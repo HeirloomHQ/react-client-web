@@ -1,13 +1,7 @@
-import Head from 'next/head'
-import Error from 'next/error'
-import styles from '../styles/Home.module.css'
-import axios from 'axios'
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
 
-export default function Home({ errorCode, message }) {
-  if (!!errorCode) {
-    return <Error statusCode={errorCode} />
-  }
-
+export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,27 +9,10 @@ export default function Home({ errorCode, message }) {
       </Head>
 
       <main className={styles.main}>
-        <p>
-          Message from the server: <b>{message}</b>
-        </p>
+        <p>Hello world!</p>
       </main>
 
-      <footer className={styles.footer}>
-        Heirloom
-      </footer>
+      <footer className={styles.footer}>Heirloom</footer>
     </div>
-  )
-}
-
-export async function getServerSideProps(context) {
-  try {
-    const { data } = await axios.get("http://localhost:5000");
-    return { props: { message: data.message } };
-  } catch (e) {
-    const ret = { props: {} };
-    if (e.isAxiosError) {
-      Object.assign(ret.props, { errorCode: e.response.status });
-    }
-    return ret;
-  }
+  );
 }
