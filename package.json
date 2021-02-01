@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "format": "eslint --fix \"**/*.+(js|jsx)\""
   },
   "dependencies": {
@@ -24,5 +24,6 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.1"
-  }
+  },
+  "cacheDirectories": [".next/cache"]
 }
