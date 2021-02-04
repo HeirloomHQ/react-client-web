@@ -15,5 +15,8 @@
     font-size: 22px;
 }
 .landing__right{
-    /* float:right; */
+    float:left;
+
+    margin-top:10%;
+    margin-left:10%;
 }
