@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Navbar from "../components/navbar";
+import Landing from './Landing/Landing';
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         <title>Heirloom</title>
       </Head>
       <Navbar />
+      <Landing/>
     </>
   );
 }

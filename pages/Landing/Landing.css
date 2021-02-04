@@ -1,0 +1,19 @@
+.landing__left{
+    float:left;
+    margin-top:10%;
+    margin-left:10%;
+}
+.landing__header{
+    font-size: 62px;
+}
+.landing__subheader{
+    font-size: 22px;
+    margin-bottom: 7%;
+
+}
+.landing__header__button{
+    font-size: 22px;
+}
+.landing__right{
+    /* float:right; */
+}
