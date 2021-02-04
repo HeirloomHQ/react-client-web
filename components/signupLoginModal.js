@@ -4,7 +4,7 @@ import Close from "./icons/close";
 import TextField from "./textfield";
 import Button from "./button";
 
-export default function SignupLoginModal({ open, variant, onClose }) {
+export default function SignupLoginModal({ open, variant, onClose, toggleVariant }) {
   React.useEffect(() => {
     function handleEscapeKey(event) {
       if (event.keyCode === 27 && open) {
@@ -48,7 +48,11 @@ export default function SignupLoginModal({ open, variant, onClose }) {
               <Close />
             </div>
           </div>
-          {variant === "signIn" ? <SignInForm /> : <SignUpForm />}
+          {variant === "signIn" ? (
+            <SignInForm />
+          ) : (
+            <SignUpForm toggleVariant={toggleVariant} />
+          )}
         </div>
       </div>
     </div>
@@ -84,7 +88,7 @@ function SignInForm() {
   );
 }
 
-function SignUpForm() {
+function SignUpForm({ toggleVariant }) {
   return (
     <>
       <div className="mt-8">
@@ -113,7 +117,15 @@ function SignUpForm() {
       </Button>
       <hr className="solid my-5" />
       <div className="flex justify-center">
-        <a className="text-heirloomOrange">Forgot password?</a>
+        <span className="text-gray-500 font-extralight">
+          Already have an account?&nbsp;
+          <span
+            className="text-heirloomOrange hover:underline font-extralight"
+            onClick={toggleVariant}
+          >
+            Sign in
+          </span>
+        </span>
       </div>
     </>
   );

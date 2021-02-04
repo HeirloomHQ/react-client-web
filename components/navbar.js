@@ -41,7 +41,14 @@ export default function Navbar() {
           </Button>
         </div>
       </div>
-      <SignupLoginModal open={modalOpen} onClose={closeModal} variant={modalVariant} />
+      <SignupLoginModal
+        open={modalOpen}
+        onClose={closeModal}
+        variant={modalVariant}
+        toggleVariant={() =>
+          setModalVariant(modalVariant === "signIn" ? "signUp" : "signIn")
+        }
+      />
     </>
   );
 }
