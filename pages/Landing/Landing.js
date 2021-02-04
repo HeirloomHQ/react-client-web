@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Button from "../../components/button";
-// import "./Landing.css";
+
 
 export default class Landing extends Component {
     render() {
@@ -21,8 +21,7 @@ export default class Landing extends Component {
                 </div>
 
                 <div className="landing__right">
-test
-                    <img></img>
+                    <img className="gramps" />
                 </div>
 
             </div>
