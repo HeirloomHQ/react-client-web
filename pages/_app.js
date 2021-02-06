@@ -1,5 +1,5 @@
 import "tailwindcss/tailwind.css";
-import './Landing/Landing.css'
+import "./Landing/Landing.css";
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;

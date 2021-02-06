@@ -1,10 +1,15 @@
+.landing{
+
+    position: absolute;
+    width: 1415.85px;
+    height: 939.22px;
+    left: 0px;
+    top: -4.73px;
+}
 .landing__left{
-    /* float:left;
-    margin-top:10%;
-    margin-left:10%; */
+
 }
 .landing__header{
-    /* font-size: 62px; */
     position: absolute;
     width: 523.72px;
     height: 153.65px;
@@ -36,16 +41,10 @@
     height: 49.56px;
     left: 89.21px;
     top: 471.9px;
-
-    /* background: #FF7F59; */
     border-radius: 11.5647px;
 }
 
 .landing__right{
-    /* float:left;
-
-    margin-top:10%;
-    margin-left:10%; */
 }
 .gramps{
     position: absolute;
