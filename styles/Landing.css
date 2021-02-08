@@ -6,9 +6,7 @@
     left: 0px;
     top: -4.73px;
 }
-.landing__left{
 
-}
 .landing__header{
     position: absolute;
     width: 523.72px;
@@ -52,7 +50,7 @@
     height: 1023.45px;
     left: 399.01px;
     top: 84.64px;
-    content: url(../../public/assets/gramps.svg);
+    content: url(../public/assets/gramps.svg);
     object-fit: cover;
 
     filter: drop-shadow(0px 3.3042px 61.1277px rgba(0, 0, 0, 0.05));

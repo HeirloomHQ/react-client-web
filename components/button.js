@@ -26,7 +26,7 @@ export default function Button({
     <button
       className={`${buttonStyle} font-medium py-2 px-6 rounded-lg font-body`}
       onClick={() => {
-        if (!disabled) onClick();
+        if (!disabled && !!onClick) onClick();
       }}
     >
       {children}
