@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Close from "./icons/close";
-import TextField from "./textfield";
+import FloatingTextField from "./floatingTextField";
 import Button from "./button";
 
 export default function SignupLoginModal({ open, variant, onClose, toggleVariant }) {
@@ -65,8 +65,13 @@ function SignInForm() {
       <div className="mt-8">
         <h2 className="font-sans font-bold text-3xl">Sign in</h2>
       </div>
-      <TextField className="mt-8" id="sign-in-email" placeholder="Email" type="text" />
-      <TextField
+      <FloatingTextField
+        className="mt-8"
+        id="sign-in-email"
+        placeholder="Email"
+        type="text"
+      />
+      <FloatingTextField
         className="mt-8"
         id="sign-in-password"
         placeholder="Password"
@@ -94,14 +99,19 @@ function SignUpForm({ toggleVariant }) {
       <div className="mt-8">
         <h2 className="font-sans font-bold text-3xl">Create your account</h2>
       </div>
-      <TextField className="mt-8" id="sign-up-email" placeholder="Email" type="text" />
-      <TextField
+      <FloatingTextField
+        className="mt-8"
+        id="sign-up-email"
+        placeholder="Email"
+        type="text"
+      />
+      <FloatingTextField
         className="mt-8"
         id="sign-up-password"
         placeholder="Password"
         type="password"
       />
-      <TextField
+      <FloatingTextField
         className="mt-8"
         id="sign-up-password-confirm"
         placeholder="Confirm password"

@@ -2,7 +2,7 @@ import React from "react";
 
 const textStyles = "text-lg text-grey-darker font-sans";
 
-export default function TextField({
+export default function FloatingTextField({
   className,
   id,
   name,

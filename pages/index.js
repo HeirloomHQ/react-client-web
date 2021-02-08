@@ -2,8 +2,6 @@ import Head from "next/head";
 import Navbar from "../components/navbar";
 import Button from "../components/button";
 
-// import Landing from "./Landing/Landing";
-
 export default function Home() {
   return (
     <>
@@ -26,7 +24,7 @@ export default function Home() {
         </div>
 
         <div className="landing__right">
-          <img className="gramps" />
+          <img alt="couple holding hands" className="gramps" />
         </div>
       </div>
     </>
