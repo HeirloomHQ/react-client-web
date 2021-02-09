@@ -1,5 +1,8 @@
 import React from "react";
 import Image from "next/image";
+import { Form, Formik } from "formik";
+import axios from "axios";
+
 import Close from "./icons/close";
 import FloatingTextField from "./floatingTextField";
 import Button from "./button";
@@ -64,26 +67,73 @@ function SignInForm() {
       <div className="mt-8">
         <h2 className="font-sans font-bold text-3xl">Sign in</h2>
       </div>
-      <FloatingTextField
-        className="mt-8"
-        id="sign-in-email"
-        placeholder="Email"
-        type="text"
-      />
-      <FloatingTextField
-        className="mt-8"
-        id="sign-in-password"
-        placeholder="Password"
-        type="password"
-      />
-      <Button
-        className="mt-8 h-12 text-xl"
-        variant="filled"
-        fullWidth={true}
-        disabled={true}
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validate={(values) => {
+          const errors = {};
+          if (!values.email) {
+            errors.email = "Required";
+          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+            errors.email = "Invalid email address";
+          }
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          axios
+            .post("/api/auth/login", values)
+            .then((response) => {
+              window.alert(JSON.stringify(response.data, null, 2));
+              setSubmitting(false);
+            })
+            .catch((e) => {
+              if (e.isAxiosError) {
+                window.alert(JSON.stringify(e.response, null, 2));
+              }
+            });
+        }}
       >
-        Sign in
-      </Button>
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <FloatingTextField
+              className="mt-8"
+              id="sign-in-email"
+              name="email"
+              placeholder="Email"
+              type="text"
+              value={values.email}
+              onChange={handleChange}
+            />
+            {errors.email && touched.email && errors.email}
+            <FloatingTextField
+              className="mt-8"
+              id="sign-in-password"
+              name="password"
+              placeholder="Password"
+              type="password"
+              value={values.password}
+              onChange={handleChange}
+            />
+            {errors.password && touched.password && errors.password}
+            <Button
+              className="mt-8 h-12 text-xl"
+              variant="filled"
+              fullWidth={true}
+              disabled={isSubmitting}
+              type="submit"
+            >
+              Sign in
+            </Button>
+          </form>
+        )}
+      </Formik>
       <hr className="solid my-5" />
       <div className="flex justify-center">
         <a className="text-heirloomOrange">Forgot password?</a>

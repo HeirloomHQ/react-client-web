@@ -17,7 +17,7 @@ export default function FloatingTextField({
     const prevState = active;
     const currState = !!e.target.value;
     if (currState !== prevState) setActive(currState);
-    !!onChange && onChange();
+    !!onChange && onChange(e);
   }
 
   return (

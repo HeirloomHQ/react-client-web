@@ -7,6 +7,7 @@ export default function Button({
   onClick,
   fullWidth,
   disabled,
+  type,
 }) {
   let buttonStyle = `${className} ${fullWidth && "w-full"} `;
   switch (variant) {
@@ -28,6 +29,7 @@ export default function Button({
       onClick={() => {
         if (!disabled && !!onClick) onClick();
       }}
+      type={type}
     >
       {children}
     </button>
