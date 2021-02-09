@@ -8,11 +8,16 @@ module.exports = {
     fontFamily: {
       display: ["Recoleta"],
       body: ["Avenir"],
+      sans: ["Inter"],
     },
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      heirloomOrange: "#FF7F59",
+      heirloomOrange: {
+        DEFAULT: "#FF7F59",
+        light: "#ffb087",
+        dark: "#c74f2e",
+      },
 
       black: colors.black,
       white: colors.white,
