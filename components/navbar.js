@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "./button";
 import SignupLoginModal from "./signupLoginModal";
 import { useRouter } from "next/router";
@@ -13,18 +12,18 @@ export default function Navbar() {
     setModalOpen(true);
   };
   const closeModal = () => setModalOpen(false);
+  const router = useRouter();
 
   return (
     <>
       <div className="h-24 w-full flex items-center px-24">
-        <Link href="/">
-          <Image
-            src="/assets/img/heirloom-header-logo.png"
-            alt="Heirloom logo"
-            height={42}
-            width={170}
-          />
-        </Link>
+        <Image
+          src="/assets/img/heirloom-header-logo.png"
+          alt="Heirloom logo"
+          height={42}
+          width={170}
+          onClick={() => router.push("/")}
+        />
         <div className="flex justify-between ml-32">
           <NavLink href="#">Product</NavLink>
           <NavLink href="#">Pricing</NavLink>
@@ -57,7 +56,7 @@ function NavLink({ href, children }) {
   const router = useRouter();
   const handleClick = (e) => {
     e.preventDefault();
-    router.push(href);
+    return router.push(href);
   };
 
   return (
