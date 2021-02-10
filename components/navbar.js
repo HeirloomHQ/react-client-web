@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="h-24 w-full flex items-center px-24">
+      <div className="h-24 w-full flex items-center px-24 bg-paper">
         <Image
           src="/assets/img/heirloom-header-logo.png"
           alt="Heirloom logo"
