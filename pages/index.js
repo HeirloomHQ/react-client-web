@@ -8,23 +8,25 @@ export default function Home() {
       <Head>
         <title>Heirloom</title>
       </Head>
-      <Navbar />
-      <div className="landing">
-        <div className="landing__left">
-          <div className="landing__header">
-            Keep memories of <br />
-            loved ones alive.
+      <div className="h-screen">
+        <Navbar />
+        <div className="landing bg-paper w-full h-full">
+          <div className="landing__left">
+            <div className="landing__header">
+              Keep memories of <br />
+              loved ones alive.
+            </div>
+            <div className="landing__subheader">
+              Connect and share stories with your community.
+            </div>
+            <div className="landing__header__button">
+              <Button variant="filled"> Learn more</Button>
+            </div>
           </div>
-          <div className="landing__subheader">
-            Connect and share stories with your community.
-          </div>
-          <div className="landing__header__button">
-            <Button variant="filled"> Learn more</Button>
-          </div>
-        </div>
 
-        <div className="landing__right">
-          <img alt="couple holding hands" className="gramps" />
+          <div className="landing__right">
+            <img alt="couple holding hands" className="gramps" />
+          </div>
         </div>
       </div>
     </>
