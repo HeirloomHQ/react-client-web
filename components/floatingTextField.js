@@ -10,6 +10,8 @@ export default function FloatingTextField({
   value,
   onChange,
   type,
+  //Used for constant keyword press checking
+  onBlur,
 }) {
   const [active, setActive] = React.useState(false);
 
@@ -19,9 +21,18 @@ export default function FloatingTextField({
     if (currState !== prevState) setActive(currState);
     !!onChange && onChange(e);
   }
+  //declares className declaration that will determine styling format for errors. 
+  function classNameDec(className){
+    //className previously by default
+    if (className == "mt-8")
+      return "mt-8 h-14 relative border-2 border-gray-500 rounded-lg";
+    //className when there is error in validation
+    else if (className == "error")
+      return "mt-8 h-14 relative border-2 border-red-500 rounded-lg";
+  }
 
   return (
-    <div className={`${className} h-14 relative border-2 border-gray-500 rounded-lg`}>
+    <div className={`${classNameDec(className)}`}>
       <label
         className={[
           "absolute top-0 left-0 flex items-center p-3",
@@ -42,6 +53,8 @@ export default function FloatingTextField({
         name={name}
         value={value}
         onChange={handleActivation}
+        //Used for constant keyword press checking
+        onBlur={onBlur}
       />
     </div>
   );
