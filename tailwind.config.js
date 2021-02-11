@@ -25,6 +25,8 @@ module.exports = {
       indigo: colors.indigo,
       red: colors.rose,
       yellow: colors.amber,
+      "text-default": "#1F1F1F",
+      paper: "#FEF9F5",
     },
   },
   variants: {
