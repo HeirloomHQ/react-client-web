@@ -1,10 +1,8 @@
 .landing{
     z-index: -1;
     position: absolute;
-    width: 1415.85px;
-    height: 939.22px;
-    left: 0px;
-    top: -4.73px;
+    top: 0;
+    overflow: hidden;
 }
 
 .landing__header{
