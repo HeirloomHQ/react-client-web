@@ -10,6 +10,8 @@ export default function FloatingTextField({
   value,
   onChange,
   type,
+  error,
+  onBlur,
 }) {
   const [active, setActive] = React.useState(false);
 
@@ -17,11 +19,15 @@ export default function FloatingTextField({
     const prevState = active;
     const currState = !!e.target.value;
     if (currState !== prevState) setActive(currState);
-    !!onChange && onChange();
+    !!onChange && onChange(e);
   }
 
   return (
-    <div className={`${className} relative border-2 border-gray-500 rounded-lg`}>
+    <div
+      className={`${className} relative border-2 ${
+        error ? "border-red-500" : "border-gray-500"
+      } rounded-lg`}
+    >
       <label
         className={[
           "absolute top-0 left-0 flex items-center p-3",
@@ -45,6 +51,7 @@ export default function FloatingTextField({
         name={name}
         value={value}
         onChange={handleActivation}
+        onBlur={onBlur}
       />
     </div>
   );
