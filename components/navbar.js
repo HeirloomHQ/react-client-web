@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Button from "./button";
 import SignupLoginModal from "./signupLoginModal";
-import { useRouter } from "next/router";
+import NavLink from "./navLink";
 
 export default function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="h-24 w-full flex items-center px-24">
+      <div className="h-24 w-full flex items-center px-24 bg-paper">
         <Image
           src="/assets/img/heirloom-header-logo.png"
           alt="Heirloom logo"
@@ -25,10 +26,18 @@ export default function Navbar() {
           onClick={() => router.push("/")}
         />
         <div className="flex justify-between ml-32">
-          <NavLink href="#">Product</NavLink>
-          <NavLink href="#">Pricing</NavLink>
-          <NavLink href="#">Blog</NavLink>
-          <NavLink href="#">About</NavLink>
+          <NavLink className="font-body font-medium text-xl " href="#">
+            Product
+          </NavLink>
+          <NavLink className="font-body font-medium text-xl " href="#">
+            Pricing
+          </NavLink>
+          <NavLink className="font-body font-medium text-xl " href="#">
+            Blog
+          </NavLink>
+          <NavLink className="font-body font-medium text-xl " href="#">
+            About
+          </NavLink>
         </div>
 
         <div className="ml-auto">
@@ -49,23 +58,5 @@ export default function Navbar() {
         }
       />
     </>
-  );
-}
-
-function NavLink({ href, children }) {
-  const router = useRouter();
-  const handleClick = (e) => {
-    e.preventDefault();
-    return router.push(href);
-  };
-
-  return (
-    <a
-      className="font-body font-medium text-xl hover:underline mx-6"
-      href={href}
-      onClick={handleClick}
-    >
-      {children}
-    </a>
   );
 }

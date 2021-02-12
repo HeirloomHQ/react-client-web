@@ -18,14 +18,18 @@ export default function Button({
           : "bg-heirloomOrange-light"
       }  text-white`;
       break;
+    case "outlined":
+      buttonStyle +=
+        "text-black border-solid border border-black hover:text-white hover:border-opacity-0 hover:bg-heirloomOrange-light";
+      break;
     case "transparent":
     default:
-      buttonStyle += "text-black";
+      buttonStyle += "text-black  hover:bg-heirloomOrange-light hover:text-white";
   }
 
   return (
     <button
-      className={`${buttonStyle} font-medium py-2 px-6 rounded-lg font-body`}
+      className={`${buttonStyle} font-medium py-2 px-6 rounded-lg font-body transition-colors duration-100`}
       onClick={() => {
         if (!disabled && !!onClick) onClick();
       }}
