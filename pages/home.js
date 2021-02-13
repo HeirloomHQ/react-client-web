@@ -3,9 +3,19 @@ import Head from "next/head";
 import Button from "../components/button";
 import styles from "../styles/home.module.css";
 import DashNavbar from "../components/dashNavbar";
+import { isAuthenticated, redirectHome } from "../lib/serverSideAuth";
+
+export async function getServerSideProps(ctx) {
+  const isAuth = await isAuthenticated(ctx);
+  if (!isAuth) return redirectHome(ctx);
+  return {
+    props: {},
+  };
+}
 
 export default function Home() {
   const [tab, setTab] = useState(0);
+
   return (
     <>
       <Head>

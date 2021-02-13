@@ -25,7 +25,7 @@ export default function FloatingTextField({
   return (
     <div
       className={`${className} relative border-2 ${
-        error ? "border-red-500" : "border-gray-500"
+        error ? "border-red-600" : "border-gray-500"
       } rounded-lg`}
     >
       <label
