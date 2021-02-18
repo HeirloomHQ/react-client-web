@@ -19,12 +19,11 @@ export default function Button({
       }  text-white`;
       break;
     case "outlined":
-      buttonStyle +=
-        "text-black border-solid border border-black hover:text-white hover:border-opacity-0 hover:bg-heirloomOrange-light";
-      break;
-    case "transparent":
     default:
-      buttonStyle += "text-black  hover:bg-heirloomOrange-light hover:text-white";
+      buttonStyle += [
+        "text-black border-solid border",
+        "hover:bg-outlineButtonHover",
+      ].join(" ");
   }
 
   return (

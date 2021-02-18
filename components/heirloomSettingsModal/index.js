@@ -4,6 +4,7 @@ import styles from "./modal.module.css";
 import LoadingSpinner from "../loadingSpinner";
 import { useMemorial } from "../../lib/memorial";
 import SelectedRectangle from "../selectedRectangle";
+import HeirloomSettings from "./settings";
 
 export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
   // this prevents the background from scrolling when modal is open
@@ -33,7 +34,7 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg"
+        className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg pt-10 flex flex-col"
         onClick={stopPropagation}
       >
         <ModalContent loading={loading} memorial={memorial} />
@@ -45,11 +46,22 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
 function ModalContent({ loading, memorial }) {
   const [tab, setTab] = useState(0);
 
+  function ContentRender() {
+    switch (tab) {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+      default:
+        return <HeirloomSettings />;
+    }
+  }
+
   return loading || !memorial ? (
     <LoadingSpinner />
   ) : (
     <>
-      <div className="pt-10 px-20">
+      <Spacer>
         <h2 className="font-sans font-semibold text-3xl">
           {memorial.pageSettings.firstName}&apos;s Heirloom
         </h2>
@@ -83,8 +95,15 @@ function ModalContent({ loading, memorial }) {
             {tab === 3 && <SelectedRectangle />}
           </div>
         </div>
-      </div>
-      <hr className="stroke-1" />
+      </Spacer>
+      <hr />
+      <Spacer className="flex-grow overflow-y-auto">
+        <ContentRender />
+      </Spacer>
     </>
   );
+}
+
+function Spacer({ className, children }) {
+  return <div className={`${className} px-20`}>{children}</div>;
 }
