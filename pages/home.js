@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Head from "next/head";
 import Button from "../components/button";
-import styles from "../styles/home.module.css";
 import DashNavbar from "../components/dashNavbar";
 import { isAuthenticated, redirectHome } from "../lib/serverSideAuth";
+import HeirloomSettingsModal from "../components/heirloomSettingsModal";
+import SelectedRectangle from "../components/selectedRectangle";
 
+// comment this out for dev if necessary
 export async function getServerSideProps(ctx) {
   const isAuth = await isAuthenticated(ctx);
   if (!isAuth) return redirectHome(ctx);
@@ -15,6 +17,15 @@ export async function getServerSideProps(ctx) {
 
 export default function Home() {
   const [tab, setTab] = useState(0);
+  const [memorialID, setMemorialID] = useState(undefined);
+
+  function openSettings(memorialID) {
+    setMemorialID(memorialID);
+  }
+
+  function closeSettings() {
+    setMemorialID(undefined);
+  }
 
   return (
     <>
@@ -61,7 +72,7 @@ export default function Home() {
 
         {/*Memorial Grid*/}
         <div className="sm:px-60 2xl:px-0 mt-12 grid sm:grid-cols-2 2xl:max-w-4xl 2xl:w-full 2xl:mx-auto md:grid-cols-3  gap-12">
-          <MockMemorialCard />
+          <MockMemorialCard onClick={openSettings} />
           <MockMemorialCard />
           <MockMemorialCard />
           <MockMemorialCard />
@@ -69,6 +80,11 @@ export default function Home() {
           <MockMemorialCard />
         </div>
       </div>
+      <HeirloomSettingsModal
+        open={!!memorialID}
+        onClose={closeSettings}
+        memorialID={memorialID}
+      />
     </>
   );
 }

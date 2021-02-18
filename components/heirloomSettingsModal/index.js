@@ -1,0 +1,90 @@
+import React, { useEffect, useState } from "react";
+
+import styles from "./modal.module.css";
+import LoadingSpinner from "../loadingSpinner";
+import { useMemorial } from "../../lib/memorial";
+import SelectedRectangle from "../selectedRectangle";
+
+export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
+  // this prevents the background from scrolling when modal is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
+  // this prevents clicks from inside modal from closing it
+  function stopPropagation(e) {
+    e.stopPropagation();
+  }
+
+  const { loading, memorial } = useMemorial(memorialID);
+
+  return (
+    <div
+      className={[
+        !open ? "opacity-0 pointer-events-none" : "",
+        styles.modal,
+        "transition-opacity duration-300",
+        "z-50 w-full h-full flex justify-center items-center",
+        "py-16 sm:px-48 2xl:px-0",
+      ].join(" ")}
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg"
+        onClick={stopPropagation}
+      >
+        <ModalContent loading={loading} memorial={memorial} />
+      </div>
+    </div>
+  );
+}
+
+function ModalContent({ loading, memorial }) {
+  const [tab, setTab] = useState(0);
+
+  return loading || !memorial ? (
+    <LoadingSpinner />
+  ) : (
+    <>
+      <div className="pt-10 px-20">
+        <h2 className="font-sans font-semibold text-3xl">
+          {memorial.pageSettings.firstName}&apos;s Heirloom
+        </h2>
+        <div className="mt-8 flex flex-start">
+          <div
+            className="mr-6 text-text-default font-sans font-semibold"
+            onClick={() => setTab(0)}
+          >
+            <h2 className="mb-4 select-none">Settings</h2>
+            {tab === 0 && <SelectedRectangle />}
+          </div>
+          <div
+            className="mx-6 text-text-default font-sans font-semibold"
+            onClick={() => setTab(1)}
+          >
+            <h2 className="mb-4 select-none">Sharing</h2>
+            {tab === 1 && <SelectedRectangle />}
+          </div>
+          <div
+            className="mx-6 text-text-default font-sans font-semibold"
+            onClick={() => setTab(2)}
+          >
+            <h2 className="mb-4 select-none">Donations</h2>
+            {tab === 2 && <SelectedRectangle />}
+          </div>
+          <div
+            className="mx-6 text-text-default font-sans font-semibold"
+            onClick={() => setTab(3)}
+          >
+            <h2 className="mb-4 select-none">Billing</h2>
+            {tab === 3 && <SelectedRectangle />}
+          </div>
+        </div>
+      </div>
+      <hr className="stroke-1" />
+    </>
+  );
+}
