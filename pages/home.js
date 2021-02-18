@@ -73,10 +73,14 @@ export default function Home() {
   );
 }
 
-function SelectedRectangle() {
-  return <div className={styles.rectangle} />;
-}
-
-function MockMemorialCard() {
-  return <div className="h-72 mb-8 rounded-2xl border-black border-2"> </div>;
+// fake card while card is in dev
+function MockMemorialCard({ onClick }) {
+  return (
+    <div
+      className="h-72 mb-8 rounded-2xl border-black border-2"
+      onClick={() => onClick("fake-id")}
+    >
+      {" "}
+    </div>
+  );
 }
