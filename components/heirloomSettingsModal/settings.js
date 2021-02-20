@@ -1,5 +1,8 @@
 import React from "react";
+import Image from "next/image";
 import TextField from "../textField";
+import Button from "../button";
+import ButtonFileInput from "../buttonFileInput";
 
 export default function HeirloomSettings() {
   return (
@@ -28,12 +31,25 @@ export default function HeirloomSettings() {
       </ButtonFileInput>
       <hr />
       <SettingLabel>Bio (optional)</SettingLabel>
+      <TextField
+        id="heirloom-f-name"
+        className="w-full mb-10"
+        placeholder="Who are you memorializing? What filled the pages of their life story?"
+        multiline
+        rows={12}
+      />
       <hr />
       <SettingLabel>Page Theme</SettingLabel>
       <hr />
       <SettingLabel>Offline Export</SettingLabel>
+      <Button className="mr-4 mb-10">Export as PDF</Button>
+      <Button>Export as Webpage</Button>
       <hr />
       <SettingLabel>Delete Heirloom</SettingLabel>
+      <Button className="mr-4 mb-10">
+        <span className="text-red-500">Delete Heirloom</span>
+      </Button>
+      <Button>Take Online</Button>
       <hr />
     </div>
   );
