@@ -20,6 +20,7 @@ export default function HeirloomSettings() {
         id="heirloom-f-name"
         className="w-full mb-10"
         placeholder="In loving memory"
+        maxCharacters={100}
       />
       <hr />
 
