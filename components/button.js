@@ -28,7 +28,7 @@ export default function Button({
 
   return (
     <button
-      className={`${buttonStyle} font-medium py-2 px-6 rounded-lg font-body transition-colors duration-100`}
+      className={`${buttonStyle} font-medium py-2 px-4 rounded-lg font-body transition-colors duration-100 focus:outline-none`}
       onClick={() => {
         if (!disabled && !!onClick) onClick();
       }}

@@ -73,11 +73,11 @@ export default function Home() {
         {/*Memorial Grid*/}
         <div className="sm:px-60 2xl:px-0 mt-12 grid sm:grid-cols-2 2xl:max-w-4xl 2xl:w-full 2xl:mx-auto md:grid-cols-3  gap-12">
           <MockMemorialCard onClick={openSettings} />
-          <MockMemorialCard />
-          <MockMemorialCard />
-          <MockMemorialCard />
-          <MockMemorialCard />
-          <MockMemorialCard />
+          <MockMemorialCard onClick={openSettings} />
+          <MockMemorialCard onClick={openSettings} />
+          <MockMemorialCard onClick={openSettings} />
+          <MockMemorialCard onClick={openSettings} />
+          <MockMemorialCard onClick={openSettings} />
         </div>
       </div>
       <HeirloomSettingsModal
