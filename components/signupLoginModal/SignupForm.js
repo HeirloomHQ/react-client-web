@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { Formik } from "formik";
 
-import FloatingTextField from "../floatingTextField";
+import FloatingTextField from "../textField/floatingTextField";
 import Button from "../button";
 import { useAuth } from "../../lib/clientSideAuth";
 

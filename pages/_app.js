@@ -6,7 +6,7 @@ import { AuthProvider } from "../lib/clientSideAuth";
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </AuthProvider>
   );
 }
