@@ -15,6 +15,17 @@ export default function HeirloomSettings() {
       />
       <hr />
       <SettingLabel>Cover Photo</SettingLabel>
+      <div className="mb-4">
+        <Image src="/assets/img/default_cover_photo.png" width={237} height={150} />
+      </div>
+      <ButtonFileInput
+        id="heriloom-cover-photo-usr"
+        className="mb-10"
+        type="file"
+        onChange={(e) => console.log(e)}
+      >
+        Upload a Photo
+      </ButtonFileInput>
       <hr />
       <SettingLabel>Bio (optional)</SettingLabel>
       <hr />
