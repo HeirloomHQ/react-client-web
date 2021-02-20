@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import TextField from "../textField";
+
 import Button from "../button";
 import ButtonFileInput from "../buttonFileInput";
+import TextArea from "../textField/textArea";
+import TextField from "../textField/textField";
 
 export default function HeirloomSettings() {
   const [theme, setTheme] = useState(COLORS[0]);
@@ -36,12 +38,13 @@ export default function HeirloomSettings() {
       <hr />
 
       <SettingLabel>Bio (optional)</SettingLabel>
-      <TextField
+      <TextArea
         id="heirloom-f-name"
         className="w-full mb-10"
         placeholder="Who are you memorializing? What filled the pages of their life story?"
         multiline
-        rows={12}
+        rows={6}
+        maxCharacters={2000}
       />
       <hr />
 
@@ -69,7 +72,6 @@ export default function HeirloomSettings() {
         <span className="text-red-500">Delete Heirloom</span>
       </Button>
       <Button>Take Online</Button>
-      <hr />
     </div>
   );
 }

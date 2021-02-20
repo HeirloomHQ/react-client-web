@@ -5,6 +5,7 @@ import LoadingSpinner from "../loadingSpinner";
 import { useMemorial } from "../../lib/memorial";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
+import Button from "../button";
 
 export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
   // this prevents the background from scrolling when modal is open
@@ -29,7 +30,7 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
         styles.modal,
         "transition-opacity duration-300",
         "z-50 w-full h-full flex justify-center items-center",
-        "py-16 sm:px-48 2xl:px-0",
+        "py-14 sm:px-48 2xl:px-0",
       ].join(" ")}
       onClick={onClose}
     >
@@ -37,13 +38,13 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
         className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg pt-10 flex flex-col"
         onClick={stopPropagation}
       >
-        <ModalContent loading={loading} memorial={memorial} />
+        <ModalContent loading={loading} memorial={memorial} onClose={onClose} />
       </div>
     </div>
   );
 }
 
-function ModalContent({ loading, memorial }) {
+function ModalContent({ loading, memorial, onClose }) {
   const [tab, setTab] = useState(0);
 
   function ContentRender() {
@@ -57,6 +58,57 @@ function ModalContent({ loading, memorial }) {
     }
   }
 
+  function ActionBar() {
+    return (
+      <>
+        <hr />
+        <div className="w-full py-5">
+          <Spacer>
+            <Button variant="filled" className="mr-5">
+              Save Changes
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </Spacer>
+        </div>
+      </>
+    );
+  }
+
+  function MenuBar() {
+    return (
+      <div className="mt-8 flex flex-start">
+        <div
+          className="mr-6 text-text-default font-sans font-semibold"
+          onClick={() => setTab(0)}
+        >
+          <h2 className="mb-4 select-none">Settings</h2>
+          {tab === 0 && <SelectedRectangle />}
+        </div>
+        <div
+          className="mx-6 text-text-default font-sans font-semibold"
+          onClick={() => setTab(1)}
+        >
+          <h2 className="mb-4 select-none">Sharing</h2>
+          {tab === 1 && <SelectedRectangle />}
+        </div>
+        <div
+          className="mx-6 text-text-default font-sans font-semibold"
+          onClick={() => setTab(2)}
+        >
+          <h2 className="mb-4 select-none">Donations</h2>
+          {tab === 2 && <SelectedRectangle />}
+        </div>
+        <div
+          className="mx-6 text-text-default font-sans font-semibold"
+          onClick={() => setTab(3)}
+        >
+          <h2 className="mb-4 select-none">Billing</h2>
+          {tab === 3 && <SelectedRectangle />}
+        </div>
+      </div>
+    );
+  }
+
   return loading || !memorial ? (
     <LoadingSpinner />
   ) : (
@@ -65,41 +117,13 @@ function ModalContent({ loading, memorial }) {
         <h2 className="font-sans font-semibold text-3xl">
           {memorial.pageSettings.firstName}&apos;s Heirloom
         </h2>
-        <div className="mt-8 flex flex-start">
-          <div
-            className="mr-6 text-text-default font-sans font-semibold"
-            onClick={() => setTab(0)}
-          >
-            <h2 className="mb-4 select-none">Settings</h2>
-            {tab === 0 && <SelectedRectangle />}
-          </div>
-          <div
-            className="mx-6 text-text-default font-sans font-semibold"
-            onClick={() => setTab(1)}
-          >
-            <h2 className="mb-4 select-none">Sharing</h2>
-            {tab === 1 && <SelectedRectangle />}
-          </div>
-          <div
-            className="mx-6 text-text-default font-sans font-semibold"
-            onClick={() => setTab(2)}
-          >
-            <h2 className="mb-4 select-none">Donations</h2>
-            {tab === 2 && <SelectedRectangle />}
-          </div>
-          <div
-            className="mx-6 text-text-default font-sans font-semibold"
-            onClick={() => setTab(3)}
-          >
-            <h2 className="mb-4 select-none">Billing</h2>
-            {tab === 3 && <SelectedRectangle />}
-          </div>
-        </div>
+        <MenuBar />
       </Spacer>
       <hr />
       <Spacer className="flex-grow overflow-y-auto">
         <ContentRender />
       </Spacer>
+      {tab === 0 && <ActionBar />}
     </>
   );
 }
