@@ -2,18 +2,8 @@ import { useState } from "react";
 import Head from "next/head";
 import Button from "../components/button";
 import DashNavbar from "../components/dashNavbar";
-import { isAuthenticated, redirectHome } from "../lib/serverSideAuth";
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
 import SelectedRectangle from "../components/selectedRectangle";
-
-// comment this out for dev if necessary
-export async function getServerSideProps(ctx) {
-  const isAuth = await isAuthenticated(ctx);
-  if (!isAuth) return redirectHome(ctx);
-  return {
-    props: {},
-  };
-}
 
 export default function Home() {
   const [tab, setTab] = useState(0);
