@@ -5,14 +5,34 @@ import Link from "../icons/link";
 import Lock from "../icons/lock";
 import { useMembers } from "../../lib/members";
 import LoadingSpinner from "../loadingSpinner";
+import RoleDropdown, { RoleDropdownItem } from "./roleDropdown";
+import TextField from "../textField/textField";
 
 export default function SharingTab({ memorial }) {
   const [selected, setSelected] = useState(memorial?.canView || "");
+  const [emailFieldOpen, setEmailFieldOpen] = useState(true);
   const { members, loading } = useMembers(memorial?.id);
+
   return loading || !members ? (
     <LoadingSpinner />
   ) : (
     <>
+      {emailFieldOpen && (
+        <div className="mt-8">
+          <SettingLabel>Invite People</SettingLabel>
+          <TextField />
+          <div className="flex justify-end mt-4 mb-8">
+            <Button variant="outlined" onClick={() => setEmailFieldOpen(false)}>
+              Cancel
+            </Button>
+            <Button className="ml-2" variant="filled">
+              Send
+            </Button>
+          </div>
+          <hr />
+        </div>
+      )}
+
       <div className="flex justify-between mt-8">
         <SettingLabel>Who Can view this Heirloom?</SettingLabel>
         <div className="flex items-center">
@@ -24,9 +44,12 @@ export default function SharingTab({ memorial }) {
               </div>
             </Button>
           )}
-          <Button variant="filled">Invite Members</Button>
+          <Button variant="filled" onClick={() => setEmailFieldOpen(true)}>
+            Invite Members
+          </Button>
         </div>
       </div>
+
       <Dropdown value={selected} onChange={(e) => setSelected(e.target.value)}>
         <DropdownItem value="MANAGER">
           <Lock className="mr-2 -ml-1 my-auto" />
@@ -37,17 +60,19 @@ export default function SharingTab({ memorial }) {
           Anyone with the link can view
         </DropdownItem>
       </Dropdown>
+
       <div className="mt-8 mb-4">
         <SettingLabel>Members</SettingLabel>
         <hr />
         {members.map((mem) => (
           <>
-            <PersonCard
+            <PersonRow
               firstName={mem.firstName}
               lastName={mem.lastName}
               email={mem.email}
               imgSrc={mem.profilePicture}
               key={mem.id}
+              role={mem.role}
             />
             <hr />
           </>
@@ -61,8 +86,9 @@ function SettingLabel({ children }) {
   return <div className="text-xl font-bold mb-4">{children}</div>;
 }
 
-function PersonCard({ firstName, lastName, email, imgSrc }) {
+function PersonRow({ firstName, lastName, email, imgSrc, role }) {
   const hasName = !!firstName && !!lastName;
+  const [selected, setSelected] = useState(role || "MEMBER");
 
   const NameComponent = () => (
     <div className="ml-2 flex flex-col justify-center self-stretch">
@@ -78,7 +104,7 @@ function PersonCard({ firstName, lastName, email, imgSrc }) {
   );
 
   return (
-    <div className="w-full  h-full py-2 flex flex-start">
+    <div className="w-full h-full py-2 flex flex-start">
       <div className="w-12 h-12">
         <img
           className="rounded-full border border-gray-100 shadow-sm"
@@ -87,6 +113,10 @@ function PersonCard({ firstName, lastName, email, imgSrc }) {
         />
       </div>
       {hasName ? <NameComponent /> : <EmailComponent />}
+      <RoleDropdown value={selected} onChange={(e) => setSelected(e.target.value)}>
+        <RoleDropdownItem value="MANAGER">Admin</RoleDropdownItem>
+        <DropdownItem value="MEMBER">Member</DropdownItem>
+      </RoleDropdown>
     </div>
   );
 }
