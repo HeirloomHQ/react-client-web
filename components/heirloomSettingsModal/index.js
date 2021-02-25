@@ -31,7 +31,7 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
         styles.modal,
         "transition-opacity duration-300",
         "z-50 w-full h-full flex justify-center items-center",
-        "py-14 sm:px-48 2xl:px-0",
+        "py-12 sm:px-48 2xl:px-0",
       ].join(" ")}
       onClick={onClose}
     >
