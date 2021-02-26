@@ -21,6 +21,10 @@ export default function SignupLoginModal({ open, variant, onClose, toggleVariant
     };
   }, [open, onClose]);
 
+  function stopPropagation(e) {
+    e.stopPropagation();
+  }
+
   return (
     <div
       className={`z-50 ${
@@ -30,9 +34,13 @@ export default function SignupLoginModal({ open, variant, onClose, toggleVariant
       <div
         className="modal-overlay absolute w-full h-full opacity-90 placeholder-"
         style={{ background: "#FEF9F5" }}
+        onClick={onClose}
       />
 
-      <div className="modal-container bg-white w-full max-w-3xl mx-auto rounded-2xl shadow-lg z-50 overflow-y-auto">
+      <div
+        className="modal-container bg-white w-full max-w-3xl mx-auto rounded-2xl shadow-lg z-50 overflow-y-auto"
+        onClick={stopPropagation}
+      >
         <div className="modal-content py-8 text-left px-12">
           <div className="flex justify-between items-center pb-3">
             <div className="invisible" onClick={onClose}>

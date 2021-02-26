@@ -4,7 +4,11 @@ module.exports = {
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      outline: {
+        heirloomOrange: ["2.5px solid #FF7F59", "1px"],
+      },
+    },
     fontFamily: {
       display: ["Recoleta"],
       body: ["Avenir"],
@@ -18,6 +22,7 @@ module.exports = {
         light: "#ffb087",
         dark: "#c74f2e",
       },
+      outlineButtonHover: "#F6F5F3",
 
       black: colors.black,
       white: colors.white,

@@ -8,7 +8,7 @@ export default function Home() {
       <Head>
         <title>Heirloom</title>
       </Head>
-      <div className="h-screen">
+      <div>
         <Navbar />
         <div className="landing bg-paper w-full h-full">
           <div className="landing__left">

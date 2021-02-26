@@ -1,15 +1,16 @@
 import React from "react";
 
-export default function Button({
+export default function ButtonFileInput({
   children,
   className,
+  id,
   variant,
   onClick,
-  fullWidth,
   disabled,
-  type,
+  onChange,
+  ...rest
 }) {
-  let buttonStyle = `${className} ${fullWidth && "w-full"} `;
+  let buttonStyle = "";
   switch (variant) {
     case "filled":
       buttonStyle += `${
@@ -27,14 +28,15 @@ export default function Button({
   }
 
   return (
-    <button
-      className={`${buttonStyle} font-medium py-2 px-4 rounded-lg font-body transition-colors duration-100 focus:outline-none`}
-      onClick={() => {
-        if (!disabled && !!onClick) onClick();
-      }}
-      type={type}
-    >
-      {children}
-    </button>
+    <div className={`${className} py-2`}>
+      <label
+        className={`${buttonStyle} font-medium py-2 px-4 rounded-lg font-body transition-colors duration-100 box-border`}
+        htmlFor={id}
+        {...rest}
+      >
+        {children}
+      </label>
+      <input type="file" onChange={onChange} className="hidden" id={id} />
+    </div>
   );
 }
