@@ -2,6 +2,8 @@ import { useState } from "react";
 import Head from "next/head";
 import Button from "../components/button";
 import DashNavbar from "../components/dashNavbar";
+import MemorialCard from "../components/memorialCard";
+
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
 import SelectedRectangle from "../components/selectedRectangle";
 
@@ -62,12 +64,8 @@ export default function Home() {
 
         {/*Memorial Grid*/}
         <div className="sm:px-60 2xl:px-0 mt-12 grid sm:grid-cols-2 2xl:max-w-4xl 2xl:w-full 2xl:mx-auto md:grid-cols-3  gap-12">
-          <MockMemorialCard onClick={openSettings} />
-          <MockMemorialCard onClick={openSettings} />
-          <MockMemorialCard onClick={openSettings} />
-          <MockMemorialCard onClick={openSettings} />
-          <MockMemorialCard onClick={openSettings} />
-          <MockMemorialCard onClick={openSettings} />
+          <MemorialCard />
+
         </div>
       </div>
       <HeirloomSettingsModal
@@ -79,14 +77,6 @@ export default function Home() {
   );
 }
 
-// fake card while card is in dev
-function MockMemorialCard({ onClick }) {
-  return (
-    <div
-      className="h-72 mb-8 rounded-2xl border-black border-2"
-      onClick={() => onClick("fake-id")}
-    >
-      {" "}
-    </div>
-  );
+function SelectedRectangle() {
+  return <div className={styles.rectangle} />;
 }
