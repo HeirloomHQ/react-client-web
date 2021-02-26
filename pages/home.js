@@ -73,6 +73,6 @@ function SelectedRectangle() {
   return <div className={styles.rectangle} />;
 }
 
-function MockMemorialCard() {
-  return <div className="h-72 mb-8 rounded-2xl border-black border-2"> </div>;
-}
+// function MockMemorialCard() {
+//   return <div className="h-72 mb-8 rounded-2xl border-black border-2"> </div>;
+// }
