@@ -10,19 +10,19 @@ import TextField from "../textField/textField";
 
 export default function SharingTab({ memorial }) {
   const [selected, setSelected] = useState(memorial?.canView || "");
-  const [emailFieldOpen, setEmailFieldOpen] = useState(true);
+  const [inviteFieldOpen, setInviteFieldOpen] = useState(false);
   const { members, loading } = useMembers(memorial?.id);
 
   return loading || !members ? (
     <LoadingSpinner />
   ) : (
     <>
-      {emailFieldOpen && (
+      {inviteFieldOpen && (
         <div className="mt-8">
           <SettingLabel>Invite People</SettingLabel>
           <TextField />
           <div className="flex justify-end mt-4 mb-8">
-            <Button variant="outlined" onClick={() => setEmailFieldOpen(false)}>
+            <Button variant="outlined" onClick={() => setInviteFieldOpen(false)}>
               Cancel
             </Button>
             <Button className="ml-2" variant="filled">
@@ -44,7 +44,7 @@ export default function SharingTab({ memorial }) {
               </div>
             </Button>
           )}
-          <Button variant="filled" onClick={() => setEmailFieldOpen(true)}>
+          <Button variant="filled" onClick={() => setInviteFieldOpen(true)}>
             Invite Members
           </Button>
         </div>
