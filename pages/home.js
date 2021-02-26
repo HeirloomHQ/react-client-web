@@ -5,14 +5,6 @@ import DashNavbar from "../components/dashNavbar";
 import { isAuthenticated, redirectHome } from "../lib/serverSideAuth";
 import MemorialCard from "../components/memorialCard";
 
-export async function getServerSideProps(ctx) {
-  const isAuth = await isAuthenticated(ctx);
-  if (!isAuth) return redirectHome(ctx);
-  return {
-    props: {},
-  };
-}
-
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
 import SelectedRectangle from "../components/selectedRectangle";
 
@@ -89,5 +81,4 @@ export default function Home() {
 function SelectedRectangle() {
   return <div className={styles.rectangle} />;
 }
-
 
