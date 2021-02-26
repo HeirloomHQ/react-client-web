@@ -6,13 +6,13 @@ import DashNavbar from "../components/dashNavbar";
 import { isAuthenticated, redirectHome } from "../lib/serverSideAuth";
 import MemorialCard from "../components/memorialCard";
 
-// export async function getServerSideProps(ctx) {
-//   const isAuth = await isAuthenticated(ctx);
-//   if (!isAuth) return redirectHome(ctx);
-//   return {
-//     props: {},
-//   };
-// }
+export async function getServerSideProps(ctx) {
+  const isAuth = await isAuthenticated(ctx);
+  if (!isAuth) return redirectHome(ctx);
+  return {
+    props: {},
+  };
+}
 
 export default function Home() {
   const [tab, setTab] = useState(0);
