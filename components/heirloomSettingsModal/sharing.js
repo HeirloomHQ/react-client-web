@@ -11,7 +11,7 @@ import TextField from "../textField/textField";
 export default function SharingTab({ memorial }) {
   const [selected, setSelected] = useState(memorial?.canView || "");
   const [inviteFieldOpen, setInviteFieldOpen] = useState(false);
-  const { members, loading } = useMembers(memorial?.id);
+  const { members, loading } = useMembers(memorial.id);
 
   return loading || !members ? (
     <LoadingSpinner />

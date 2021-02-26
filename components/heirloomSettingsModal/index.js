@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 import styles from "./modal.module.css";
-import LoadingSpinner from "../loadingSpinner";
-import { useMemorial } from "../../lib/memorial";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
 import Button from "../button";
 
-export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
+export default function HeirloomSettingsModal({ open, onClose, memorial }) {
   // this prevents the background from scrolling when modal is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
@@ -21,8 +19,6 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
   function stopPropagation(e) {
     e.stopPropagation();
   }
-
-  const { loading, memorial } = useMemorial(memorialID);
 
   return (
     <div
@@ -39,13 +35,13 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
         className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg pt-10 flex flex-col"
         onClick={stopPropagation}
       >
-        <ModalContent loading={loading} memorial={memorial} onClose={onClose} />
+        {!!memorial && <ModalContent memorial={memorial} onClose={onClose} />}
       </div>
     </div>
   );
 }
 
-function ModalContent({ loading, memorial, onClose }) {
+function ModalContent({ memorial, onClose }) {
   const [tab, setTab] = useState(0);
 
   function ContentRender() {
@@ -109,9 +105,7 @@ function ModalContent({ loading, memorial, onClose }) {
     );
   }
 
-  return loading || !memorial ? (
-    <LoadingSpinner />
-  ) : (
+  return (
     <>
       <Spacer>
         <h2 className="font-sans font-semibold text-3xl">
