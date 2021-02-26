@@ -2,7 +2,6 @@ import { useState } from "react";
 import Head from "next/head";
 import Button from "../components/button";
 import DashNavbar from "../components/dashNavbar";
-import { isAuthenticated, redirectHome } from "../lib/serverSideAuth";
 import MemorialCard from "../components/memorialCard";
 
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
@@ -81,4 +80,3 @@ export default function Home() {
 function SelectedRectangle() {
   return <div className={styles.rectangle} />;
 }
-
