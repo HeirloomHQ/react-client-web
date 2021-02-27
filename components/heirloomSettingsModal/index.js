@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 import styles from "./modal.module.css";
-import LoadingSpinner from "../loadingSpinner";
-import { useMemorial } from "../../lib/memorial";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
+import SharingTab from "./sharing";
 import Button from "../button";
 
-export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
+export default function HeirloomSettingsModal({ open, onClose, memorial }) {
   // this prevents the background from scrolling when modal is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
@@ -21,8 +20,6 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
     e.stopPropagation();
   }
 
-  const { loading, memorial } = useMemorial(memorialID);
-
   return (
     <div
       className={[
@@ -30,7 +27,7 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
         styles.modal,
         "transition-opacity duration-300",
         "z-50 w-full h-full flex justify-center items-center",
-        "py-14 sm:px-48 2xl:px-0",
+        "py-12 sm:px-48 2xl:px-0",
       ].join(" ")}
       onClick={onClose}
     >
@@ -38,23 +35,30 @@ export default function HeirloomSettingsModal({ open, onClose, memorialID }) {
         className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg pt-10 flex flex-col"
         onClick={stopPropagation}
       >
-        <ModalContent loading={loading} memorial={memorial} onClose={onClose} />
+        {!!memorial && <ModalContent memorial={memorial} onClose={onClose} />}
       </div>
     </div>
   );
 }
 
-function ModalContent({ loading, memorial, onClose }) {
+function ModalContent({ memorial, onClose }) {
   const [tab, setTab] = useState(0);
 
   function ContentRender() {
     switch (tab) {
       case 0:
-      case 1:
-      case 2:
-      case 3:
       default:
         return <HeirloomSettings />;
+      case 1:
+        return <></>;
+      case 2:
+        return <SharingTab memorial={memorial} />;
+      case 3:
+        return <></>;
+      case 4:
+        return <></>;
+      case 5:
+        return <></>;
     }
   }
 
@@ -75,47 +79,37 @@ function ModalContent({ loading, memorial, onClose }) {
   }
 
   function MenuBar() {
+    const MENU_TABS = [
+      "General",
+      "Media",
+      "Sharing",
+      "Donations",
+      "Billing",
+      "Privacy & Settings",
+    ];
     return (
       <div className="mt-8 flex flex-start">
-        <div
-          className="mr-6 text-text-default font-sans font-semibold"
-          onClick={() => setTab(0)}
-        >
-          <h2 className="mb-4 select-none">Settings</h2>
-          {tab === 0 && <SelectedRectangle />}
-        </div>
-        <div
-          className="mx-6 text-text-default font-sans font-semibold"
-          onClick={() => setTab(1)}
-        >
-          <h2 className="mb-4 select-none">Sharing</h2>
-          {tab === 1 && <SelectedRectangle />}
-        </div>
-        <div
-          className="mx-6 text-text-default font-sans font-semibold"
-          onClick={() => setTab(2)}
-        >
-          <h2 className="mb-4 select-none">Donations</h2>
-          {tab === 2 && <SelectedRectangle />}
-        </div>
-        <div
-          className="mx-6 text-text-default font-sans font-semibold"
-          onClick={() => setTab(3)}
-        >
-          <h2 className="mb-4 select-none">Billing</h2>
-          {tab === 3 && <SelectedRectangle />}
-        </div>
+        {MENU_TABS.map((title, num) => (
+          <button
+            className={`${
+              num === 0 ? "mr-7" : "mx-7"
+            } text-text-default font-sans font-semibold focus:outline-none`}
+            onClick={() => setTab(num)}
+            key={title}
+          >
+            <h2 className="mb-4 select-none">{title}</h2>
+            {tab === num && <SelectedRectangle />}
+          </button>
+        ))}
       </div>
     );
   }
 
-  return loading || !memorial ? (
-    <LoadingSpinner />
-  ) : (
+  return (
     <>
       <Spacer>
         <h2 className="font-sans font-semibold text-3xl">
-          {memorial.pageSettings.firstName}&apos;s Heirloom
+          {memorial.firstName}&apos;s Heirloom
         </h2>
         <MenuBar />
       </Spacer>
@@ -129,5 +123,5 @@ function ModalContent({ loading, memorial, onClose }) {
 }
 
 function Spacer({ className, children }) {
-  return <div className={`${className} px-20`}>{children}</div>;
+  return <div className={`${className} px-16`}>{children}</div>;
 }
