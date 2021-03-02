@@ -6,7 +6,7 @@ import Lock from "../icons/lock";
 import { useMembers } from "../../lib/members";
 import LoadingSpinner from "../loadingSpinner";
 import RoleDropdown, { RoleDropdownItem } from "./roleDropdown";
-import TextField from "../textField/textField";
+import ChipTextField from "../textField/chipTextField";
 
 export default function SharingTab({ memorial }) {
   const [selected, setSelected] = useState(memorial?.canView || "");
@@ -20,7 +20,7 @@ export default function SharingTab({ memorial }) {
       {inviteFieldOpen && (
         <div className="mt-8">
           <SettingLabel>Invite People</SettingLabel>
-          <TextField />
+          <ChipTextField id="invite-people-input" />
           <div className="flex justify-end mt-4 mb-8">
             <Button variant="outlined" onClick={() => setInviteFieldOpen(false)}>
               Cancel

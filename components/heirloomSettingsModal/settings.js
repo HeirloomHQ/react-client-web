@@ -1,21 +1,38 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 import Button from "../button";
 import ButtonFileInput from "../buttonFileInput";
 import TextArea from "../textField/textArea";
 import TextField from "../textField/textField";
+import SettingsPopover from "./settingsPopover";
+import ExampleMemorialCard from "./exampleMemorialCard";
 
 export default function HeirloomSettings() {
   const [theme, setTheme] = useState(COLORS[0]);
 
+  const pageDescriptionHelp = (
+    <div className="flex flex-col items-center">
+      This short description will appear below the name of the person being memorialized.
+      <ExampleMemorialCard outlined="photo" />
+    </div>
+  );
+
+  const coverPhotoHelp = (
+    <div className="flex flex-col items-center">
+      This short description will appear below the name of the person being memorialized.
+      <ExampleMemorialCard outlined="description" />
+    </div>
+  );
+
   return (
     <div>
-      <SettingLabel>Name</SettingLabel>
+      <SettingLabel help="Who is this heirloom memorializing?">Name</SettingLabel>
       <TextField id="heirloom-f-name" className="w-full mb-10" placeholder="First Last" />
       <hr />
 
-      <SettingLabel>Page Description</SettingLabel>
+      <SettingLabel help={pageDescriptionHelp}>Page Description</SettingLabel>
       <TextField
         id="heirloom-f-name"
         className="w-full mb-10"
@@ -24,7 +41,7 @@ export default function HeirloomSettings() {
       />
       <hr />
 
-      <SettingLabel>Cover Photo</SettingLabel>
+      <SettingLabel help={coverPhotoHelp}>Cover Photo</SettingLabel>
       <div className="mb-4">
         <Image src="/assets/img/default_cover_photo.png" width={237} height={150} />
       </div>
@@ -38,7 +55,9 @@ export default function HeirloomSettings() {
       </ButtonFileInput>
       <hr />
 
-      <SettingLabel>Bio (optional)</SettingLabel>
+      <SettingLabel help="Write a description of the person being memorialized’s life. When and where did they grow up? Who and what filled the pages of their life journey?">
+        Bio (optional)
+      </SettingLabel>
       <TextArea
         id="heirloom-f-name"
         className="w-full mb-10"
@@ -49,7 +68,9 @@ export default function HeirloomSettings() {
       />
       <hr />
 
-      <SettingLabel>Page Theme</SettingLabel>
+      <SettingLabel help="Customize your Heirloom page. The color you choose will change the color of the buttons on the Heirloom page itself.">
+        Page Theme
+      </SettingLabel>
       <div className="flex mb-10">
         {COLORS.map((fill, i) => (
           <ColorPicker
@@ -63,12 +84,16 @@ export default function HeirloomSettings() {
       </div>
       <hr />
 
-      <SettingLabel>Offline Export</SettingLabel>
+      <SettingLabel help="Save an offline copy of your Heirloom to your computer. ">
+        Offline Export
+      </SettingLabel>
       <Button className="mr-4 mb-10">Export as PDF</Button>
       <Button>Export as Webpage</Button>
 
       <hr />
-      <SettingLabel>Delete Heirloom</SettingLabel>
+      <SettingLabel help="Deleting your page will remove the page from the internet, and all its content will be deleted forever. Before deleting an Heirloom, we recommend exporting a copy of it first. To hide your Heirloom from the public, take it offline. We’ll save a copy of your page if you ever want to make it visible again. ">
+        Delete Heirloom
+      </SettingLabel>
       <Button className="mr-4 mb-10">
         <span className="text-red-500">Delete Heirloom</span>
       </Button>
@@ -77,8 +102,23 @@ export default function HeirloomSettings() {
   );
 }
 
-function SettingLabel({ children }) {
-  return <div className="text-xl font-bold mb-4 mt-8">{children}</div>;
+function SettingLabel({ children, help }) {
+  // eslint-disable-next-line react/display-name
+  const Trigger = React.forwardRef((props, ref) => (
+    <button ref={ref} className="focus:outline-none" {...props}>
+      <HelpOutlineIcon className="text-gray-300 hover:text-gray-500" />
+    </button>
+  ));
+
+  return (
+    <div className="text-xl font-bold mb-4 mt-8">
+      {children}
+      &nbsp;
+      <SettingsPopover trigger={Trigger}>
+        <div className="text-white text-sm">{help}</div>
+      </SettingsPopover>
+    </div>
+  );
 }
 
 const COLORS = [
