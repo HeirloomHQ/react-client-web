@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 import Button from "../button";
 import ButtonFileInput from "../buttonFileInput";
 import TextArea from "../textField/textArea";
 import TextField from "../textField/textField";
-import SettingsPopover from "./settingsPopover";
 import ExampleMemorialCard from "./exampleMemorialCard";
+import SettingLabel from "./settingsLabel";
 
 export default function HeirloomSettings() {
   const [theme, setTheme] = useState(COLORS[0]);
@@ -98,25 +97,6 @@ export default function HeirloomSettings() {
         <span className="text-red-500">Delete Heirloom</span>
       </Button>
       <Button>Take Online</Button>
-    </div>
-  );
-}
-
-function SettingLabel({ children, help }) {
-  // eslint-disable-next-line react/display-name
-  const Trigger = React.forwardRef((props, ref) => (
-    <button ref={ref} className="focus:outline-none" {...props}>
-      <HelpOutlineIcon className="text-gray-300 hover:text-gray-500" />
-    </button>
-  ));
-
-  return (
-    <div className="text-xl font-bold mb-4 mt-8">
-      {children}
-      &nbsp;
-      <SettingsPopover trigger={Trigger}>
-        <div className="text-white text-sm">{help}</div>
-      </SettingsPopover>
     </div>
   );
 }

@@ -5,8 +5,9 @@ import Link from "../icons/link";
 import Lock from "../icons/lock";
 import { useMembers } from "../../lib/members";
 import LoadingSpinner from "../loadingSpinner";
-import RoleDropdown, { RoleDropdownItem } from "./roleDropdown";
+import RoleDropdown from "./roleDropdown";
 import ChipTextField from "../textField/chipTextField";
+import SettingLabel from "./settingsLabel";
 
 export default function SharingTab({ memorial }) {
   const [selected, setSelected] = useState(memorial?.canView || "");
@@ -19,7 +20,7 @@ export default function SharingTab({ memorial }) {
     <>
       {inviteFieldOpen && (
         <div className="mt-8">
-          <SettingLabel>Invite People</SettingLabel>
+          <SettingLabelText>Invite People</SettingLabelText>
           <ChipTextField id="invite-people-input" />
           <div className="flex justify-end mt-4 mb-8">
             <Button variant="outlined" onClick={() => setInviteFieldOpen(false)}>
@@ -34,7 +35,7 @@ export default function SharingTab({ memorial }) {
       )}
 
       <div className="flex justify-between mt-8">
-        <SettingLabel>Who Can view this Heirloom?</SettingLabel>
+        <SettingLabelText>Who Can view this Heirloom?</SettingLabelText>
         <div className="flex items-center">
           {selected === "" && (
             <Button className="mr-4" variant="outlined">
@@ -62,7 +63,9 @@ export default function SharingTab({ memorial }) {
       </Dropdown>
 
       <div className="mt-8 mb-4">
-        <SettingLabel>Members</SettingLabel>
+        <SettingLabel help="Members are people you invite to your Heirloom page. You can choose how members interact with your Heirloom page. Admins have full access to change page settings and share the page with new members. Regular members don’t have admin control, but they can post content. View-only members cannot add content to the memorial page.">
+          Members
+        </SettingLabel>
         <hr />
         {members.map((mem) => (
           <>
@@ -82,7 +85,7 @@ export default function SharingTab({ memorial }) {
   );
 }
 
-function SettingLabel({ children }) {
+function SettingLabelText({ children }) {
   return <div className="text-xl font-bold mb-4">{children}</div>;
 }
 
@@ -113,10 +116,12 @@ function PersonRow({ firstName, lastName, email, imgSrc, role }) {
         />
       </div>
       {hasName ? <NameComponent /> : <EmailComponent />}
-      <RoleDropdown value={selected} onChange={(e) => setSelected(e.target.value)}>
-        <RoleDropdownItem value="MANAGER">Admin</RoleDropdownItem>
-        <DropdownItem value="MEMBER">Member</DropdownItem>
-      </RoleDropdown>
+      <RoleDropdown
+        value={selected}
+        onChange={(value) => {
+          setSelected(value);
+        }}
+      />
     </div>
   );
 }
