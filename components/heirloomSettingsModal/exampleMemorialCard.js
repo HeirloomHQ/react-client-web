@@ -17,12 +17,16 @@ export default function ExampleMemorialCard({ outlined }) {
       <div className="mt-8 px-2 md:px-8">
         <h1 className="font-bold text-xl text-gray-800">{"Kobe Bryant"}</h1>
       </div>
-      <p
-        className={`mt-1 px-2 md:px-8 text-gray-500 text-xs ${
-          outlined === "description" && "border-4 border-heirloomOrange"
-        }`}
-      >
-        In loving memory
+      <p className="mt-1 px-2 md:px-8 text-gray-500 text-xs">
+        <span
+          className={
+            outlined === "description"
+              ? "border-4 border-heirloomOrange rounded-lg p-1"
+              : undefined
+          }
+        >
+          In loving memory
+        </span>
       </p>
     </div>
   );
