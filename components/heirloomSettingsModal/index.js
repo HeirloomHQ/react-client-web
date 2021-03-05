@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import axios from "axios";
 
 import styles from "./modal.module.css";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
-import Button from "../button";
+import { useApiCall } from "../../lib/clientSideAuth";
 
 export default function HeirloomSettingsModal({ open, onClose, memorial }) {
   // this prevents the background from scrolling when modal is open
@@ -43,12 +45,25 @@ export default function HeirloomSettingsModal({ open, onClose, memorial }) {
 
 function ModalContent({ memorial, onClose }) {
   const [tab, setTab] = useState(0);
+  const request = useApiCall();
+
+  async function updateHeirloomPage(memorialId, body) {
+    return await request(() =>
+      axios.put(`/api/memorials/${memorialId}/settings`, body, { withCredentials: true })
+    );
+  }
 
   function ContentRender() {
     switch (tab) {
       case 0:
       default:
-        return <HeirloomSettings />;
+        return (
+          <HeirloomSettings
+            memorial={memorial}
+            onClose={onClose}
+            onSave={updateHeirloomPage}
+          />
+        );
       case 1:
         return <></>;
       case 2:
@@ -60,22 +75,6 @@ function ModalContent({ memorial, onClose }) {
       case 5:
         return <></>;
     }
-  }
-
-  function ActionBar() {
-    return (
-      <>
-        <hr />
-        <div className="w-full py-5">
-          <Spacer>
-            <Button variant="filled" className="mr-5">
-              Save Changes
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </Spacer>
-        </div>
-      </>
-    );
   }
 
   function MenuBar() {
@@ -114,10 +113,9 @@ function ModalContent({ memorial, onClose }) {
         <MenuBar />
       </Spacer>
       <hr />
-      <Spacer className="flex-grow overflow-y-auto">
+      <ChakraProvider>
         <ContentRender />
-      </Spacer>
-      {tab === 0 && <ActionBar />}
+      </ChakraProvider>
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function SharingTab({ memorial }) {
   return loading || !members ? (
     <LoadingSpinner />
   ) : (
-    <>
+    <Spacer className="flex-grow overflow-y-auto">
       {inviteFieldOpen && (
         <div className="mt-8">
           <SettingLabelText>Invite People</SettingLabelText>
@@ -81,7 +81,7 @@ export default function SharingTab({ memorial }) {
           </>
         ))}
       </div>
-    </>
+    </Spacer>
   );
 }
 
@@ -124,4 +124,8 @@ function PersonRow({ firstName, lastName, email, imgSrc, role }) {
       />
     </div>
   );
+}
+
+function Spacer({ className, children }) {
+  return <div className={`${className} px-16`}>{children}</div>;
 }
