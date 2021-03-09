@@ -7,9 +7,17 @@ import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
 import { useApiCall } from "../../lib/clientSideAuth";
+import { useMemorial } from "../../lib/memorial";
+import { useMembers } from "../../lib/members";
 
-export default function HeirloomSettingsModal({ open, onClose, memorial }) {
+export default function HeirloomSettingsModal() {
   // this prevents the background from scrolling when modal is open
+  const { memorial, setMemorial } = useMemorial();
+  const { members, loading } = useMembers();
+
+  const open = !!memorial;
+  const onClose = () => setMemorial(undefined);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
     return () => {
@@ -37,13 +45,20 @@ export default function HeirloomSettingsModal({ open, onClose, memorial }) {
         className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg pt-10 flex flex-col"
         onClick={stopPropagation}
       >
-        {!!memorial && <ModalContent memorial={memorial} onClose={onClose} />}
+        {!!memorial && (
+          <ModalContent
+            memorial={memorial}
+            onClose={onClose}
+            members={members}
+            loadingMembers={loading}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function ModalContent({ memorial, onClose }) {
+function ModalContent({ memorial, onClose, loadingMembers, members }) {
   const [tab, setTab] = useState(0);
   const request = useApiCall();
 
@@ -67,7 +82,7 @@ function ModalContent({ memorial, onClose }) {
       case 1:
         return <></>;
       case 2:
-        return <SharingTab memorial={memorial} />;
+        return <SharingTab members={members} loading={loadingMembers} />;
       case 3:
         return <></>;
       case 4:
