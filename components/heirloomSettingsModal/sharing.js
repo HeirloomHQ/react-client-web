@@ -83,6 +83,10 @@ export default function SharingTab({ members, loading }) {
       >
         <DropdownItem value="MANAGER">
           <Lock className="mr-2 -ml-1 my-auto" />
+          Admins only
+        </DropdownItem>
+        <DropdownItem value="MEMBER">
+          <Lock className="mr-2 -ml-1 my-auto" />
           Only people invited to this Heirloom page
         </DropdownItem>
         <DropdownItem value="">
