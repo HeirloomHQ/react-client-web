@@ -10,6 +10,7 @@ import TextArea from "../textField/textArea";
 import TextField from "../textField/textField";
 import ExampleMemorialCard from "./exampleMemorialCard";
 import SettingLabel from "./settingsLabel";
+import { useMemorial, useUpdateMemorial } from "../../lib/memorial";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().max(100, "100 characters or less"),
@@ -17,7 +18,9 @@ const validationSchema = Yup.object().shape({
   bio: Yup.string().max(2000, "The bio cannot be longer than 2000 characters"),
 });
 
-export default function HeirloomSettings({ memorial, onClose, onSave }) {
+export default function HeirloomSettings({ memorial, onClose }) {
+  const onSave = useUpdateMemorial();
+  const { setMemorial, reloadMemorials } = useMemorial();
   const [theme, setTheme] = useState(memorial.pageTheme || COLORS[0]);
   const toast = useToast();
 
@@ -63,8 +66,9 @@ export default function HeirloomSettings({ memorial, onClose, onSave }) {
       initialValues={{ ...memorial }}
       //Call to the api route using axios
       onSubmit={(values, { setSubmitting }) => {
-        onSave(memorial.id, values)
-          .then(() =>
+        const data = { id: memorial.id, ...values };
+        onSave(data)
+          .then(() => {
             toast({
               title: "Success",
               description: "Changes saved",
@@ -72,8 +76,10 @@ export default function HeirloomSettings({ memorial, onClose, onSave }) {
               duration: 2000,
               isClosable: true,
               position: "bottom-right",
-            })
-          )
+            });
+            setMemorial({ ...memorial, ...values });
+            reloadMemorials();
+          })
           .catch(() =>
             toast({
               title: "Error",
