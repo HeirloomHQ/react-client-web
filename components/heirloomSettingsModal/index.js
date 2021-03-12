@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import axios from "axios";
 
 import styles from "./modal.module.css";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
-import { useApiCall } from "../../lib/clientSideAuth";
 import { useMemorial } from "../../lib/memorial";
 import { useMembers } from "../../lib/members";
 
@@ -60,25 +58,12 @@ export default function HeirloomSettingsModal() {
 
 function ModalContent({ memorial, onClose, loadingMembers, members }) {
   const [tab, setTab] = useState(0);
-  const request = useApiCall();
-
-  async function updateHeirloomPage(memorialId, body) {
-    return await request(() =>
-      axios.put(`/api/memorials/${memorialId}/settings`, body, { withCredentials: true })
-    );
-  }
 
   function ContentRender() {
     switch (tab) {
       case 0:
       default:
-        return (
-          <HeirloomSettings
-            memorial={memorial}
-            onClose={onClose}
-            onSave={updateHeirloomPage}
-          />
-        );
+        return <HeirloomSettings memorial={memorial} onClose={onClose} />;
       case 1:
         return <></>;
       case 2:
