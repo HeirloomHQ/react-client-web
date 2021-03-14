@@ -8,12 +8,16 @@ import SelectedRectangle from "../components/selectedRectangle";
 import LoadingSpinner from "../components/loadingSpinner";
 import { useUserMock } from "../lib/clientSideAuth";
 import { useMemorialsMock } from "../lib/memorial";
+// import { useRouter } from "next/router";
+
+import Explore from "../components/explore";
 
 export default function Home() {
   const [tab, setTab] = useState(0);
   const [selectedMemorial, setSelectedMemorial] = useState(undefined);
   const { loading: userLoading, user } = useUserMock();
   const { loading: memorialsLoading, memorials, roles } = useMemorialsMock(user?.id);
+  // const router = useRouter();
 
   function openSettings(memorial) {
     setSelectedMemorial(memorial);
@@ -40,7 +44,11 @@ export default function Home() {
                 className={`${
                   i === 0 ? "mr-5" : "mx-5"
                 } text-text-default font-sans font-semibold focus:outline-none`}
-                onClick={() => setTab(i)}
+                onClick={() => {
+                    setTab(i);
+                    // router.push("/explore");
+                  }
+                }
                 key={tabName}
               >
                 <h2 className="mb-4 select-none">{tabName}</h2>
@@ -66,7 +74,7 @@ export default function Home() {
         <DashNavbar />
 
         <HomeHeader />
-
+        <Explore/>
         {/*Memorial Grid*/}
         {memorialsLoading || !memorials ? (
           <LoadingSpinner />
@@ -80,7 +88,10 @@ export default function Home() {
                 role={roles[memorial.id]}
               />
             ))}
-          </div>
+
+
+              </div>
+
         )}
       </div>
       <HeirloomSettingsModal
