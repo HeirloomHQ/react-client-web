@@ -10,7 +10,7 @@ export default function Explore() {
       <Head>
         <title>Explore</title>
       </Head>
-      <div>
+      <div className="bubble-container">
         <BubbleElement options={defaultOptions} className="bubbleUI">
           {companyData.slice(0, 20).map((company, i) => (
             <CompanyBubble {...company} key={i} />

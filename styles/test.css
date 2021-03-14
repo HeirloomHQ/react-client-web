@@ -10,12 +10,23 @@
 	height: 100%;
 	border-radius: 50%;
 }
+.bubble-container{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+  height: 800px;
+  width: 80vh;
+  border: 2px solid black;
+}
 .bubbleUI {
-  position: relative;
-  background-color: rgba(0, 0, 0, 0) !important;
+	position: relative; /* or absolute */
+
   width: 100%;
-  max-width: 1000px;
-  height: 500px;
+  /* max-width: 1000px; */
+  height: 100%;
   border-radius: 50px;
   background-color: white !important;
   overflow: hidden !important;
