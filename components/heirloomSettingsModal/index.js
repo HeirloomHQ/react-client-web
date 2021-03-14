@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 import styles from "./modal.module.css";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
-import Button from "../button";
+import { useMemorial } from "../../lib/memorial";
+import { useMembers } from "../../lib/members";
 
-export default function HeirloomSettingsModal({ open, onClose, memorial }) {
+export default function HeirloomSettingsModal() {
   // this prevents the background from scrolling when modal is open
+  const { memorial, setMemorial } = useMemorial();
+  const { members, loading } = useMembers();
+
+  const open = !!memorial;
+  const onClose = () => setMemorial(undefined);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
     return () => {
@@ -35,24 +43,31 @@ export default function HeirloomSettingsModal({ open, onClose, memorial }) {
         className="bg-white rounded-lg h-full w-full 2xl:max-w-screen-lg pt-10 flex flex-col"
         onClick={stopPropagation}
       >
-        {!!memorial && <ModalContent memorial={memorial} onClose={onClose} />}
+        {!!memorial && (
+          <ModalContent
+            memorial={memorial}
+            onClose={onClose}
+            members={members}
+            loadingMembers={loading}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function ModalContent({ memorial, onClose }) {
+function ModalContent({ memorial, onClose, loadingMembers, members }) {
   const [tab, setTab] = useState(0);
 
   function ContentRender() {
     switch (tab) {
       case 0:
       default:
-        return <HeirloomSettings />;
+        return <HeirloomSettings memorial={memorial} onClose={onClose} />;
       case 1:
         return <></>;
       case 2:
-        return <SharingTab memorial={memorial} />;
+        return <SharingTab members={members} loading={loadingMembers} />;
       case 3:
         return <></>;
       case 4:
@@ -60,22 +75,6 @@ function ModalContent({ memorial, onClose }) {
       case 5:
         return <></>;
     }
-  }
-
-  function ActionBar() {
-    return (
-      <>
-        <hr />
-        <div className="w-full py-5">
-          <Spacer>
-            <Button variant="filled" className="mr-5">
-              Save Changes
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </Spacer>
-        </div>
-      </>
-    );
   }
 
   function MenuBar() {
@@ -114,10 +113,9 @@ function ModalContent({ memorial, onClose }) {
         <MenuBar />
       </Spacer>
       <hr />
-      <Spacer className="flex-grow overflow-y-auto">
+      <ChakraProvider>
         <ContentRender />
-      </Spacer>
-      {tab === 0 && <ActionBar />}
+      </ChakraProvider>
     </>
   );
 }

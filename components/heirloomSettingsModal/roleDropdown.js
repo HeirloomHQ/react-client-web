@@ -3,13 +3,18 @@ import OutsideAlerter from "../outsideAlerter";
 import Chevron from "../icons/chevron";
 import Check from "../icons/check";
 
-export default function RoleDropdown({ children, value, onChange }) {
+export default function RoleDropdown({ value, onChange }) {
   const [open, setOpen] = useState(false);
 
-  const childrenArray = React.Children.toArray(children);
-
-  const chosenIndex = childrenArray.map((child) => child.props.value).indexOf(value);
-  const chosenChild = childrenArray[chosenIndex];
+  function DropdownText() {
+    switch (value) {
+      case "MANAGER":
+        return "Admin";
+      case "MEMBER":
+      default:
+        return "Member";
+    }
+  }
 
   return (
     <div className="relative inline-block ml-auto w-36">
@@ -22,7 +27,7 @@ export default function RoleDropdown({ children, value, onChange }) {
         ].join(" ")}
         onClick={() => setOpen(true)}
       >
-        {chosenChild.props.children}
+        <DropdownText />
         <Chevron className="-mr-1 ml-4 my-auto" />
       </div>
 
@@ -38,15 +43,38 @@ export default function RoleDropdown({ children, value, onChange }) {
           ].join(" ")}
           role="menu"
         >
-          {childrenArray.map((child) =>
-            React.cloneElement(child, {
-              selected: child.props.value === value,
-              onClick: (e) => {
-                onChange(e);
-                setOpen(false);
-              },
-            })
-          )}
+          <RoleDropdownItem
+            value="MANAGER"
+            label="Admin"
+            selected={value === "MANAGER"}
+            onClick={() => {
+              setOpen(false);
+              onChange("MANAGER");
+            }}
+          >
+            <div className="text-left font-sans">
+              <div>Admin</div>
+              <div className="text-xs text-gray-500 mt-1">
+                Can change page settings and invite new members to the memorial page
+              </div>
+            </div>
+          </RoleDropdownItem>
+          <RoleDropdownItem
+            value="MEMBER"
+            label="Member"
+            selected={value === "MEMBER"}
+            onClick={() => {
+              setOpen(false);
+              onChange("MEMBER");
+            }}
+          >
+            <div className="text-left font-sans">
+              <div>Member</div>
+              <div className="text-xs text-gray-500 mt-1">
+                Cannot change page settings and invite new members. Can submit content.
+              </div>
+            </div>
+          </RoleDropdownItem>
         </div>
       </OutsideAlerter>
     </div>
@@ -59,7 +87,7 @@ export function RoleDropdownItem({ children, selected, value, onClick }) {
       className="block px-4 py-2 hover:bg-gray-100 hover:text-gray-900 inline-flex justify-start w-full focus:outline-none"
       role="menuitem"
       value={value}
-      onClick={(e) => onClick && onClick(e)}
+      onClick={onClick}
     >
       {children}
       {selected && <Check className="-mr-1 ml-auto my-auto" />}
