@@ -1,0 +1,54 @@
+.myBubbleUI {
+	width: 100%;
+	max-width: 1000px;
+	height: 500px;
+	border-radius: 50px;
+}
+
+
+.child {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.bubble-container{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+  height: 800px;
+  width: 800vh;
+  /* border: 2px solid black; */
+}
+.bubbleUI {
+	position: relative; /* or absolute */
+
+  width: 100%;
+  /* max-width: 1000px; */
+  height: 100%;
+  border-radius: 50px;
+  background-color: rgba(254, 249, 245, var(--tw-bg-opacity)) !important;
+  overflow: hidden !important;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+
+  margin-bottom: 10px;
+}
+.companyBubble {
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	transition: opacity 0.1s ease;
+  }
+
+  .companyBubble:hover {
+	opacity: 0.5;
+  }
