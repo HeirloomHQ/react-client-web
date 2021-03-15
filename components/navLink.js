@@ -9,7 +9,7 @@ export default function NavLink({ href, children, className, onClick }) {
 
   return (
     <a
-      className={`${className} hover:underline `}
+      className={`${className} hover:underline mx-6`}
       href={href}
       onClick={onClick || handleClick}
     >
