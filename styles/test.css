@@ -5,6 +5,7 @@
 	border-radius: 50px;
 }
 
+
 .child {
 	width: 100%;
 	height: 100%;
@@ -18,8 +19,8 @@
     transform: translate(-50%, -50%);
 
   height: 800px;
-  width: 80vh;
-  border: 2px solid black;
+  width: 800vh;
+  /* border: 2px solid black; */
 }
 .bubbleUI {
 	position: relative; /* or absolute */
@@ -28,7 +29,7 @@
   /* max-width: 1000px; */
   height: 100%;
   border-radius: 50px;
-  background-color: white !important;
+  background-color: rgba(254, 249, 245, var(--tw-bg-opacity)) !important;
   overflow: hidden !important;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
