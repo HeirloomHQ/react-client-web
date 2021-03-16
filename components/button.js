@@ -32,7 +32,7 @@ export default function Button({
       onClick={() => {
         if (!disabled && !!onClick) onClick();
       }}
-      type={type}
+      type={type || "button"}
     >
       {children}
     </button>

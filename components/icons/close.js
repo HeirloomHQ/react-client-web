@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function Close() {
+export default function Close({ className }) {
   return (
     <svg
-      className="fill-current text-black"
+      className={`${className} fill-current text-black`}
       xmlns="http://www.w3.org/2000/svg"
       width="18"
       height="18"

@@ -6,21 +6,18 @@ import MemorialCard from "../components/memorialCard";
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
 import SelectedRectangle from "../components/selectedRectangle";
 import LoadingSpinner from "../components/loadingSpinner";
-import { useUserMock } from "../lib/clientSideAuth";
-import { useMemorialsMock } from "../lib/memorial";
+import { useUser, useUserMock } from "../lib/clientSideAuth";
+import { useMemorials, useMemorialsMock } from "../lib/memorial";
 
 export default function Home() {
   const [tab, setTab] = useState(0);
-  const [selectedMemorial, setSelectedMemorial] = useState(undefined);
-  const { loading: userLoading, user } = useUserMock();
-  const { loading: memorialsLoading, memorials, roles } = useMemorialsMock(user?.id);
+  const { loading: userLoading, user } = useUser();
+  const { loading: memorialsLoading, memorials, roles, setMemorial } = useMemorials(
+    user?.id
+  );
 
   function openSettings(memorial) {
-    setSelectedMemorial(memorial);
-  }
-
-  function closeSettings() {
-    setSelectedMemorial(undefined);
+    setMemorial(memorial);
   }
 
   function HomeHeader() {
@@ -66,7 +63,6 @@ export default function Home() {
         <DashNavbar />
 
         <HomeHeader />
-
         {/*Memorial Grid*/}
         {memorialsLoading || !memorials ? (
           <LoadingSpinner />
@@ -83,11 +79,7 @@ export default function Home() {
           </div>
         )}
       </div>
-      <HeirloomSettingsModal
-        open={!!selectedMemorial}
-        onClose={closeSettings}
-        memorial={selectedMemorial}
-      />
+      <HeirloomSettingsModal />
     </>
   );
 }

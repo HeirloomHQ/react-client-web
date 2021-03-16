@@ -1,26 +1,44 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 import Button from "../button";
 import Dropdown, { DropdownItem } from "../dropdown";
 import Link from "../icons/link";
 import Lock from "../icons/lock";
-import { useMembers } from "../../lib/members";
 import LoadingSpinner from "../loadingSpinner";
-import RoleDropdown, { RoleDropdownItem } from "./roleDropdown";
-import TextField from "../textField/textField";
+import RoleDropdown from "./roleDropdown";
+import ChipTextField from "../textField/chipTextField";
+import SettingLabel from "./settingsLabel";
+import { useMemorial, useUpdateMemorial } from "../../lib/memorial";
+import { useApiCall } from "../../lib/clientSideAuth";
+import { useReloadMembers } from "../../lib/members";
 
-export default function SharingTab({ memorial }) {
-  const [selected, setSelected] = useState(memorial?.canView || "");
+export default function SharingTab({ members, loading }) {
+  const { memorial, setMemorial, reloadMemorials } = useMemorial();
   const [inviteFieldOpen, setInviteFieldOpen] = useState(false);
-  const { members, loading } = useMembers(memorial.id);
+  const updateMemorial = useUpdateMemorial();
+
+  const apiCall = useApiCall();
+
+  const updateMemberRole = (memberID) => {
+    return async (role) =>
+      apiCall(() =>
+        axios.put(
+          `/api/memorials/${memorial?.id}/members/${memberID}`,
+          { role },
+          { withCredentials: true }
+        )
+      );
+  };
 
   return loading || !members ? (
     <LoadingSpinner />
   ) : (
-    <>
+    <Spacer className="flex-grow overflow-y-auto">
       {inviteFieldOpen && (
         <div className="mt-8">
-          <SettingLabel>Invite People</SettingLabel>
-          <TextField />
+          <SettingLabelText>Invite People</SettingLabelText>
+          <ChipTextField id="invite-people-input" />
           <div className="flex justify-end mt-4 mb-8">
             <Button variant="outlined" onClick={() => setInviteFieldOpen(false)}>
               Cancel
@@ -34,9 +52,9 @@ export default function SharingTab({ memorial }) {
       )}
 
       <div className="flex justify-between mt-8">
-        <SettingLabel>Who Can view this Heirloom?</SettingLabel>
+        <SettingLabelText>Who Can view this Heirloom?</SettingLabelText>
         <div className="flex items-center">
-          {selected === "" && (
+          {memorial?.canView === "" && (
             <Button className="mr-4" variant="outlined">
               <div className="flex items-center">
                 <Link />
@@ -50,8 +68,24 @@ export default function SharingTab({ memorial }) {
         </div>
       </div>
 
-      <Dropdown value={selected} onChange={(e) => setSelected(e.target.value)}>
+      <Dropdown
+        value={memorial?.canView || ""}
+        onChange={(e) => {
+          e.persist();
+          const data = { id: memorial.id, canView: e.target.value };
+          updateMemorial(data)
+            .then(() => {
+              setMemorial({ ...memorial, canView: data.canView });
+              reloadMemorials();
+            })
+            .catch((e) => console.log(e));
+        }}
+      >
         <DropdownItem value="MANAGER">
+          <Lock className="mr-2 -ml-1 my-auto" />
+          Admins only
+        </DropdownItem>
+        <DropdownItem value="MEMBER">
           <Lock className="mr-2 -ml-1 my-auto" />
           Only people invited to this Heirloom page
         </DropdownItem>
@@ -62,33 +96,42 @@ export default function SharingTab({ memorial }) {
       </Dropdown>
 
       <div className="mt-8 mb-4">
-        <SettingLabel>Members</SettingLabel>
+        <SettingLabel help="Members are people you invite to your Heirloom page. You can choose how members interact with your Heirloom page. Admins have full access to change page settings and share the page with new members. Regular members don’t have admin control, but they can post content. View-only members cannot add content to the memorial page.">
+          Members
+        </SettingLabel>
         <hr />
-        {members.map((mem) => (
-          <>
-            <PersonRow
-              firstName={mem.firstName}
-              lastName={mem.lastName}
-              email={mem.email}
-              imgSrc={mem.profilePicture}
-              key={mem.id}
-              role={mem.role}
-            />
-            <hr />
-          </>
-        ))}
+        {members.length ? (
+          members.map((mem) => (
+            <>
+              <PersonRow
+                firstName={mem.firstName}
+                lastName={mem.lastName}
+                email={mem.email}
+                imgSrc={mem.profilePicture}
+                key={mem.id}
+                role={mem.role}
+                onUpdateRole={updateMemberRole(mem.id)}
+              />
+              <hr />
+            </>
+          ))
+        ) : (
+          <p className="mt-4 text-gray-500 font-sans">
+            People you invite to this memorial will appear here.
+          </p>
+        )}
       </div>
-    </>
+    </Spacer>
   );
 }
 
-function SettingLabel({ children }) {
+function SettingLabelText({ children }) {
   return <div className="text-xl font-bold mb-4">{children}</div>;
 }
 
-function PersonRow({ firstName, lastName, email, imgSrc, role }) {
+function PersonRow({ firstName, lastName, email, imgSrc, role, onUpdateRole }) {
   const hasName = !!firstName && !!lastName;
-  const [selected, setSelected] = useState(role || "MEMBER");
+  const reloadMembers = useReloadMembers();
 
   const NameComponent = () => (
     <div className="ml-2 flex flex-col justify-center self-stretch">
@@ -113,10 +156,22 @@ function PersonRow({ firstName, lastName, email, imgSrc, role }) {
         />
       </div>
       {hasName ? <NameComponent /> : <EmailComponent />}
-      <RoleDropdown value={selected} onChange={(e) => setSelected(e.target.value)}>
-        <RoleDropdownItem value="MANAGER">Admin</RoleDropdownItem>
-        <DropdownItem value="MEMBER">Member</DropdownItem>
-      </RoleDropdown>
+      {role === "OWNER" ? (
+        <span className="font-medium font-sans ml-auto my-auto mr-10">Owner</span>
+      ) : (
+        <RoleDropdown
+          value={role || "MEMBER"}
+          onChange={(value) => {
+            onUpdateRole(value)
+              .then(() => reloadMembers())
+              .catch((e) => console.log(e));
+          }}
+        />
+      )}
     </div>
   );
+}
+
+function Spacer({ className, children }) {
+  return <div className={`${className} px-16`}>{children}</div>;
 }
