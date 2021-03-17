@@ -2,6 +2,7 @@ import { useState, useRef, createRef, useEffect } from "react";
 import Head from "next/head";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import CreateIcon from "@material-ui/icons/Create";
 
 import Button from "../components/button";
 import DashNavbar from "../components/dashNavbar";
@@ -41,6 +42,7 @@ export default function Home() {
   }
 
   const [centeredCard, setCenteredCard] = useState(0);
+  const [hovered, setHover] = useState(-1);
 
   return userLoading || !user ? (
     <div className="bg-paper min-h-screen h-full">
@@ -90,11 +92,30 @@ export default function Home() {
                         setCenteredCard(index);
                       }}
                       ref={elRefs[index]}
+                      onMouseEnter={() => setHover(index)}
+                      onMouseLeave={() => setHover(-1)}
                     >
+                      <button
+                        className={[
+                          hovered === index ? "" : "opacity-0 ",
+                          "self-end rounded-md mr-8 mt-8 mb-auto ml-auto px-2 py-2 bg-black bg-opacity-40 text-white hover:bg-opacity-70 transition-all duration-150 focus:outline-none",
+                        ].join(" ")}
+                        onClick={(e) => {
+                          openSettings(memorial);
+                          e.stopPropagation();
+                        }}
+                      >
+                        <CreateIcon
+                          className="float-left mr-1 my-auto"
+                          fontSize="small"
+                        />
+                        <span className="my-auto">Edit</span>
+                      </button>
                       <p className="font-display text-7xl font-semibold text-white">{`${memorial?.firstName} ${memorial?.lastName}`}</p>
                       <p className="font-sans text-2xl font-semibold text-white mt-4">
                         {memorial?.description}
                       </p>
+                      <div className="mt-auto" />
                     </div>
                   ))}
                   <div className="w-40 flex-shrink-0" />
