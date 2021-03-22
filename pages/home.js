@@ -1,57 +1,51 @@
-import { useState } from "react";
+import { useState, useRef, createRef, useEffect } from "react";
 import Head from "next/head";
+import { ChakraProvider } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import CreateIcon from "@material-ui/icons/Create";
+
 import Button from "../components/button";
 import DashNavbar from "../components/dashNavbar";
-import MemorialCard from "../components/memorialCard";
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
-import SelectedRectangle from "../components/selectedRectangle";
 import LoadingSpinner from "../components/loadingSpinner";
 import { useUser, useUserMock } from "../lib/clientSideAuth";
 import { useMemorials, useMemorialsMock } from "../lib/memorial";
 
 export default function Home() {
-  const [tab, setTab] = useState(0);
   const { loading: userLoading, user } = useUser();
   const { loading: memorialsLoading, memorials, roles, setMemorial } = useMemorials(
     user?.id
   );
+  const router = useRouter();
+
+  const memorialCount = memorials?.length || 0;
+
+  const ref = useRef(null);
+  const scroll = (scrollOffset, left) => {
+    const { offsetLeft } = scrollOffset.current;
+    ref.current.scrollLeft = offsetLeft - 200;
+  };
+
+  const [elRefs, setElRefs] = useState([]);
+
+  useEffect(() => {
+    setElRefs(
+      Array(memorialCount)
+        .fill()
+        .map((_, i) => elRefs[i] || createRef())
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memorialCount]);
 
   function openSettings(memorial) {
     setMemorial(memorial);
   }
 
-  function HomeHeader() {
-    const TABS = ["Home", "Invites", "Notifications"];
-    return (
-      <div className="flex flex-col sm:px-60 2xl:px-0 pt-10 w-full bg-paper shadow-lg">
-        <div className="2xl:max-w-4xl 2xl:w-full 2xl:mx-auto">
-          <div className="flex justify-between">
-            <h1 className="text-3xl font-sans font-extrabold text-text-default">
-              My Heirlooms
-            </h1>
-            <Button variant="filled">+&nbsp;&nbsp;&nbsp;Create an Heirloom</Button>
-          </div>
-          <div className="mt-6 flex flex-start">
-            {TABS.map((tabName, i) => (
-              <button
-                className={`${
-                  i === 0 ? "mr-5" : "mx-5"
-                } text-text-default font-sans font-semibold focus:outline-none`}
-                onClick={() => setTab(i)}
-                key={tabName}
-              >
-                <h2 className="mb-4 select-none">{tabName}</h2>
-                {tab === i && <SelectedRectangle />}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const [centeredCard, setCenteredCard] = useState(0);
+  const [hovered, setHover] = useState(-1);
 
   return userLoading || !user ? (
-    <div className="bg-paper min-h-screen flex flex-col">
+    <div className="bg-paper min-h-screen h-full">
       <LoadingSpinner />
     </div>
   ) : (
@@ -59,27 +53,83 @@ export default function Home() {
       <Head>
         <title>Heirloom | My Heirlooms</title>
       </Head>
-      <div className="bg-paper min-h-screen flex flex-col">
-        <DashNavbar />
+      <ChakraProvider>
+        <div className="bg-paper min-h-screen flex flex-col">
+          <DashNavbar />
 
-        <HomeHeader />
-        {/*Memorial Grid*/}
-        {memorialsLoading || !memorials ? (
-          <LoadingSpinner />
-        ) : (
-          <div className="sm:px-60 2xl:px-0 mt-12 grid sm:grid-cols-2 2xl:max-w-4xl 2xl:w-full 2xl:mx-auto md:grid-cols-3 gap-10">
-            {memorials.map((memorial) => (
-              <MemorialCard
-                key={memorial.id}
-                onOpenSettings={() => openSettings(memorial)}
-                memorial={memorial}
-                role={roles[memorial.id]}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-      <HeirloomSettingsModal />
+          {/*Memorial Grid*/}
+          {memorialsLoading || !memorials ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <div
+                className="w-screen flex-grow flex overflow-x-hidden mx-auto py-20 transition-transform"
+                ref={ref}
+              >
+                <div className="flex-grow inline-flex box-border min-w-full px-40">
+                  {memorials.map((memorial, index) => (
+                    <div
+                      className="flex-shrink-0 rounded-3xl mx-10 flex flex-col justify-center items-center bg-black bg-opacity-20 w-11/12"
+                      style={{
+                        backgroundImage: `url(${memorial.coverPhoto})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "cover",
+                      }}
+                      key={memorial?.id + index}
+                      onClick={() => {
+                        if (index === centeredCard) {
+                          router.push({
+                            pathname: "/page",
+                            query: {
+                              mem_id: memorial.id,
+                              firstname: memorial.firstName,
+                              lastname: memorial.lastName,
+                            },
+                          });
+                          return;
+                        }
+                        scroll(elRefs[index]);
+                        setCenteredCard(index);
+                      }}
+                      ref={elRefs[index]}
+                      onMouseEnter={() => setHover(index)}
+                      onMouseLeave={() => setHover(-1)}
+                    >
+                      <button
+                        className={[
+                          hovered === index ? "" : "opacity-0 ",
+                          "self-end rounded-md mr-8 mt-8 mb-auto ml-auto px-2 py-2 bg-black bg-opacity-40 text-white hover:bg-opacity-70 transition-all duration-150 focus:outline-none",
+                        ].join(" ")}
+                        onClick={(e) => {
+                          openSettings(memorial);
+                          e.stopPropagation();
+                        }}
+                      >
+                        <CreateIcon
+                          className="float-left mr-1 my-auto"
+                          fontSize="small"
+                        />
+                        <span className="my-auto">Edit</span>
+                      </button>
+                      <p className="font-display text-7xl font-semibold text-white">{`${memorial?.firstName} ${memorial?.lastName}`}</p>
+                      <p className="font-sans text-2xl font-semibold text-white mt-4">
+                        {memorial?.description}
+                      </p>
+                      <div className="mt-auto" />
+                    </div>
+                  ))}
+                  <div className="w-40 flex-shrink-0" />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        <HeirloomSettingsModal />
+      </ChakraProvider>
     </>
   );
+}
+
+function MemorialSlide(props) {
+  return <div></div>;
 }
