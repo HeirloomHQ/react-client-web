@@ -1,4 +1,12 @@
-import { useState, useRef, createRef, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  createRef,
+  useEffect,
+  createContext,
+  useContext,
+  useReducer,
+} from "react";
 import Head from "next/head";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -10,6 +18,8 @@ import HeirloomSettingsModal from "../components/heirloomSettingsModal";
 import LoadingSpinner from "../components/loadingSpinner";
 import { useUser, useUserMock } from "../lib/clientSideAuth";
 import { useMemorials, useMemorialsMock } from "../lib/memorial";
+import { CreateProvider } from "../components/createHeirloom/hooks";
+import { CreateHeirloomModal } from "../components/createHeirloom";
 
 export default function Home() {
   const { loading: userLoading, user } = useUser();
@@ -49,7 +59,7 @@ export default function Home() {
       <LoadingSpinner />
     </div>
   ) : (
-    <>
+    <CreateProvider>
       <Head>
         <title>Heirloom | My Heirlooms</title>
       </Head>
@@ -97,7 +107,7 @@ export default function Home() {
                     >
                       <button
                         className={[
-                          hovered === index ? "" : "opacity-0 ",
+                          hovered === index && centeredCard === index ? "" : "opacity-0 ",
                           "self-end rounded-md mr-8 mt-8 mb-auto ml-auto px-2 py-2 bg-black bg-opacity-40 text-white hover:bg-opacity-70 transition-all duration-150 focus:outline-none",
                         ].join(" ")}
                         onClick={(e) => {
@@ -125,11 +135,8 @@ export default function Home() {
           )}
         </div>
         <HeirloomSettingsModal />
+        <CreateHeirloomModal />
       </ChakraProvider>
-    </>
+    </CreateProvider>
   );
-}
-
-function MemorialSlide(props) {
-  return <div></div>;
 }
