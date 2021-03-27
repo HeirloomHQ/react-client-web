@@ -43,6 +43,8 @@ const reducer = (state, action) => {
         ...state,
         emails: state.emails.filter((email) => email != action.value),
       };
+    case "RESET":
+      return initValues;
     default:
       return state;
   }

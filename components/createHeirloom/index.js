@@ -7,7 +7,6 @@ import { RadioGroup, Stack, Radio } from "@chakra-ui/react";
 
 import ModalBase from "./modalbase";
 import TextField from "../textField/textField";
-import ChipTextField from "../textField/chipTextField";
 import Button from "../button";
 import { useDragAndDrop, useHeirloomCreatContext } from "./hooks";
 import TextArea from "../textField/textArea";
@@ -16,6 +15,7 @@ import styles from "./create.module.css";
 import EmailChipTextField from "./emailChipTextField";
 import { useApiCall } from "../../lib/clientSideAuth";
 import axios from "axios";
+import { useMemorial } from "../../lib/memorial";
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -25,12 +25,32 @@ const useStyles = makeStyles(() => ({
 
 export function CreateHeirloomModal() {
   const [{ createState, emails }, dispatch] = useHeirloomCreatContext();
+  const { reloadMemorials } = useMemorial();
+  const apiCall = useApiCall();
 
   const onClose = () => dispatch({ type: "CLOSE" });
+  const clearAndClose = () => {
+    dispatch({ type: "RESET" });
+    onClose();
+  };
 
   const [step, setStep] = useState(0);
   const advanceStep = () => setStep(step + 1);
   const reverseStep = () => setStep(step - 1 >= 0 ? step - 1 : 0);
+
+  const [createLoading, setCreateLoading] = useState(false);
+  const createHeirloom = () => {
+    apiCall(() => axios.post("/api/memorials", createState, { withCredentials: true }))
+      .then(() => {
+        setCreateLoading(false);
+        clearAndClose();
+        reloadMemorials();
+      })
+      .catch((e) => {
+        setCreateLoading(false);
+        window.alert(e);
+      });
+  };
 
   const Title = () => {
     switch (step) {
@@ -100,7 +120,9 @@ export function CreateHeirloomModal() {
       case 4:
         return (
           <>
-            <Btn>Create Heirloom</Btn>{" "}
+            <Btn disabled={createLoading} onClick={createHeirloom}>
+              Create Heirloom
+            </Btn>
             <div className="mt-4 w-full flex justify-center">
               <button className="font-sans font-bold text-center text-heirloomOrange">
                 Add later
@@ -179,12 +201,13 @@ function FormSteps({ step }) {
           },
         })
       )
-        .then(() => {
+        .then((res) => {
           setFile(inFile);
+          dispatch({ type: "SET", name: "coverPhoto", value: res.data.imageURL });
         })
         .catch((e) => window.alert(e));
     },
-    [setFile, apiCall]
+    [setFile, apiCall, dispatch]
   );
 
   const handleDrop = (e) => {
@@ -386,7 +409,13 @@ function FormSteps({ step }) {
               {file.name}
               <span>
                 &nbsp;
-                <IconButton size="small" onClick={() => setFile()}>
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    setFile();
+                    dispatch({ type: "SET", name: "coverPhoto", value: "" });
+                  }}
+                >
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </span>
