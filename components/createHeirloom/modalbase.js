@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import CloseIcon from "@material-ui/icons/Close";
 
 import styles from "../heirloomSettingsModal/modal.module.css";
 import { useHeirloomCreatContext } from "./hooks";
-import IconButton from "@material-ui/core/IconButton";
-import SettingLabel from "../heirloomSettingsModal/settingsLabel";
-import TextField from "../textField/textField";
 
 export default function ModalBase({ children }) {
   const [state, dispatch] = useHeirloomCreatContext();

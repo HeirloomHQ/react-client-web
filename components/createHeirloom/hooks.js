@@ -1,18 +1,19 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 
 const initValues = {
   isOpen: false,
   createState: {
-    firstName: "test",
-    lastName: "test",
-    description: "test-am/email-invites",
-    born: "Jan 2nd",
-    died: "Jan 3rd",
-    bio: "one helluva test",
-    homeTown: "LA",
-    coverPhoto: "http://profilepic",
+    firstName: "",
+    lastName: "",
+    description: "",
+    born: "",
+    died: "",
+    bio: "",
+    homeTown: "Anytown, USA",
+    coverPhoto: "",
     pageTheme: "#FF7F59",
   },
+  emails: [],
 };
 
 const reducer = (state, action) => {
@@ -32,6 +33,16 @@ const reducer = (state, action) => {
         ...state,
         isOpen: false,
       };
+    case "ADD_EMAIL":
+      return {
+        ...state,
+        emails: [...state.emails, action.value],
+      };
+    case "DELETE_EMAIL":
+      return {
+        ...state,
+        emails: state.emails.filter((email) => email != action.value),
+      };
     default:
       return state;
   }
@@ -50,4 +61,17 @@ export function CreateProvider({ children }) {
 
 export function useHeirloomCreatContext() {
   return useContext(HeirloomCreateContext);
+}
+
+export function useDragAndDrop() {
+  const [inDropZone, setInDropZone] = useState(false);
+  const [file, setFile] = useState();
+
+  return {
+    inDropZone,
+    enterDropZone: () => setInDropZone(true),
+    leaveDropZone: () => setInDropZone(false),
+    setFile,
+    file,
+  };
 }

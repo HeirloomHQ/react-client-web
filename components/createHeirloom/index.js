@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { RadioGroup, Stack, Radio } from "@chakra-ui/react";
-import Image from "next/image";
 
 import ModalBase from "./modalbase";
 import TextField from "../textField/textField";
 import ChipTextField from "../textField/chipTextField";
 import Button from "../button";
-import { useHeirloomCreatContext } from "./hooks";
+import { useDragAndDrop, useHeirloomCreatContext } from "./hooks";
 import TextArea from "../textField/textArea";
 
 import styles from "./create.module.css";
+import EmailChipTextField from "./emailChipTextField";
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function CreateHeirloomModal() {
-  const [, dispatch] = useHeirloomCreatContext();
+  const [{ createState, emails }, dispatch] = useHeirloomCreatContext();
 
   const onClose = () => dispatch({ type: "CLOSE" });
 
@@ -45,21 +45,46 @@ export function CreateHeirloomModal() {
   };
 
   const ActionButton = () => {
-    const Btn = ({ onClick, children }) => (
-      <Button className="w-full font-bold" variant="filled" onClick={onClick}>
+    const Btn = ({ onClick, children, disabled }) => (
+      <Button
+        className="w-full font-bold"
+        variant="filled"
+        onClick={onClick}
+        disabled={disabled}
+      >
         {children}
       </Button>
     );
     switch (step) {
       case 0:
+        return (
+          <Btn
+            onClick={advanceStep}
+            disabled={
+              createState.firstName === "" ||
+              createState.lastName === "" ||
+              createState.born === "" ||
+              createState.died === ""
+            }
+          >
+            Next
+          </Btn>
+        );
       case 1:
+        return (
+          <Btn onClick={advanceStep} disabled={createState.description === ""}>
+            Next
+          </Btn>
+        );
       case 2:
       default:
         return <Btn onClick={advanceStep}>Next</Btn>;
       case 3:
         return (
           <>
-            <Btn onClick={advanceStep}>Send Invite</Btn>
+            <Btn onClick={advanceStep} disabled={emails.length === 0}>
+              Send Invite
+            </Btn>
             <div className="mt-4 w-full flex justify-center">
               <button
                 className="font-sans font-bold text-center text-heirloomOrange"
@@ -121,6 +146,44 @@ export function CreateHeirloomModal() {
 
 function FormSteps({ step }) {
   const classes = useStyles();
+  const { enterDropZone, leaveDropZone, inDropZone, file, setFile } = useDragAndDrop();
+  const [{ emails, createState }, dispatch] = useHeirloomCreatContext();
+  const { firstName, lastName, born, died, description } = createState;
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    enterDropZone();
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let files = [...e.dataTransfer.files];
+
+    if (files && files.length > 0) {
+      setFile(files[0]);
+    }
+    leaveDropZone();
+  };
+  const handleBrowse = (e) => {
+    let files = [...e.target.files];
+    console.log(files);
+    if (files && files.length > 0) {
+      setFile(files[0]);
+    }
+  };
+  const handleChange = (name) => (e) => {
+    const toDispatch = { type: "SET", name, value: e.target.value };
+    dispatch(toDispatch);
+  };
+
   switch (step) {
     case 0:
     default:
@@ -129,30 +192,44 @@ function FormSteps({ step }) {
           <SettingsLabel help="Who is this heirloom memorializing?">
             Who are you honoring with this Heirloom?
           </SettingsLabel>
-          <TextField
-            id="heirloom-f-name"
-            className="w-full mb-10"
-            placeholder="First Last"
-            name="firstName"
-          />
+          <div className="w-full mb-10 flex">
+            <TextField
+              id="heirloom-f-name"
+              className="w-full pr-2"
+              placeholder="First"
+              name="firstName"
+              onChange={handleChange("firstName")}
+              value={firstName}
+            />
+            <TextField
+              id="heirloom-f-name"
+              className="w-full pl-2"
+              placeholder="Last"
+              name="lastName"
+              onChange={handleChange("lastName")}
+              value={lastName}
+            />
+          </div>
           <hr />
 
           <SettingsLabel>Date of Birth</SettingsLabel>
           <div className="w-full mb-10 flex">
             <TextField
-              id="date"
-              label="Birthday"
               type="date"
+              name="born"
               className={`${classes.textField} text-gray-500`}
+              onChange={handleChange("born")}
+              value={born}
               InputLabelProps={{
                 shrink: true,
               }}
             />
             <span className="font-bold text-5xl font-display mx-5 text-gray-500">-</span>
             <TextField
-              id="date"
-              label="Birthday"
               type="date"
+              name="died"
+              onChange={handleChange("died")}
+              value={died}
               className={`${classes.textField} text-gray-500`}
               InputLabelProps={{
                 shrink: true,
@@ -171,7 +248,8 @@ function FormSteps({ step }) {
             className="w-full mb-10"
             placeholder="This Heirloom was created to help collect our memories of Brad in a single place online."
             rows={5}
-            name="firstName"
+            onChange={handleChange("description")}
+            value={description}
           />
         </>
       );
@@ -182,7 +260,7 @@ function FormSteps({ step }) {
             Who can view this Heirloom?
           </SettingsLabel>
           <div className="mb-10">
-            <RadioGroup defaultValue="">
+            <RadioGroup defaultValue="1">
               <Stack>
                 <Radio value="1" colorScheme="orange">
                   Anyone (public)
@@ -225,7 +303,11 @@ function FormSteps({ step }) {
       return (
         <>
           <SettingsLabel>Invite by Email</SettingsLabel>
-          <ChipTextField id="invite-people-input" className="mb-10" />
+          <EmailChipTextField
+            emails={emails}
+            onAddEmail={(email) => dispatch({ type: "ADD_EMAIL", value: email })}
+            onDeleteEmail={(email) => dispatch({ type: "DELETE_EMAIL", value: email })}
+          />
           <SettingsLabel>Customize Message</SettingsLabel>
           <TextArea
             className="w-full mb-10"
@@ -239,20 +321,50 @@ function FormSteps({ step }) {
       return (
         <>
           <SettingsLabel>Upload Media</SettingsLabel>
-          <div className={`${styles.dndArea} flex flex-col`}>
+          <div
+            className={`${
+              inDropZone ? styles.dndAreaLoading : styles.dndArea
+            } flex flex-col`}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+          >
             <img
               className="mx-auto mt-10 mb-5"
               src="/assets/img/media.png"
               alt="Heirloom logo"
             />
-            <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5 mb-10">
+            <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5  mb-10">
               Drop your files here,
               <br /> or{" "}
-              <button className="text-heirloomOrange font-bold text-xl focus:outline-none focus:ring-0">
+              <label
+                className="text-heirloomOrange hover:text-heirloomOrange-dark font-bold text-xl cursor-pointer"
+                htmlFor="cover-photo-browse-in"
+              >
                 Browse
-              </button>
+              </label>
+              <input
+                type="file"
+                onChange={handleBrowse}
+                className="hidden"
+                id="cover-photo-browse-in"
+              />
             </div>
           </div>
+          {file ? (
+            <div className="font-sans text-heirloomOrange mb-1">
+              {file.name}
+              <span>
+                &nbsp;
+                <IconButton size="small" onClick={() => setFile()}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </span>
+            </div>
+          ) : (
+            <div className="mb-12" />
+          )}
         </>
       );
   }
