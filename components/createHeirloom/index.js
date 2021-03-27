@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -14,6 +14,8 @@ import TextArea from "../textField/textArea";
 
 import styles from "./create.module.css";
 import EmailChipTextField from "./emailChipTextField";
+import { useApiCall } from "../../lib/clientSideAuth";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -149,6 +151,8 @@ function FormSteps({ step }) {
   const { enterDropZone, leaveDropZone, inDropZone, file, setFile } = useDragAndDrop();
   const [{ emails, createState }, dispatch] = useHeirloomCreatContext();
   const { firstName, lastName, born, died, description } = createState;
+  const apiCall = useApiCall();
+
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -162,23 +166,48 @@ function FormSteps({ step }) {
     e.stopPropagation();
     enterDropZone();
   };
+
+  const uploadImage = useMemo(
+    () => (inFile) => {
+      const data = new FormData();
+      data.append("img", inFile);
+
+      apiCall(() =>
+        axios.post("/api/image", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      )
+        .then(() => {
+          setFile(inFile);
+        })
+        .catch((e) => window.alert(e));
+    },
+    [setFile, apiCall]
+  );
+
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     let files = [...e.dataTransfer.files];
 
     if (files && files.length > 0) {
-      setFile(files[0]);
+      const [inFile] = files;
+      uploadImage(inFile);
     }
     leaveDropZone();
   };
+
   const handleBrowse = (e) => {
     let files = [...e.target.files];
-    console.log(files);
+
     if (files && files.length > 0) {
-      setFile(files[0]);
+      const [inFile] = files;
+      uploadImage(inFile);
     }
   };
+
   const handleChange = (name) => (e) => {
     const toDispatch = { type: "SET", name, value: e.target.value };
     dispatch(toDispatch);
