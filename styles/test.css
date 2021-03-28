@@ -50,6 +50,7 @@
   }
 
   .bubbleElement:hover {
-	opacity: 0.5;
-  filter: blur(1px);
+	/* opacity: 0.5; */
+  filter: blur(1px) brightness(70%);
+  /* filter: brightness(50%); */
   }
