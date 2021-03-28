@@ -21,7 +21,7 @@ export default function BubbleInfoModal({ open, onClose  }) {
       />
 
       <div
-        className="modal-container bg-white w-full max-w-3xl mx-auto rounded-2xl shadow-lg z-50 overflow-y-auto"
+        className="modal-container bg-white bg-opacity-0 w-full  max-h-3xl max-w-3xl mx-auto rounded-3xl z-50 overflow-y-auto"
         onClick={stopPropagation}
       >
         <div className="modal-content py-8 text-left px-12">

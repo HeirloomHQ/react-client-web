@@ -58,17 +58,6 @@ export default function Home() {
       <div>
         <div className="landing bg-paper w-full h-full">
 		      <div className="bubble-container w-full h-full">
-            {/* <div>
-        <div className="landing bg-paper w-full h-full">
-		      <div className="bubble-container">
-            <BubbleElement options={defaultOptions}  className="bubbleUI" >
-              {functionCall(mockMemoirs).map((bubble, i) => (
-              <MockMemoirBubble {...bubble} key={i} />
-				))}
-				    </BubbleElement>
-          </div>
-        </div>
-      </div> */}
              <div className="bubble-container">
             <BubbleElement options={defaultOptions}  className="bubbleUI" >
               {functionCall(mockMemoirs).map((bubble, i) => (
