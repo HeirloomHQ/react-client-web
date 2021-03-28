@@ -40,7 +40,7 @@
 }
 .bubbleElement {
 	border-radius: 50%;
-	display: flex;
+	/* display: flex; */
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
@@ -53,4 +53,8 @@
 	/* opacity: 0.5; */
   filter: blur(1px) brightness(70%);
   /* filter: brightness(50%); */
+  }
+  .bubbleinfo{
+    /* height: 500px;
+    width: 600px; */
   }
