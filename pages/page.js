@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import PageNavbar from "../components/pageNavbar";
-import React from "react";
+import React ,{ useState } from "react";
 import BubbleElement, { defaultOptions } from "../lib/react-bubble-ui";
 import mockMemoirs from "../components/mockMemoirs";
 import MockMemoirBubble from "../components/test";
@@ -58,7 +58,7 @@ export default function Home() {
       <div>
         <div className="landing bg-paper w-full h-full">
 		      <div className="bubble-container w-full h-full">
-            <BubbleElement options={defaultOptions}  className="bubbleUI w-full h-full" >
+            {/* <BubbleElement options={defaultOptions}  className="bubbleUI w-full h-full" >
               {functionCall(mockMemoirs).map((bubble, i) => (
                 <div>
                   <MockMemoirBubble onClick={handleclick} className="bubbleElement w-full h-screen"
@@ -72,7 +72,23 @@ export default function Home() {
                 </div>
 
 				))}
-            </BubbleElement>
+            </BubbleElement> */}
+            <BubbleElement options={defaultOptions}  className="bubbleUI w-full h-full" >
+              {functionCall(mockMemoirs).map((bubble, i) => (
+                <div>
+                  <MockMemoirBubble onClick={handleclick} className="bubbleElement"
+                  bubble={bubble} key={i} />
+
+
+                </div>
+
+				))}
+        </BubbleElement>
+        <BubbleInfoModal
+                    open={modalOpen}
+                    // key={i}
+                  onClose={closeModal}
+                  />
 
           </div>
         </div>
