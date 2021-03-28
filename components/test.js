@@ -2,7 +2,7 @@ import React ,{ useState } from "react";
 import { useRouter } from "next/router";
 import BubbleInfoModal from "./bubbleInfoModal";
 
-const mockMemoirBubble=({onClick})=> {
+const mockMemoirBubble=({bubble,onClick})=> {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState("bubbleInfo");
@@ -16,7 +16,7 @@ const mockMemoirBubble=({onClick})=> {
   return (
     <div
       style={{
-        // backgroundImage: props.backgroundImage,
+        backgroundImage: bubble.backgroundImage,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundColor: '#FF7F59',
