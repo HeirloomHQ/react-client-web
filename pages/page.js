@@ -58,32 +58,29 @@ export default function Home() {
       <div>
         <div className="landing bg-paper w-full h-full">
 		      <div className="bubble-container w-full h-full">
-            {/* <BubbleElement options={defaultOptions}  className="bubbleUI w-full h-full" >
+            {/* <div>
+        <div className="landing bg-paper w-full h-full">
+		      <div className="bubble-container">
+            <BubbleElement options={defaultOptions}  className="bubbleUI" >
               {functionCall(mockMemoirs).map((bubble, i) => (
-                <div>
-                  <MockMemoirBubble onClick={handleclick} className="bubbleElement w-full h-screen"
-                  bubble={bubble} key={i} />
-
-                  <BubbleInfoModal
-                    open={modalOpen}
-                    key={i}
-                  onClose={closeModal}
-                  />
-                </div>
-
+              <MockMemoirBubble {...bubble} key={i} />
 				))}
-            </BubbleElement> */}
-            <BubbleElement options={defaultOptions}  className="bubbleUI w-full h-full" >
+				    </BubbleElement>
+          </div>
+        </div>
+      </div> */}
+             <div className="bubble-container">
+            <BubbleElement options={defaultOptions}  className="bubbleUI" >
               {functionCall(mockMemoirs).map((bubble, i) => (
-                <div>
+
                   <MockMemoirBubble onClick={handleclick} className="bubbleElement"
                   bubble={bubble} key={i} />
 
 
-                </div>
+
 
 				))}
-        </BubbleElement>
+        </BubbleElement></div>
         <BubbleInfoModal
                     open={modalOpen}
                     // key={i}

@@ -24,7 +24,7 @@ const mockMemoirBubble=({onClick})=> {
       className="bubbleElement w-full h-screen"
       onClick={onClick}
     >
-      test
+
 
 
     </div>
