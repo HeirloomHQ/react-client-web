@@ -1,8 +1,8 @@
-import React ,{ useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import BubbleInfoModal from "./bubbleInfoModal";
 
-const mockMemoirBubble=({bubble,onClick})=> {
+const MockMemoirBubble = ({ bubble, onClick }) => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState("bubbleInfo");
@@ -12,22 +12,17 @@ const mockMemoirBubble=({bubble,onClick})=> {
 
   const closeModal = () => setModalOpen(false);
 
-
   return (
     <div
       style={{
         backgroundImage: bubble.backgroundImage,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundColor: '#FF7F59',
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundColor: "#FF7F59",
       }}
       className="bubbleElement "
       onClick={onClick}
-    >
-
-
-
-    </div>
+    ></div>
   );
-}
-export default mockMemoirBubble;
+};
+export default MockMemoirBubble;

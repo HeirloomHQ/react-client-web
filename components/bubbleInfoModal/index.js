@@ -3,8 +3,7 @@ import BubbleInfo from "./bubbleInfo";
 import Close from "../icons/close";
 import Image from "next/image";
 
-export default function BubbleInfoModal({ open, onClose  }) {
-
+export default function BubbleInfoModal({ open, onClose }) {
   function stopPropagation(e) {
     e.stopPropagation();
   }
@@ -31,18 +30,18 @@ export default function BubbleInfoModal({ open, onClose  }) {
               <Close />
             </div>
             <Image
-          src="/assets/img/mockImages/4.png"
-          alt="Heirloom logo"
-          // layout='fill'
-          height={200}
-          width={200}
-          // onClick={() => router.push("/")}
-        />
+              src="/assets/img/mockImages/4.png"
+              alt="Heirloom logo"
+              // layout='fill'
+              height={200}
+              width={200}
+              // onClick={() => router.push("/")}
+            />
             <div className="modal-close cursor-pointer z-50" onClick={onClose}>
               <Close />
             </div>
           </div>
-            <BubbleInfo />
+          <BubbleInfo />
         </div>
       </div>
     </div>
