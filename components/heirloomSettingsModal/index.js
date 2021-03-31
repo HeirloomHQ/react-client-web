@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ChakraProvider } from "@chakra-ui/react";
 
 import styles from "./modal.module.css";
 import SelectedRectangle from "../selectedRectangle";
@@ -113,9 +112,7 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
         <MenuBar />
       </Spacer>
       <hr />
-      <ChakraProvider>
-        <ContentRender />
-      </ChakraProvider>
+      <ContentRender />
     </>
   );
 }

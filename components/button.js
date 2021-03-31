@@ -15,7 +15,7 @@ export default function Button({
       buttonStyle += `${
         !disabled
           ? "bg-heirloomOrange hover:bg-heirloomOrange-dark"
-          : "bg-heirloomOrange-light"
+          : "bg-heirloomOrange-light pointer-events-none"
       }  text-white`;
       break;
     case "outlined":
