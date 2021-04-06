@@ -1,18 +1,9 @@
-import {
-  useState,
-  useRef,
-  createRef,
-  useEffect,
-  createContext,
-  useContext,
-  useReducer,
-} from "react";
+import { useState, useRef, createRef, useEffect } from "react";
 import Head from "next/head";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import CreateIcon from "@material-ui/icons/Create";
 
-import Button from "../components/button";
 import DashNavbar from "../components/dashNavbar";
 import HeirloomSettingsModal from "../components/heirloomSettingsModal";
 import LoadingSpinner from "../components/loadingSpinner";
@@ -53,6 +44,22 @@ export default function Home() {
 
   const [centeredCard, setCenteredCard] = useState(0);
   const [hovered, setHover] = useState(-1);
+
+  const canManage = (memorial) => {
+    if (user) {
+      switch (memorial.canManage) {
+        case "MEMBER":
+          return ["OWNER", "MANAGER", "MEMBER"].includes(roles[memorial.id]);
+        case "MANAGER":
+          return ["OWNER", "MANAGER"].includes(roles[memorial.id]);
+        case "OWNER":
+          return roles[memorial.id] === "OWNER";
+        default:
+          return false;
+      }
+    }
+    return false;
+  };
 
   return userLoading || !user ? (
     <div className="bg-paper min-h-screen h-full">
@@ -107,7 +114,11 @@ export default function Home() {
                     >
                       <button
                         className={[
-                          hovered === index && centeredCard === index ? "" : "opacity-0 ",
+                          hovered === index &&
+                          centeredCard === index &&
+                          canManage(memorial)
+                            ? ""
+                            : "opacity-0 ",
                           "self-end rounded-md mr-8 mt-8 mb-auto ml-auto px-2 py-2 bg-black bg-opacity-40 text-white hover:bg-opacity-70 transition-all duration-150 focus:outline-none",
                         ].join(" ")}
                         onClick={(e) => {
