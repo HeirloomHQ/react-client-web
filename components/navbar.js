@@ -5,14 +5,7 @@ import Button from "./button";
 import SignupLoginModal from "./signupLoginModal";
 import NavLink from "./navLink";
 
-export default function Navbar() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalVariant, setModalVariant] = useState("signIn");
-  const openModal = (variant) => {
-    setModalVariant(variant);
-    setModalOpen(true);
-  };
-  const closeModal = () => setModalOpen(false);
+export default function Navbar({ openModal }) {
   const router = useRouter();
 
   return (
@@ -49,14 +42,6 @@ export default function Navbar() {
           </Button>
         </div>
       </div>
-      <SignupLoginModal
-        open={modalOpen}
-        onClose={closeModal}
-        variant={modalVariant}
-        toggleVariant={() =>
-          setModalVariant(modalVariant === "signIn" ? "signUp" : "signIn")
-        }
-      />
     </>
   );
 }

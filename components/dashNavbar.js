@@ -39,7 +39,7 @@ export default function DashNavbar() {
           <Tooltip hasArrow label="Account Settings" bg="blue.800" color="white">
             <button className="bg-heirloomOrange rounded-full w-9 h-9 my-auto hover:bg-heirloomOrange-dark transition-colors">
               <span className="flex items-center justify-center text-white  box-border">
-                {userCtx.user?.firstName.length ? userCtx.user?.firstName[0] : ""}
+                {userCtx.user?.firstName?.length ? userCtx.user?.firstName[0] : "A"}
               </span>
             </button>
           </Tooltip>

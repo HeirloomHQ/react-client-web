@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useToast } from "@chakra-ui/react";
 
 import Button from "../button";
 import Dropdown, { DropdownItem } from "../dropdown";
@@ -7,18 +8,26 @@ import Link from "../icons/link";
 import Lock from "../icons/lock";
 import LoadingSpinner from "../loadingSpinner";
 import RoleDropdown from "./roleDropdown";
-import ChipTextField from "../textField/chipTextField";
 import SettingLabel from "./settingsLabel";
 import { useMemorial, useUpdateMemorial } from "../../lib/memorial";
 import { useApiCall } from "../../lib/clientSideAuth";
 import { useReloadMembers } from "../../lib/members";
+import EmailChipTextField from "../createHeirloom/emailChipTextField";
 
 export default function SharingTab({ members, loading }) {
   const { memorial, setMemorial, reloadMemorials } = useMemorial();
   const [inviteFieldOpen, setInviteFieldOpen] = useState(false);
+  const [emails, setEmails] = useState([]);
+  const addEmail = (email) => setEmails([...emails, email]);
+  const popEmail = (email) => setEmails(emails.filter((value) => value != email));
+
   const updateMemorial = useUpdateMemorial();
 
   const apiCall = useApiCall();
+
+  useEffect(() => {
+    if (!inviteFieldOpen) setEmails([]);
+  }, [inviteFieldOpen]);
 
   const updateMemberRole = (memberID) => {
     return async (role) =>
@@ -31,6 +40,39 @@ export default function SharingTab({ members, loading }) {
       );
   };
 
+  const toast = useToast();
+  const sendInvites = async () => {
+    try {
+      await apiCall(() =>
+        axios.post(
+          `/api/invites?memorial=${memorial.id}`,
+          { emails },
+          { withCredentials: true }
+        )
+      );
+      toast({
+        title: "Success",
+        description: "Invites sent",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+      setEmails([]);
+      setInviteFieldOpen(false);
+    } catch (e) {
+      console.log(e);
+      toast({
+        title: "Error",
+        description: "Looks like something went wrong on our end",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    }
+  };
+
   return loading || !members ? (
     <LoadingSpinner />
   ) : (
@@ -38,12 +80,22 @@ export default function SharingTab({ members, loading }) {
       {inviteFieldOpen && (
         <div className="mt-8">
           <SettingLabelText>Invite People</SettingLabelText>
-          <ChipTextField id="invite-people-input" />
+          <EmailChipTextField
+            id="invite-people-input"
+            emails={emails}
+            onAddEmail={addEmail}
+            onDeleteEmail={popEmail}
+          />
           <div className="flex justify-end mt-4 mb-8">
             <Button variant="outlined" onClick={() => setInviteFieldOpen(false)}>
               Cancel
             </Button>
-            <Button className="ml-2" variant="filled">
+            <Button
+              className="ml-2"
+              variant="filled"
+              onClick={sendInvites}
+              disabled={emails.length === 0}
+            >
               Send
             </Button>
           </div>
@@ -150,8 +202,8 @@ function PersonRow({ firstName, lastName, email, imgSrc, role, onUpdateRole }) {
     <div className="w-full h-full py-2 flex flex-start">
       <div className="w-12 h-12">
         <img
-          className="rounded-full border border-gray-100 shadow-sm"
-          src={imgSrc}
+          className="rounded-full border border-gray-100 shadow-sm h-full object-cover"
+          src={imgSrc || "https://i.stack.imgur.com/l60Hf.png"}
           alt="user image"
         />
       </div>
