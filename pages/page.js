@@ -91,11 +91,3 @@ export default function Home() {
     </>
   );
 }
-<RoleDropdown
-value={role || "MEMBER"}
-onChange={(value) => {
-  onUpdateRole(value)
-    .then(() => reloadMembers())
-    .catch((e) => console.log(e));
-}}
-/>

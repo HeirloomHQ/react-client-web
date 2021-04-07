@@ -6,10 +6,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { RadioGroup, Stack, Radio } from "@chakra-ui/react";
 
 import ModalBase from "./modalbase";
-// import TextField from "../textField/textField";
+import TextField from "../textField/textField";
 import Button from "../button";
 import { useDragAndDrop } from "../createHeirloom/hooks";
-// import TextArea from "../textField/textArea";
+import TextArea from "../textField/textArea";
 
 import styles from "./create.module.css";
 import { useApiCall } from "../../lib/clientSideAuth";
@@ -54,15 +54,20 @@ export function AddMemoirModal({open,onCloseClick}) {
 
   const Title = () => {
     switch (step) {
+     default:
       case 0:
+      
+        return "Upload Photo";
       case 1:
+        return "Tell a Story";
       case 2:
-      default:
-        return "Add Memorials";
-      case 3:
-        return "Invite Contributors";
-      case 4:
-        return "Add a Cover Photo";
+          return "Upload Video "
+      
+        // return "Add Memorials";
+    //   case 3:
+    //     return "Invite Contributors";
+    //   case 4:
+    //     return "Add a Cover Photo";
     }
   };
 
@@ -78,6 +83,7 @@ export function AddMemoirModal({open,onCloseClick}) {
       </Button>
     );
     switch (step) {
+    default:
       case 0:
         return (
           <Btn
@@ -101,42 +107,42 @@ export function AddMemoirModal({open,onCloseClick}) {
           </Btn>
         );
       case 2:
-      default:
-        return <Btn onClick={advanceStep}>Next</Btn>;
-      case 3:
-        return (
-          <>
-            <Btn onClick={advanceStep}
-            //  disabled={emails.length === 0}
-             >
-              Send Invite
-            </Btn>
-            <div className="mt-4 w-full flex justify-center">
-              <button
-                className="font-sans font-bold text-center text-heirloomOrange"
-                onClick={advanceStep}
-              >
-                Skip
-              </button>
-            </div>
-          </>
-        );
-      case 4:
-        return (
-          <>
-            <Btn 
-            disabled={createLoading} 
-            onClick={createHeirloom}
-            >
-              Add More Modals
-            </Btn>
-            <div className="mt-4 w-full flex justify-center">
-              <button className="font-sans font-bold text-center text-heirloomOrange">
-                Add later
-              </button>
-            </div>
-          </>
-        );
+      
+        return <Btn onClick={onClose}>Post</Btn>;
+    //   case 3:
+    //     return (
+    //       <>
+    //         <Btn onClick={advanceStep}
+    //         //  disabled={emails.length === 0}
+    //          >
+    //           Send Invite
+    //         </Btn>
+    //         <div className="mt-4 w-full flex justify-center">
+    //           <button
+    //             className="font-sans font-bold text-center text-heirloomOrange"
+    //             onClick={advanceStep}
+    //           >
+    //             Skip
+    //           </button>
+    //         </div>
+    //       </>
+    //     );
+    //   case 4:
+    //     return (
+    //       <>
+    //         <Btn 
+    //         // disabled={createLoading} 
+    //         onClick={() => console.log("Button was bressed to add")}
+    //         >
+    //           Add More Modals
+    //         </Btn>
+    //         <div className="mt-4 w-full flex justify-center">
+    //           <button className="font-sans font-bold text-center text-heirloomOrange">
+    //             Add later
+    //           </button>
+    //         </div>
+    //       </>
+        // );
     }
   };
 
@@ -251,8 +257,167 @@ function FormSteps({ step }) {
   };
 
   switch (step) {
-    case 0:
     default:
+    case 0:
+    
+        return (
+            <>
+              <SettingsLabel>Add photos, videos, or audio clips</SettingsLabel>
+              <div
+                className={`${
+                  inDropZone ? styles.dndAreaLoading : styles.dndArea
+                } flex flex-col`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+              >
+                <img
+                  className="mx-auto mt-10 mb-5"
+                  src="/assets/img/media.png"
+                  alt="Heirloom logo"
+                />
+                <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5  mb-10">
+                  Drop your files here,
+                  <br /> or{" "}
+                  <label
+                    className="text-heirloomOrange hover:text-heirloomOrange-dark font-bold text-xl cursor-pointer"
+                    htmlFor="cover-photo-browse-in"
+                  >
+                    Browse
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleBrowse}
+                    className="hidden"
+                    id="cover-photo-browse-in"
+                  />
+                </div>
+              </div>
+              {file ? (
+                <div className="font-sans text-heirloomOrange mb-1">
+                  {file.name}
+                  <span>
+                    &nbsp;
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        setFile();
+                        // dispatch({ type: "SET", name: "coverPhoto", value: "" });
+                        setMemData({...memData, photo: "" })
+    
+                      }}
+                    >
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </span>
+                </div>
+              ) : (
+                <div className="mb-12" />
+              )}
+            </>
+          );
+    case 1:
+      return (
+        <>
+          <SettingsLabel help="Who is this heirloom memorializing?">
+            {/* Tell A Story */}
+          </SettingsLabel>
+          <TextArea
+            className="w-full mb-10"
+            placeholder="Write a story about Brad."
+            // Need to put actual name of person here
+            rows={5}
+            onChange={handleChange("link")}
+            value={memData.link}
+          />
+        </>
+      );
+
+      case 2:
+        return (
+          <>
+            <SettingsLabel help="Who is this heirloom memorializing?">
+              Enter video link from Youtube
+            </SettingsLabel>
+            <TextArea
+              className="w-full mb-10"
+              placeholder="https://:"
+              // Need to put actual name of person here
+              rows={5}
+              onChange={handleChange("link")}
+              value={memData.link}
+            />
+          </>
+        );
+
+    // case 3:
+    //   return (
+    //     <>
+    //       <SettingsLabel>Invite by Email</SettingsLabel>
+    //       <EmailChipTextField
+    //         emails={emails}
+    //         onAddEmail={(email) => dispatch({ type: "ADD_EMAIL", value: email })}
+    //         onDeleteEmail={(email) => dispatch({ type: "DELETE_EMAIL", value: email })}
+    //       />
+    //       <SettingsLabel>Customize Message</SettingsLabel>
+    //       <TextArea
+    //         className="w-full mb-10"
+    //         placeholder="This Heirloom was created to help collect our memories of Brad in a single place online."
+    //         rows={5}
+    //         name="bio"
+    //       />
+    //     </>
+    //   );
+
+    //   case 2:
+    //   return (
+    //     <>
+    //       <SettingsLabel help="Who is this heirloom memorializing?">
+    //         Who can view this Heirloom?
+    //       </SettingsLabel>
+    //       <div className="mb-10">
+    //         <RadioGroup defaultValue="1">
+    //           <Stack>
+    //             <Radio value="1" colorScheme="orange">
+    //               Anyone (public)
+    //             </Radio>
+    //             <Radio value="2" colorScheme="orange">
+    //               Anyone with shareable link
+    //             </Radio>
+    //             <Radio value="3" colorScheme="orange">
+    //               Only people invited to this Heirloom page
+    //             </Radio>
+    //           </Stack>
+    //         </RadioGroup>
+    //       </div>
+    //       <hr />
+
+    //       <SettingsLabel help="Who is this heirloom memorializing?">
+    //         Who can add memories to this Heirloom?
+    //       </SettingsLabel>
+    //       <div className="mb-10">
+    //         <RadioGroup defaultValue="1" co>
+    //           <Stack>
+    //             <Radio value="1" colorScheme="orange">
+    //               Anyone (public)
+    //             </Radio>
+    //             <Radio value="2" colorScheme="orange">
+    //               Anyone with the shareable link
+    //             </Radio>
+    //             <Radio value="3" colorScheme="orange">
+    //               Only people invited to this Heirloom page
+    //             </Radio>
+    //             <Radio value="4" colorScheme="orange">
+    //               Only me
+    //             </Radio>
+    //           </Stack>
+    //         </RadioGroup>
+    //       </div>
+    //     </>
+    //   );
+
+
     //   return (
     //     <>
     //       <SettingsLabel help="Who is this heirloom memorializing?">
@@ -384,63 +549,63 @@ function FormSteps({ step }) {
     //     </>
     //   );
     // case 4:
-      return (
-        <>
-          <SettingsLabel>Upload Media</SettingsLabel>
-          <div
-            className={`${
-              inDropZone ? styles.dndAreaLoading : styles.dndArea
-            } flex flex-col`}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-          >
-            <img
-              className="mx-auto mt-10 mb-5"
-              src="/assets/img/media.png"
-              alt="Heirloom logo"
-            />
-            <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5  mb-10">
-              Drop your files here,
-              <br /> or{" "}
-              <label
-                className="text-heirloomOrange hover:text-heirloomOrange-dark font-bold text-xl cursor-pointer"
-                htmlFor="cover-photo-browse-in"
-              >
-                Browse
-              </label>
-              <input
-                type="file"
-                onChange={handleBrowse}
-                className="hidden"
-                id="cover-photo-browse-in"
-              />
-            </div>
-          </div>
-          {file ? (
-            <div className="font-sans text-heirloomOrange mb-1">
-              {file.name}
-              <span>
-                &nbsp;
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    setFile();
-                    // dispatch({ type: "SET", name: "coverPhoto", value: "" });
-                    setMemData({...memData, photo: "" })
+    //   return (
+    //     <>
+    //       <SettingsLabel>Upload Media</SettingsLabel>
+    //       <div
+    //         className={`${
+    //           inDropZone ? styles.dndAreaLoading : styles.dndArea
+    //         } flex flex-col`}
+    //         onDrop={handleDrop}
+    //         onDragOver={handleDragOver}
+    //         onDragEnter={handleDragEnter}
+    //         onDragLeave={handleDragLeave}
+    //       >
+    //         <img
+    //           className="mx-auto mt-10 mb-5"
+    //           src="/assets/img/media.png"
+    //           alt="Heirloom logo"
+    //         />
+    //         <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5  mb-10">
+    //           Drop your files here,
+    //           <br /> or{" "}
+    //           <label
+    //             className="text-heirloomOrange hover:text-heirloomOrange-dark font-bold text-xl cursor-pointer"
+    //             htmlFor="cover-photo-browse-in"
+    //           >
+    //             Browse
+    //           </label>
+    //           <input
+    //             type="file"
+    //             onChange={handleBrowse}
+    //             className="hidden"
+    //             id="cover-photo-browse-in"
+    //           />
+    //         </div>
+    //       </div>
+    //       {file ? (
+    //         <div className="font-sans text-heirloomOrange mb-1">
+    //           {file.name}
+    //           <span>
+    //             &nbsp;
+    //             <IconButton
+    //               size="small"
+    //               onClick={() => {
+    //                 setFile();
+    //                 // dispatch({ type: "SET", name: "coverPhoto", value: "" });
+    //                 setMemData({...memData, photo: "" })
 
-                  }}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              </span>
-            </div>
-          ) : (
-            <div className="mb-12" />
-          )}
-        </>
-      );
+    //               }}
+    //             >
+    //               <CloseIcon fontSize="small" />
+    //             </IconButton>
+    //           </span>
+    //         </div>
+    //       ) : (
+    //         <div className="mb-12" />
+    //       )}
+    //     </>
+    //   );
   }
 }
 
