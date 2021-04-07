@@ -1,0 +1,13 @@
+.dndArea {
+  border: 2px dashed #C1C0BF;
+  border-radius: 10px;
+  background: rgba(255, 127, 89, 0.1);
+  margin-bottom: 1rem;
+}
+
+.dndAreaLoading {
+  border: 2px solid #C1C0BF;
+  border-radius: 10px;
+  background: rgba(255, 73, 18, 0.1);
+  margin-bottom: 1rem;
+}

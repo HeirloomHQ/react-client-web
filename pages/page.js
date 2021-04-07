@@ -6,6 +6,7 @@ import BubbleElement, { defaultOptions } from "../lib/react-bubble-ui";
 import mockMemoirs from "../components/mockMemoirs";
 import MockMemoirBubble from "../components/test";
 import BubbleInfoModal from "../components/bubbleInfoModal/index";
+import {AddMemoirModal} from "../components/addMemorials"
 
 //reference: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function functionCall(array) {
@@ -39,6 +40,7 @@ export default function Home() {
   const lastname = router.query?.lastname;
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [addMemModal, setAddMemModal] = useState(false);
   const [modalVariant, setModalVariant] = useState("bubbleInfo");
   const openModal = (variant) => {
     setModalOpen(true);
@@ -48,6 +50,11 @@ export default function Home() {
 
   const handleclick = () => setModalOpen(true);
 
+  const onPlusClick = () => setAddMemModal(true)
+
+  const onCloseClick = () => setAddMemModal(false)
+
+  //onPlusClick use as a prop to be passed into pageNavBar
   return (
     <>
       <Head>
@@ -55,7 +62,9 @@ export default function Home() {
           {firstname} {lastname}
         </title>
       </Head>
-      <PageNavbar />
+      {/* onPlusClick={openRoleDropDown} */}
+      <PageNavbar onPlusClick={onPlusClick} onCloseClick={onCloseClick} />
+      <AddMemoirModal open={addMemModal} onCloseClick={onCloseClick} />
       <div>
         <div className="landing bg-paper w-full h-full">
           <div className="bubble-container w-full h-full">
@@ -82,3 +91,11 @@ export default function Home() {
     </>
   );
 }
+<RoleDropdown
+value={role || "MEMBER"}
+onChange={(value) => {
+  onUpdateRole(value)
+    .then(() => reloadMembers())
+    .catch((e) => console.log(e));
+}}
+/>

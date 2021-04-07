@@ -1,8 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { CreateHeirloomModal } from "../components/createHeirloom";
 import "tailwindcss/tailwind.css";
 
-export default function PageNavbar() {
+// onPlusClick allows access
+export default function PageNavbar({onPlusClick}) {
   const router = useRouter();
   const memorial_id = router.query.mem_id;
   const firstname = router.query?.firstname;
@@ -27,8 +29,10 @@ export default function PageNavbar() {
             alt="Heirloom logo"
             height={30}
             width={30}
+            onClick={onPlusClick}
           />
         </div>
+
       </div>
       <hr />
     </>
