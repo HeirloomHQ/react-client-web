@@ -5,6 +5,10 @@
   margin-bottom: 1rem;
 }
 
+.dndAreaWithPhoto {
+  margin-bottom: 1rem;
+}
+
 .dndAreaLoading {
   border: 2px solid #C1C0BF;
   border-radius: 10px;

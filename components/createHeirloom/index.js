@@ -2,6 +2,7 @@ import React, { useState, useRef, useMemo } from "react";
 import { makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import CreateIcon from "@material-ui/icons/Create";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { RadioGroup, Stack, Radio } from "@chakra-ui/react";
 
@@ -16,6 +17,7 @@ import EmailChipTextField from "./emailChipTextField";
 import { useApiCall } from "../../lib/clientSideAuth";
 import axios from "axios";
 import { useMemorial } from "../../lib/memorial";
+import LoadingSpinner from "../loadingSpinner";
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -59,9 +61,9 @@ export function CreateHeirloomModal() {
       case 2:
       default:
         return "Create New Heirloom";
+      // case 3:
+      //   return "Invite Contributors";
       case 3:
-        return "Invite Contributors";
-      case 4:
         return "Add a Cover Photo";
     }
   };
@@ -101,23 +103,23 @@ export function CreateHeirloomModal() {
       case 2:
       default:
         return <Btn onClick={advanceStep}>Next</Btn>;
+      // case 3:
+      //   return (
+      //     <>
+      //       <Btn onClick={advanceStep} disabled={emails.length === 0}>
+      //         Send Invite
+      //       </Btn>
+      //       <div className="mt-4 w-full flex justify-center">
+      //         <button
+      //           className="font-sans font-bold text-center text-heirloomOrange"
+      //           onClick={advanceStep}
+      //         >
+      //           Skip
+      //         </button>
+      //       </div>
+      //     </>
+      //   );
       case 3:
-        return (
-          <>
-            <Btn onClick={advanceStep} disabled={emails.length === 0}>
-              Send Invite
-            </Btn>
-            <div className="mt-4 w-full flex justify-center">
-              <button
-                className="font-sans font-bold text-center text-heirloomOrange"
-                onClick={advanceStep}
-              >
-                Skip
-              </button>
-            </div>
-          </>
-        );
-      case 4:
         return (
           <>
             <Btn disabled={createLoading} onClick={createHeirloom}>
@@ -172,7 +174,7 @@ function FormSteps({ step }) {
   const classes = useStyles();
   const { enterDropZone, leaveDropZone, inDropZone, file, setFile } = useDragAndDrop();
   const [{ emails, createState }, dispatch] = useHeirloomCreatContext();
-  const { firstName, lastName, born, died, description } = createState;
+  const { firstName, lastName, born, died, description, coverPhoto } = createState;
   const apiCall = useApiCall();
 
   const handleDragEnter = (e) => {
@@ -189,11 +191,12 @@ function FormSteps({ step }) {
     enterDropZone();
   };
 
+  const [imageLoading, setImageLoading] = useState(false);
   const uploadImage = useMemo(
     () => (inFile) => {
       const data = new FormData();
       data.append("img", inFile);
-
+      setImageLoading(true);
       apiCall(() =>
         axios.post("/api/image", data, {
           headers: {
@@ -204,8 +207,12 @@ function FormSteps({ step }) {
         .then((res) => {
           setFile(inFile);
           dispatch({ type: "SET", name: "coverPhoto", value: res.data.imageURL });
+          setImageLoading(false);
         })
-        .catch((e) => window.alert(e));
+        .catch((e) => {
+          setImageLoading(false);
+          window.alert(e);
+        });
     },
     [setFile, apiCall, dispatch]
   );
@@ -235,6 +242,8 @@ function FormSteps({ step }) {
     const toDispatch = { type: "SET", name, value: e.target.value };
     dispatch(toDispatch);
   };
+
+  const [coverPhotoHovered, setCoverPhotoHovered] = useState(false);
 
   switch (step) {
     case 0:
@@ -312,15 +321,15 @@ function FormSteps({ step }) {
             Who can view this Heirloom?
           </SettingsLabel>
           <div className="mb-10">
-            <RadioGroup defaultValue="1">
+            <RadioGroup defaultValue="LINK">
               <Stack>
-                <Radio value="1" colorScheme="orange">
+                <Radio value="ANYONE" colorScheme="orange">
                   Anyone (public)
                 </Radio>
-                <Radio value="2" colorScheme="orange">
+                <Radio value="LINK" colorScheme="orange">
                   Anyone with shareable link
                 </Radio>
-                <Radio value="3" colorScheme="orange">
+                <Radio value="MEMBER" colorScheme="orange">
                   Only people invited to this Heirloom page
                 </Radio>
               </Stack>
@@ -332,18 +341,18 @@ function FormSteps({ step }) {
             Who can add memories to this Heirloom?
           </SettingsLabel>
           <div className="mb-10">
-            <RadioGroup defaultValue="1" co>
+            <RadioGroup defaultValue="MEMBER">
               <Stack>
-                <Radio value="1" colorScheme="orange">
+                <Radio value="ANYONE" colorScheme="orange">
                   Anyone (public)
                 </Radio>
-                <Radio value="2" colorScheme="orange">
+                <Radio value="LINK" colorScheme="orange">
                   Anyone with the shareable link
                 </Radio>
-                <Radio value="3" colorScheme="orange">
+                <Radio value="MEMBER" colorScheme="orange">
                   Only people invited to this Heirloom page
                 </Radio>
-                <Radio value="4" colorScheme="orange">
+                <Radio value="OWNER" colorScheme="orange">
                   Only me
                 </Radio>
               </Stack>
@@ -351,78 +360,91 @@ function FormSteps({ step }) {
           </div>
         </>
       );
+    // case 3:
+    //   return (
+    //     <>
+    //       <SettingsLabel>Invite by Email</SettingsLabel>
+    //       <EmailChipTextField
+    //         emails={emails}
+    //         onAddEmail={(email) => dispatch({ type: "ADD_EMAIL", value: email })}
+    //         onDeleteEmail={(email) => dispatch({ type: "DELETE_EMAIL", value: email })}
+    //       />
+    //       <SettingsLabel>Customize Message</SettingsLabel>
+    //       <TextArea
+    //         className="w-full mb-10"
+    //         placeholder="This Heirloom was created to help collect our memories of Brad in a single place online."
+    //         rows={5}
+    //         name="bio"
+    //       />
+    //     </>
+    //   );
     case 3:
       return (
         <>
-          <SettingsLabel>Invite by Email</SettingsLabel>
-          <EmailChipTextField
-            emails={emails}
-            onAddEmail={(email) => dispatch({ type: "ADD_EMAIL", value: email })}
-            onDeleteEmail={(email) => dispatch({ type: "DELETE_EMAIL", value: email })}
-          />
-          <SettingsLabel>Customize Message</SettingsLabel>
-          <TextArea
-            className="w-full mb-10"
-            placeholder="This Heirloom was created to help collect our memories of Brad in a single place online."
-            rows={5}
-            name="bio"
-          />
-        </>
-      );
-    case 4:
-      return (
-        <>
           <SettingsLabel>Upload Media</SettingsLabel>
-          <div
-            className={`${
-              inDropZone ? styles.dndAreaLoading : styles.dndArea
-            } flex flex-col`}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-          >
-            <img
-              className="mx-auto mt-10 mb-5"
-              src="/assets/img/media.png"
-              alt="Heirloom logo"
-            />
-            <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5  mb-10">
-              Drop your files here,
-              <br /> or{" "}
-              <label
-                className="text-heirloomOrange hover:text-heirloomOrange-dark font-bold text-xl cursor-pointer"
-                htmlFor="cover-photo-browse-in"
+          {!file ? (
+            !imageLoading ? (
+              <div
+                className={`${
+                  inDropZone ? styles.dndAreaLoading : styles.dndArea
+                } flex flex-col`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
               >
-                Browse
-              </label>
-              <input
-                type="file"
-                onChange={handleBrowse}
-                className="hidden"
-                id="cover-photo-browse-in"
-              />
-            </div>
-          </div>
-          {file ? (
-            <div className="font-sans text-heirloomOrange mb-1">
-              {file.name}
-              <span>
-                &nbsp;
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    setFile();
-                    dispatch({ type: "SET", name: "coverPhoto", value: "" });
-                  }}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              </span>
-            </div>
+                <img
+                  className="mx-auto mt-10 mb-5"
+                  src="/assets/img/media.png"
+                  alt="Heirloom logo"
+                />
+                <div className="font-sans text-gray-500 font-bold text-xl text-center mt-5  mb-10">
+                  Drop your files here,
+                  <br />
+                  or
+                  <br />
+                  <label
+                    className="text-heirloomOrange hover:text-heirloomOrange-dark font-bold text-xl cursor-pointer"
+                    htmlFor="cover-photo-browse-in"
+                  >
+                    Browse
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleBrowse}
+                    className="hidden"
+                    id="cover-photo-browse-in"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="h-80">
+                <LoadingSpinner />
+              </div>
+            )
           ) : (
-            <div className="mb-12" />
+            <div
+              className={`${styles.dndAreaWithPhoto} w-full bg-cover rounded-xl h-80 bg-center flex justify-end`}
+              onMouseEnter={() => setCoverPhotoHovered(true)}
+              onMouseLeave={() => setCoverPhotoHovered(false)}
+              style={{ backgroundImage: `url(${coverPhoto})` }}
+            >
+              <button
+                className={[
+                  coverPhotoHovered ? "" : "opacity-0 ",
+                  "rounded-full mr-2 mt-2 px-2 py-2 mb-auto bg-black bg-opacity-40 text-white hover:bg-opacity-70 transition-all duration-150 focus:outline-none",
+                ].join(" ")}
+                onClick={(e) => {
+                  setFile();
+                  dispatch({ type: "SET", name: "coverPhoto", value: "" });
+                  e.stopPropagation();
+                }}
+              >
+                <CloseIcon className="float-left mx-auto my-auto" fontSize="small" />
+              </button>
+            </div>
           )}
+          <div className="mb-8" />
         </>
       );
   }
