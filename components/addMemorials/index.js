@@ -14,7 +14,7 @@ import TextArea from "../textField/textArea";
 import styles from "./create.module.css";
 import { useApiCall } from "../../lib/clientSideAuth";
 import axios from "axios";
-// import { useMemorial } from "../../lib/memorial";
+import { useMemorial } from "../../lib/memorial";
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -24,14 +24,14 @@ const useStyles = makeStyles(() => ({
 
 export function AddMemoirModal({open,onCloseClick}) {
 //   const [{ createState, emails }, dispatch] = useHeirloomCreatContext();
-//   const { reloadMemorials } = useMemorial();
+  const { memorial } = useMemorial();
   const apiCall = useApiCall();
+  console.log("Meme",memorial)
 
-//   const onClose = () => dispatch({ type: "CLOSE" });
- const onClose = () =>  onCloseClick()
+ const onClose = () =>  onCloseClick() 
   const clearAndClose = () => {
-    // dispatch({ type: "RESET" });
-    onClose();
+    setStep(0)
+    onClose(); 
   };
 
   const [step, setStep] = useState(0);
@@ -39,18 +39,20 @@ export function AddMemoirModal({open,onCloseClick}) {
   const reverseStep = () => setStep(step - 1 >= 0 ? step - 1 : 0);
 
   const [createLoading, setCreateLoading] = useState(false);
-//   const createHeirloom = () => {
-//     apiCall(() => axios.post("/api/memorials", createState, { withCredentials: true }))
-//       .then(() => {
-//         setCreateLoading(false);
-//         clearAndClose();
-//         reloadMemorials();
-//       })
-//       .catch((e) => {
-//         setCreateLoading(false);
-//         window.alert(e);
-//       });
-//   };
+
+const addModal = () => {
+  apiCall(() => axios.post(`/api/memoir/${memorial.id}`, memData, { withCredentials: true }))
+    .then(() => {
+      setCreateLoading(false);
+      clearAndClose();
+      //TODO: Function to reload single memorial
+      console.log("Imformation has been sent")
+    })
+    .catch((e) => {
+      setCreateLoading(false);
+      window.alert(e);
+    });
+};
 
   const Title = () => {
     switch (step) {
@@ -103,13 +105,17 @@ export function AddMemoirModal({open,onCloseClick}) {
         );
       case 2:
       
-        return <Btn onClick={onClose}>Post</Btn>;
+        return <Btn onClick={addModal}>Post</Btn>;
+        // Create an apiCall that calls the hook apiCall
+        // Look for backend implementation
+          //  Pass memData to a post request
+            // Do in some button
   
     }
   };
 
   return (
-    <ModalBase open= {open} onClose={onCloseClick}>
+    <ModalBase open= {open} onClose={clearAndClose}>
       <div className="w-full flex justify-between">
         <IconButton
           size="small"
@@ -125,7 +131,7 @@ export function AddMemoirModal({open,onCloseClick}) {
         </h2>
         <IconButton
           size="small"
-          onClick={onClose}
+          onClick={clearAndClose}
           style={{ marginTop: "1rem", marginRight: "1rem", marginBottom: "auto" }}
         >
           <CloseIcon fontSize="large" />
@@ -146,8 +152,6 @@ export function AddMemoirModal({open,onCloseClick}) {
 function FormSteps({ step }) {
   const classes = useStyles();
   const { enterDropZone, leaveDropZone, inDropZone, file, setFile } = useDragAndDrop();
-//   const [{ emails, createState }, dispatch] = useHeirloomCreatContext();
-//   const { firstName, lastName, born, died, description } = createState;
   const apiCall = useApiCall();
 
   const handleDragEnter = (e) => {
@@ -163,7 +167,7 @@ function FormSteps({ step }) {
     e.stopPropagation();
     enterDropZone();
   };
-  const [memData, setMemData] = useState({picture:"",video:"",link:"", photo:""});
+  const [memData, setMemData] = useState({story:"",video:"",link:"", photo:""});
 
   const uploadImage = useMemo(
     () => (inFile) => {
@@ -180,9 +184,6 @@ function FormSteps({ step }) {
         .then((res) => {
           setFile(inFile);
           setMemData({...memData, photo: res.data.imageURL })
-
-          //create a state
-        //   dispatch({ type: "SET", name: "coverPhoto", value: res.data.imageURL });
         })
         .catch((e) => window.alert(e));
     },
@@ -214,8 +215,6 @@ function FormSteps({ step }) {
 
   const handleChange = (name) => (e) => {
     setMemData({...memData, [name]: e.target.value })
-    // const toDispatch = { type: "SET", name, value: e.target.value };
-    // dispatch(toDispatch);
   };
 
   switch (step) {
@@ -290,8 +289,9 @@ function FormSteps({ step }) {
             placeholder="Write a story about Brad."
             // Need to put actual name of person here
             rows={5}
-            onChange={handleChange("link")}
-            value={memData.link}
+            onChange={handleChange("story")}
+            value={memData.story}
+
           />
         </>
       );
@@ -307,8 +307,8 @@ function FormSteps({ step }) {
               placeholder="https://:"
               // Need to put actual name of person here
               rows={5}
-              onChange={handleChange("link")}
-              value={memData.link}
+              onChange={handleChange("video")}
+              value={memData.video}
             />
           </>
         ); 
