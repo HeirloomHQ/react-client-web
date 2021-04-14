@@ -95,14 +95,7 @@ export default function Home() {
                       key={memorial?.id + index}
                       onClick={() => {
                         if (index === centeredCard) {
-                          router.push({
-                            pathname: "/page",
-                            query: {
-                              mem_id: memorial.id,
-                              firstname: memorial.firstName,
-                              lastname: memorial.lastName,
-                            },
-                          });
+                          router.push(`/memorial/${memorial.id}`);
                           return;
                         }
                         scroll(elRefs[index]);
