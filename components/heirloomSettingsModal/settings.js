@@ -14,6 +14,7 @@ import { useMemorial, useUpdateMemorial } from "../../lib/memorial";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().max(100, "100 characters or less"),
+  lastName: Yup.string().max(100, "100 characters or less"),
   description: Yup.string().max(100, "100 characters or less"),
   bio: Yup.string().max(2000, "The bio cannot be longer than 2000 characters"),
 });
@@ -108,7 +109,9 @@ export default function HeirloomSettings({ memorial, onClose }) {
         <>
           <form className="flex-grow overflow-y-auto">
             <Spacer>
-              <SettingLabel help="Who is this heirloom memorializing?">Name</SettingLabel>
+              <SettingLabel help="Who is this heirloom memorializing?">
+                First Name
+              </SettingLabel>
               <TextField
                 id="heirloom-f-name"
                 className={`w-full ${
@@ -123,6 +126,22 @@ export default function HeirloomSettings({ memorial, onClose }) {
               />
               {touched.firstName && errors.firstName && (
                 <p className="mb-2">{errors.firstName}</p>
+              )}
+              <div className="text-xl font-bold mb-4 mt-2">Last Name</div>
+              <TextField
+                id="heirloom-f-name"
+                className={`w-full ${
+                  !!touched.firstName && !!errors.firstName ? "mb-2" : "mb-10"
+                }`}
+                placeholder="First Last"
+                value={values.lastName}
+                name="lastName"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={!!touched.lastName && !!errors.lastName}
+              />
+              {touched.lastName && errors.lastName && (
+                <p className="mb-2">{errors.lastName}</p>
               )}
               <hr />
 

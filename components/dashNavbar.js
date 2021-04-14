@@ -17,7 +17,7 @@ export default function DashNavbar() {
 
   return (
     <>
-      <div className="w-full flex items-center px-24 py-3 bg-paper">
+      <div className="w-full flex items-center px-24 py-3 bg-paper cursor-pointer">
         <Image
           src="/assets/img/nav-logo.png"
           alt="Heirloom logo"

@@ -10,12 +10,12 @@ export default function Navbar({ openModal }) {
 
   return (
     <>
-      <div className="h-24 w-full flex items-center px-24 bg-paper">
+      <div className="h-24 w-full flex items-center px-24 bg-paper cursor-pointer">
         <Image
-          src="/assets/img/heirloom-header-logo.png"
+          src="/assets/img/nav-logo.png"
           alt="Heirloom logo"
-          height={42}
-          width={170}
+          height={36}
+          width={147}
           onClick={() => router.push("/")}
         />
         <div className="flex justify-between ml-32">
