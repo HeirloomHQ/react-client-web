@@ -105,7 +105,7 @@ const addModal = () => {
         );
       case 2:
       
-        return <Btn onClick={addModal}>Post</Btn>;
+        return <Btn onClick={onCloseClick}>Post</Btn>;
         // Create an apiCall that calls the hook apiCall
         // Look for backend implementation
           //  Pass memData to a post request
