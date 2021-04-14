@@ -86,11 +86,9 @@ export default function Home() {
                 <div className="flex-grow inline-flex box-border min-w-full px-40">
                   {memorials.map((memorial, index) => (
                     <div
-                      className="flex-shrink-0 rounded-3xl mx-10 flex flex-col justify-center items-center bg-black bg-opacity-20 w-11/12"
+                      className="flex-shrink-0 rounded-3xl mx-10 flex flex-col justify-center items-center bg-black bg-opacity-20 w-11/12 bg-no-repeat bg-cover bg-center"
                       style={{
                         backgroundImage: `url(${memorial.coverPhoto})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
                       }}
                       key={memorial?.id + index}
                       onClick={() => {
