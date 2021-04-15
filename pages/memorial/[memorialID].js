@@ -10,10 +10,12 @@ import BubbleInfoModal from "../../components/bubbleInfoModal/index";
 import { useApiCall } from "../../lib/clientSideAuth";
 import LoadingSpinner from "../../components/loadingSpinner";
 import { useMemorial } from "../../lib/memorial";
+import { AddMemoirModal } from "../../components/addMemorials";
+import { ChakraProvider } from "@chakra-ui/react";
 
 //reference: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function functionCall(array) {
-  var currentIndex = array.length,
+  let currentIndex = array.length,
     temporaryValue,
     randomIndex;
 
@@ -29,7 +31,7 @@ function functionCall(array) {
     array[randomIndex] = temporaryValue;
   }
   if (array.length < 18) {
-    while (array.length != 18) {
+    while (array.length !== 18) {
       array.push({ backgroundImage: null });
     }
   }
@@ -60,9 +62,10 @@ export default function Home() {
     if (router.query.memorialID) {
       loadMemorial();
     }
-  }, [apiCall, router]);
+  }, [apiCall, router, setLoading, setMemorial]);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [addMemModal, setAddMemModal] = useState(false);
   const [modalVariant, setModalVariant] = useState("bubbleInfo");
   const openModal = (variant) => {
     setModalOpen(true);
@@ -72,14 +75,26 @@ export default function Home() {
 
   const handleclick = () => setModalOpen(true);
 
+  const onPlusClick = () => setAddMemModal(true);
+
+  const onCloseClick = () => setAddMemModal(false);
   return (
     <>
       <Head>
-        <title>{/*{firstname} {lastname}*/}</title>
+        <title>
+          Heirloom | {memorial?.firstName} {memorial?.lastName}
+        </title>
       </Head>
-      <PageNavbar />
-      <div>
-        <div className="landing bg-paper w-full h-full">
+      <ChakraProvider>
+        <PageNavbar
+          onPlusClick={onPlusClick}
+          onTextClick={() => console.log("launch text flow")}
+          onImageClick={() => console.log("launch image flow")}
+          onYoutubeClick={() => console.log("launch youtube flow")}
+          onCloseClick={onCloseClick}
+        />
+        <AddMemoirModal open={addMemModal} onCloseClick={onCloseClick} />
+        <div className="landing bg-paper w-full min-h-screen scrollable">
           {!loading ? (
             <div className="bubble-container w-full h-full">
               <div className="bubble-container">
@@ -104,7 +119,7 @@ export default function Home() {
             <LoadingSpinner />
           )}
         </div>
-      </div>
+      </ChakraProvider>
     </>
   );
 }
