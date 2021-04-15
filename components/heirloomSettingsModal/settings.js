@@ -166,10 +166,12 @@ export default function HeirloomSettings({ memorial, onClose }) {
 
               <SettingLabel help={coverPhotoHelp}>Cover Photo</SettingLabel>
               <div className="mb-4">
-                <Image
-                  src="/assets/img/default_cover_photo.png"
+                <img
+                  className="rounded-lg"
+                  src={values.coverPhoto || "/assets/img/default_cover_photo.png"}
                   width={237}
                   height={150}
+                  alt="cover-photo"
                 />
               </div>
               <ButtonFileInput
