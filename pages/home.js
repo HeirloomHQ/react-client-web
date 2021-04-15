@@ -38,6 +38,11 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memorialCount]);
 
+  // reset memorial on initial load
+  useEffect(() => {
+    setMemorial();
+  }, [setMemorial]);
+
   function openSettings(memorial) {
     setMemorial(memorial);
   }
