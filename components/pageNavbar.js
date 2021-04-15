@@ -17,19 +17,19 @@ export default function PageNavbar({ onTextClick, onImageClick, onYoutubeClick }
       option: "Text",
       detail: "Write a memory in plain text.",
       src: "/assets/img/memorial/text-post.png",
-      onTextClick,
+      onClick: onTextClick,
     },
     {
       option: "Media",
       detail: "Add photos videos and audio clips.",
       src: "/assets/img/memorial/image-post.png",
-      onImageClick,
+      onClick: onImageClick,
     },
     {
       option: "YouTube",
       detail: "Embed a video from Youtube.",
       src: "/assets/img/memorial/youtube-post.png",
-      onYoutubeClick,
+      onClick: onYoutubeClick,
     },
   ];
 
