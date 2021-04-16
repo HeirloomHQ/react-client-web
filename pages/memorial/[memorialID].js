@@ -65,19 +65,13 @@ export default function Home() {
   }, [apiCall, router, setLoading, setMemorial]);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [addMemModal, setAddMemModal] = useState(false);
-  const [modalVariant, setModalVariant] = useState("bubbleInfo");
-  const openModal = (variant) => {
-    setModalOpen(true);
-  };
+  const [modalVariant, setModalVariant] = useState("");
 
   const closeModal = () => setModalOpen(false);
 
   const handleclick = () => setModalOpen(true);
+  const onCloseClick = () => setModalVariant("");
 
-  const onPlusClick = () => setAddMemModal(true);
-
-  const onCloseClick = () => setAddMemModal(false);
   return (
     <>
       <Head>
@@ -87,13 +81,17 @@ export default function Home() {
       </Head>
       <ChakraProvider>
         <PageNavbar
-          onPlusClick={onPlusClick}
-          onTextClick={() => console.log("launch text flow")}
-          onImageClick={() => console.log("launch image flow")}
-          onYoutubeClick={() => console.log("launch youtube flow")}
-          onCloseClick={onCloseClick}
+          // onPlusClick={onPlusClick}
+          onTextClick={
+            // set stat
+            () => setModalVariant("TEXT")}
+          // onTextClick={onTextClick}
+          onImageClick={
+            () => setModalVariant("PHOTO")}
+          onYoutubeClick={
+            () => setModalVariant("YOUTUBE")}
         />
-        <AddMemoirModal open={addMemModal} onCloseClick={onCloseClick} />
+        <AddMemoirModal onCloseClick={onCloseClick} variant={modalVariant} />
         <div className="landing bg-paper w-full min-h-screen scrollable">
           {!loading ? (
             <div className="bubble-container w-full h-full">
