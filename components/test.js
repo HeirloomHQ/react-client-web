@@ -9,14 +9,12 @@ const MockMemoirBubble = ({ bubble, onClick }) => {
   const openModal = (variant) => {
     setModalOpen(true);
   };
-
-  const closeModal = () => setModalOpen(false);
+  const imageURL = bubble.mediaUrl;
 
   return (
     <div
       style={{
-        backgroundImage: bubble.backgroundImage,
-        backgroundPosition: "center",
+        backgroundImage: `url(${bubble.mediaUrl})`,
         backgroundSize: "cover",
         backgroundColor: "#FF7F59",
       }}
