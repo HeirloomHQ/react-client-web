@@ -36,7 +36,13 @@ export default function ButtonFileInput({
       >
         {children}
       </label>
-      <input type="file" onChange={onChange} className="hidden" id={id} />
+      <input
+        type="file"
+        onChange={onChange}
+        className="hidden"
+        id={id}
+        accept=".png,.PNG,.jpg,.jpeg,.JPG,.JPEG"
+      />
     </div>
   );
 }
