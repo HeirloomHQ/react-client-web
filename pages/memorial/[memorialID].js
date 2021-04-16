@@ -13,9 +13,8 @@ import { useMemorial } from "../../lib/memorial";
 import { AddMemoirModal } from "../../components/addMemorials";
 import { ChakraProvider } from "@chakra-ui/react";
 
-//reference: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function getMemoirs(array) {
-  console.log(array)
+  // console.log(array)
   if (array.length < 3) {
     while (array.length !== 3) {
       array.push({ backgroundImage: null });
@@ -65,7 +64,6 @@ export default function Home() {
         setLoading(false);
       } catch (e) {
         console.log(e);
-        // router.push("/404");
       }
     };
     if (router.query.memorialID) {
@@ -75,10 +73,6 @@ export default function Home() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [addMemModal, setAddMemModal] = useState(false);
-  const [modalVariant, setModalVariant] = useState("bubbleInfo");
-  const openModal = (variant) => {
-    setModalOpen(true);
-  };
 
   const closeModal = () => setModalOpen(false);
 
