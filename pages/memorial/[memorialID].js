@@ -13,25 +13,10 @@ import { useMemorial } from "../../lib/memorial";
 import { AddMemoirModal } from "../../components/addMemorials";
 import { ChakraProvider } from "@chakra-ui/react";
 
-//reference: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function functionCall(array) {
-  let currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-  if (array.length < 18) {
-    while (array.length !== 18) {
+function getMemoirs(array) {
+  // console.log(array)
+  if (array.length < 3) {
+    while (array.length !== 3) {
       array.push({ backgroundImage: null });
     }
   }
@@ -40,6 +25,7 @@ function functionCall(array) {
 export default function Home() {
   const router = useRouter();
   const apiCall = useApiCall();
+  const [memoirs, setMemoirs] = useState([]);
 
   const { memorial, setMemorial, loading, setLoading } = useMemorial();
 
@@ -64,12 +50,29 @@ export default function Home() {
     }
   }, [apiCall, router, setLoading, setMemorial]);
 
+  // bringing up the memoirs
+  useEffect(() => {
+    const loadMemoirs = async () => {
+      setLoading(true);
+      try {
+        const res = await apiCall(() =>
+          axios.get(`/api/memoir/${router.query.memorialID}/all_memoirs`, {
+            withCredentials: true,
+          })
+        );
+        setMemoirs(res.data.memoirs);
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    if (router.query.memorialID) {
+      loadMemoirs();
+    }
+  }, [apiCall, router, setLoading, setMemoirs]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [addMemModal, setAddMemModal] = useState(false);
-  const [modalVariant, setModalVariant] = useState("bubbleInfo");
-  const openModal = (variant) => {
-    setModalOpen(true);
-  };
 
   const closeModal = () => setModalOpen(false);
 
@@ -88,7 +91,8 @@ export default function Home() {
       <ChakraProvider>
         <PageNavbar
           onPlusClick={onPlusClick}
-          onTextClick={() => console.log("launch text flow")}
+          // onTextClick={() => console.log("launch text flow")}
+          onTextClick={onPlusClick}
           onImageClick={() => console.log("launch image flow")}
           onYoutubeClick={() => console.log("launch youtube flow")}
           onCloseClick={onCloseClick}
@@ -99,7 +103,7 @@ export default function Home() {
             <div className="bubble-container w-full h-full">
               <div className="bubble-container">
                 <BubbleElement options={defaultOptions} className="bubbleUI">
-                  {functionCall(mockMemoirs).map((bubble, i) => (
+                  {getMemoirs(memoirs).map((bubble, i) => (
                     <MockMemoirBubble
                       onClick={handleclick}
                       className="bubbleElement"
