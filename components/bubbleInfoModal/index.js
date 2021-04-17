@@ -2,8 +2,10 @@ import React from "react";
 import BubbleInfo from "./bubbleInfo";
 import Close from "../icons/close";
 import Image from "next/image";
+import RightChevron from '../icons/rightchevron';
+import LeftChevron from '../icons/leftchevron';
 
-export default function BubbleInfoModal({ open, onClose }) {
+export default function BubbleInfoModal({ open, onClose, bubble }) {
   function stopPropagation(e) {
     e.stopPropagation();
   }
@@ -24,21 +26,39 @@ export default function BubbleInfoModal({ open, onClose }) {
         className="modal-container bg-white bg-opacity-0 w-full  max-h-3xl max-w-3xl mx-auto rounded-3xl z-50 overflow-y-auto"
         onClick={stopPropagation}
       >
-        <div className="modal-content py-8 text-left px-12">
-          <div className="flex justify-between items-center pb-3">
-            <div className="invisible" onClick={onClose}>
+        <div className="modal-content py-8 text-left px-12 ">
+          <div className="flex justify-between items-center pb-3 h-100 w-100">
+            {/* <div className="invisible" onClick={onClose}>
               <Close />
+            </div> */}
+            <div className="modal-close cursor-pointer z-50" onClick={onClose}>
+
+              <LeftChevron />
             </div>
-            <Image
-              src="/assets/img/mockImages/4.png"
+            <div
+            style={{
+              backgroundImage: `url(${bubble.mediaUrl})`,
+              backgroundSize: "cover",
+                  backgroundColor: "#FF7F59",
+                  height: '600px',
+                  width:'600px'
+
+            }}
+            className="bubbleElement "
+            // onClick={onClick}
+            ></div>
+            {/* <Image
+
+              src={url(bubble.mediaUrl}
               alt="Heirloom logo"
               // layout='fill'
-              height={200}
-              width={200}
+              height={600}
+              width={600}
               // onClick={() => router.push("/")}
-            />
+            /> */}
             <div className="modal-close cursor-pointer z-50" onClick={onClose}>
-              <Close />
+
+              <RightChevron />
             </div>
           </div>
           <BubbleInfo />

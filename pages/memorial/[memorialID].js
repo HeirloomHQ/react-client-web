@@ -73,11 +73,14 @@ export default function Home() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState("");
-
+  const [modalKey, setModalKey] = useState("");
 
   const closeModal = () => setModalOpen(false);
 
-  const handleclick = () => setModalOpen(true);
+  const handleclick = (i) => {
+    setModalKey(i);
+    setModalOpen(true);
+  };
   const onCloseClick = () => setModalVariant("");
 
   return (
@@ -87,7 +90,9 @@ export default function Home() {
           Heirloom | {memorial?.firstName} {memorial?.lastName}
         </title>
       </Head>
-      <ChakraProvider>
+
+
+      <ChakraProvider class="background-p">
         <PageNavbar
           // onPlusClick={onPlusClick}
           onTextClick={
@@ -101,14 +106,17 @@ export default function Home() {
 
         />
         <AddMemoirModal onCloseClick={onCloseClick} variant={modalVariant} />
-        <div className="landing bg-paper w-full min-h-screen scrollable">
+
+        <div className="landing bg-paper w-full min-h-screen scrollable backdrop-filter backdrop-blur-lg">
+
           {!loading ? (
-            <div className="bubble-container w-full h-full">
-              <div className="bubble-container">
+
+            <div className="bubble-container w-full h-130">
+              <div className="bubble-container-add">
                 <BubbleElement options={defaultOptions} className="bubbleUI">
                   {getMemoirs(memoirs).map((bubble, i) => (
                     <MockMemoirBubble
-                      onClick={handleclick}
+                      onClick={()=>handleclick(bubble)}
                       className="bubbleElement"
                       bubble={bubble}
                       key={i}
@@ -116,17 +124,19 @@ export default function Home() {
                   ))}
                 </BubbleElement>
               </div>
-              <BubbleInfoModal
-                open={modalOpen}
-                // key={i}
+                <BubbleInfoModal
+                  open={modalOpen}
+                  bubble={modalKey}
                 onClose={closeModal}
               />
-            </div>
+              </div>
+
           ) : (
             <LoadingSpinner />
           )}
         </div>
-      </ChakraProvider>
+        </ChakraProvider>
+
     </>
   );
 }
