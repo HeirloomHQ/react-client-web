@@ -45,7 +45,20 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
 
             }}
             // onClick={onClick}
-            ></div>
+            >
+              <div
+              style={{
+                paddingTop:"100%",
+                height: '50px',
+
+              }}> Lorem Ipsum is simply dummy
+                text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's
+                standard dummy text ever since the 1500s, when an unknown
+             </div>
+
+            </div>
+
             {/* <Image
 
               src={url(bubble.mediaUrl}
