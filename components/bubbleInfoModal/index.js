@@ -44,7 +44,6 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                   width:'600px'
 
             }}
-            className="bubbleElement "
             // onClick={onClick}
             ></div>
             {/* <Image
