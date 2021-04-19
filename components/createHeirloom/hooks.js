@@ -12,6 +12,8 @@ const initValues = {
     homeTown: "Anytown, USA",
     coverPhoto: "",
     pageTheme: "#FF7F59",
+    canView: "",
+    canPost: "",
   },
   emails: [],
 };

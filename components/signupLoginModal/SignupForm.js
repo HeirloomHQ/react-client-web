@@ -22,7 +22,8 @@ export default function SignupForm({ toggleVariant }) {
 
   const onSubmitSignup = async (values, { setSubmitting, setErrors }) => {
     try {
-      await signup(values);
+      // prune null before submit
+      await signup(pruneNull(values));
       // success
       setSubmitting(false);
       await router.push("/home");
@@ -49,7 +50,12 @@ export default function SignupForm({ toggleVariant }) {
       </div>
       {/* Password Matching Source: https://github.com/formium/formik/issues/90 */}
       <Formik
-        initialValues={{ email: "", password: "", confirmPassword: "" }}
+        initialValues={{
+          email: router.query.signup || "",
+          password: "",
+          confirmPassword: "",
+          acceptInvite: router.query.acceptInvite,
+        }}
         validationSchema={validationSchema}
         onSubmit={onSubmitSignup}
       >
@@ -112,7 +118,11 @@ export default function SignupForm({ toggleVariant }) {
               } h-12 text-xl`}
               variant="filled"
               fullWidth={true}
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting ||
+                Object.values(errors).reduce((acc, curr) => acc || curr != "", false)
+              }
+              type="submit"
             >
               Create Account
             </Button>
@@ -132,5 +142,12 @@ export default function SignupForm({ toggleVariant }) {
         </span>
       </div>
     </>
+  );
+}
+
+function pruneNull(obj) {
+  return Object.keys(obj).reduce(
+    (acc, key) => (obj[key] === undefined ? acc : { ...acc, [key]: obj[key] }),
+    {}
   );
 }

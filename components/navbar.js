@@ -5,24 +5,17 @@ import Button from "./button";
 import SignupLoginModal from "./signupLoginModal";
 import NavLink from "./navLink";
 
-export default function Navbar() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalVariant, setModalVariant] = useState("signIn");
-  const openModal = (variant) => {
-    setModalVariant(variant);
-    setModalOpen(true);
-  };
-  const closeModal = () => setModalOpen(false);
+export default function Navbar({ openModal }) {
   const router = useRouter();
 
   return (
     <>
-      <div className="h-24 w-full flex items-center px-24 bg-paper">
+      <div className="h-24 w-full flex items-center px-24 bg-paper cursor-pointer">
         <Image
-          src="/assets/img/heirloom-header-logo.png"
+          src="/assets/img/nav-logo.png"
           alt="Heirloom logo"
-          height={42}
-          width={170}
+          height={36}
+          width={147}
           onClick={() => router.push("/")}
         />
         <div className="flex justify-between ml-32">
@@ -49,14 +42,6 @@ export default function Navbar() {
           </Button>
         </div>
       </div>
-      <SignupLoginModal
-        open={modalOpen}
-        onClose={closeModal}
-        variant={modalVariant}
-        toggleVariant={() =>
-          setModalVariant(modalVariant === "signIn" ? "signUp" : "signIn")
-        }
-      />
     </>
   );
 }

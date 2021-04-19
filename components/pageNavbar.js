@@ -1,12 +1,38 @@
 import React from "react";
 import { useRouter } from "next/router";
 import "tailwindcss/tailwind.css";
+import {
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+} from "@chakra-ui/react";
 
-export default function PageNavbar() {
+// onPlusClick allows access
+export default function PageNavbar({ onTextClick, onImageClick, onYoutubeClick }) {
   const router = useRouter();
-  const memorial_id = router.query.mem_id;
-  const firstname = router.query?.firstname;
-  const lastname = router.query?.lastname;
+  const OPTIONS = [
+    {
+      option: "Text",
+      detail: "Write a memory in plain text.",
+      src: "/assets/img/memorial/text-post.png",
+      onClick: onTextClick,
+    },
+    {
+      option: "Media",
+      detail: "Add photos videos and audio clips.",
+      src: "/assets/img/memorial/image-post.png",
+      onClick: onImageClick,
+    },
+    {
+      option: "YouTube",
+      detail: "Embed a video from Youtube.",
+      src: "/assets/img/memorial/youtube-post.png",
+      onClick: onYoutubeClick,
+    },
+  ];
+
   return (
     <>
       <div className="w-full flex items-center px-24 py-4 bg-paper">
@@ -20,15 +46,46 @@ export default function PageNavbar() {
             onClick={() => router.push("/home")}
           />
         </div>
-        <div className="flex ">
-          <input
-            type="image"
-            src="/assets/img/add-new-button.png"
-            alt="Heirloom logo"
-            height={30}
-            width={30}
-          />
-        </div>
+        <Popover placement="bottom-end">
+          <PopoverTrigger>
+            <div className="flex">
+              <img
+                className="cursor-pointer"
+                src="/assets/img/add-new-button.png"
+                alt="Heirloom logo"
+                height={30}
+                width={30}
+                // onClick={onPlusClick}
+              />
+            </div>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent className="w-96">
+              <PopoverBody>
+                <div className="font-sans font-semibold text-xl mb-2">Add a Memory</div>
+                {OPTIONS.map((opt, index) => (
+                  <div
+                    className="flex p-2 hover:bg-outlineButtonHover cursor-pointer"
+                    key={`${opt.option}-${index}`}
+                    onClick={opt.onClick}
+                  >
+                    <img
+                      className="mr-2"
+                      src={opt.src}
+                      alt={opt.option}
+                      height={48}
+                      width={48}
+                    />
+                    <div className="flex flex-col">
+                      <p className="font-sans font-semibold">{opt.option}</p>
+                      <p className="font-sans font-normal">{opt.detail}</p>
+                    </div>
+                  </div>
+                ))}
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </Popover>
       </div>
       <hr />
     </>

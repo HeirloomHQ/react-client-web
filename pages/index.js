@@ -1,15 +1,35 @@
 import Head from "next/head";
 import Navbar from "../components/navbar";
 import Button from "../components/button";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import SignupLoginModal from "../components/signupLoginModal";
 
 export default function Home() {
+  const router = useRouter();
+  const { signup } = router.query;
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalVariant, setModalVariant] = useState("signIn");
+  const openModal = (variant) => {
+    setModalVariant(variant);
+    setModalOpen(true);
+  };
+  const closeModal = () => setModalOpen(false);
+
+  useEffect(() => {
+    if (!!signup) {
+      openModal("signUp");
+    }
+  }, [signup]);
+
   return (
     <>
       <Head>
         <title>Heirloom</title>
       </Head>
       <div>
-        <Navbar />
+        <Navbar openModal={openModal} />
         <div className="landing bg-paper w-full h-full">
           <div className="landing__left">
             <div className="landing__header">
@@ -29,6 +49,14 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <SignupLoginModal
+        open={modalOpen}
+        onClose={closeModal}
+        variant={modalVariant}
+        toggleVariant={() =>
+          setModalVariant(modalVariant === "signIn" ? "signUp" : "signIn")
+        }
+      />
     </>
   );
 }

@@ -47,10 +47,10 @@ export default function SignupLoginModal({ open, variant, onClose, toggleVariant
               <Close />
             </div>
             <Image
-              src="/assets/img/heirloom-logo-no-txt@30.png"
+              src="/assets/img/newlogo.png"
               alt="Heirloom logo"
-              height={30}
-              width={30}
+              height={36}
+              width={26}
             />
             <div className="modal-close cursor-pointer z-50" onClick={onClose}>
               <Close />

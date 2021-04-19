@@ -13,7 +13,7 @@ export default function FloatingTextField({
   error,
   onBlur,
 }) {
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = React.useState(value != "");
 
   function handleActivation(e) {
     const prevState = active;
