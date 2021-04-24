@@ -4,11 +4,18 @@ import Close from "../icons/close";
 import Image from "next/image";
 import RightChevron from '../icons/rightchevron';
 import LeftChevron from '../icons/leftchevron';
-
+import youtubeThumbnail from 'youtube-thumbnail'
 export default function BubbleInfoModal({ open, onClose, bubble }) {
   function stopPropagation(e) {
     e.stopPropagation();
   }
+  // var youtubeThumbnail = require('youtube-thumbnail');
+  var thumbnail = youtubeThumbnail(bubble.mediaUrl);
+  var vid=false;
+  if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
+    vid = True;
+  }
+  // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
 
   return (
     <div
@@ -37,7 +44,8 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
             </div>
             <div
             style={{
-              backgroundImage: `url(${bubble.mediaUrl})`,
+              // backgroundImage: `url(${bubble.mediaUrl})`,
+              backgroundImage: `url(${vid? thumbnail.medium.url : bubble.mediaUrl})`,
               backgroundSize: "cover",
                   backgroundColor: "#FF7F59",
                   height: '600px',
@@ -46,6 +54,8 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
             }}
             // onClick={onClick}
             >
+            {/* <div>            {thumbnail.default.url}
+</div> */}
               <div
               style={{
                 paddingTop:"100%",
@@ -76,6 +86,6 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
           <BubbleInfo />
         </div>
       </div>
-    </div>
+    // </div>
   );
 }
