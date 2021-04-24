@@ -15,6 +15,7 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
   if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
     vid = True;
   }
+  console.log(bubble)
   // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
 
   return (
@@ -58,13 +59,16 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
 </div> */}
               <div
               style={{
-                paddingTop:"100%",
+                paddingTop:"103%",
                 height: '50px',
-
-              }}> Lorem Ipsum is simply dummy
-                text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's
-                standard dummy text ever since the 1500s, when an unknown
+                  lineHeight: '22px',
+                fontSize:'18px'
+                }} >{bubble.text}
+                 backgroundImage: `url(${vid? thumbnail.medium.url : bubble.mediaUrl})`,
+              backgroundSize: "cover",
+                  backgroundColor: "#FF7F59",
+                  height: '600px',
+                  width:'600px'
              </div>
 
             </div>
