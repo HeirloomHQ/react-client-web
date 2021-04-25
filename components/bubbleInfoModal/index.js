@@ -9,14 +9,17 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
   function stopPropagation(e) {
     e.stopPropagation();
   }
-  // var youtubeThumbnail = require('youtube-thumbnail');
-  var thumbnail = youtubeThumbnail(bubble.mediaUrl);
+  var thumbnail= youtubeThumbnail(bubble);
+  if (bubble) {
+    thumbnail = youtubeThumbnail(bubble.mediaUrl);//.mediaUrl);
+  }
+  // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
+
   var vid=false;
   if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
-    vid = True;
+    vid = true;
   }
   console.log(bubble)
-  // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
 
   return (
     <div
