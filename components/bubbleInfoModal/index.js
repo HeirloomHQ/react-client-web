@@ -11,11 +11,13 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
   function stopPropagation(e) {
     e.stopPropagation();
   }
-  var thumbnail= youtubeThumbnail(bubble);
-  // if (bubble) {
+  const imageURL = bubble.mediaUrl;
+
+  var thumbnail = youtubeThumbnail("" + imageURL);
+    // if (bubble) {
   //   thumbnail = youtubeThumbnail(bubble.mediaUrl);//.mediaUrl);
   // }
-  var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
+  // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
 
   var vid=false;
   if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
@@ -56,7 +58,7 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                 url="https://www.youtube.com/watch?v=9bZkp7q19f0" />
               <div
               style={{
-                // paddingTop:"103%",
+                paddingTop:"10px",
                 height: '50px',
                   lineHeight: '22px',
                 fontSize:'18px'
@@ -80,7 +82,7 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
               </div>
               <div
                 style={{
-                  // paddingTop:"103%",
+                  paddingTop:"10px",
                   height: '50px',
                   lineHeight: '22px',
                   fontSize:'18px'
