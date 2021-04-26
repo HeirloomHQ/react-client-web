@@ -11,11 +11,11 @@ const MockMemoirBubble = ({ bubble, onClick }) => {
     setModalOpen(true);
   };
   const imageURL = bubble.mediaUrl;
-var thumbnail= youtubeThumbnail(bubble);
-  if (bubble) {
-    thumbnail = youtubeThumbnail(""+ bubble.mediaUrl);//.mediaUrl);
-  }
-  var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
+var thumbnail= youtubeThumbnail(""+ imageURL);
+  // if (bubble) {
+  //   thumbnail = youtubeThumbnail(""+ imageURL);//.mediaUrl);
+  // }
+  // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
 
   var vid=false;
   if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
