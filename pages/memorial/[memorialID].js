@@ -12,6 +12,7 @@ import LoadingSpinner from "../../components/loadingSpinner";
 import { useMemorial } from "../../lib/memorial";
 import { AddMemoirModal } from "../../components/addMemorials";
 import { ChakraProvider } from "@chakra-ui/react";
+import youtubeThumbnail from 'youtube-thumbnail'
 
 function getMemoirs(array) {
   // console.log(array)
@@ -82,7 +83,14 @@ export default function Home() {
     setModalOpen(true);
   };
   const onCloseClick = () => setModalVariant("");
-
+  const getThubmnail = (bubble) => {
+    var thumbnail = youtubeThumbnail(bubble.mediaUrl);
+    console.log(bubble)
+    if (bubble) {
+      thumbnail = youtubeThumbnail(bubble.mediaUrl);//.mediaUrl);
+    }
+    return thumbnail.medium.url;
+  }
   return (
     <>
       <Head>
@@ -118,7 +126,7 @@ export default function Home() {
                     <MockMemoirBubble
                       onClick={()=>handleclick(bubble)}
                       className="bubbleElement"
-                      bubble={bubble}
+                      bubble={(bubble)}
                       key={i}
                     />
                   ))}
