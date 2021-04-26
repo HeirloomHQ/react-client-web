@@ -13,7 +13,7 @@ const MockMemoirBubble = ({ bubble, onClick }) => {
   const imageURL = bubble.mediaUrl;
 var thumbnail= youtubeThumbnail(bubble);
   if (bubble) {
-    thumbnail = youtubeThumbnail(bubble.mediaUrl);//.mediaUrl);
+    thumbnail = youtubeThumbnail(""+ bubble.mediaUrl);//.mediaUrl);
   }
   var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
 
