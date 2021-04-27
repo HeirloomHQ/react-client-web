@@ -6,6 +6,7 @@ import RightChevron from '../icons/rightchevron';
 import LeftChevron from '../icons/leftchevron';
 import youtubeThumbnail from 'youtube-thumbnail';
 import ReactPlayer from 'react-player/youtube';
+import { Textfit } from 'react-textfit';
 
 export default function BubbleInfoModal({ open, onClose, bubble }) {
   function stopPropagation(e) {
@@ -22,9 +23,28 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
   var vid=false;
   if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
     vid = true;
-
   }
-  console.log(vid)
+
+
+  var isText = false;
+  if (bubble.mediaUrl === "" && bubble.text.length > 0) {
+    isText = true;
+  }
+  const modalText = isText &&
+    (<div
+      className="bubbleElement "
+>      <Textfit mode="multi"
+        className="bubbleElement-text"
+        style={{
+          backgroundSize: "cover",
+          border: "2px solid #FFFFF",
+        }}
+      >
+        <div className="bubbleElement-text-content-modal">
+          {bubble.text}
+        </div>
+      </Textfit>
+    </div>);
 
   return (
     <div
@@ -55,7 +75,7 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                 width="640px"
                 height='600px'
                 className="player"
-                url="https://www.youtube.com/watch?v=9bZkp7q19f0" />
+                url={imageURL} />
               <div
               style={{
                 paddingTop:"10px",
@@ -77,8 +97,9 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                   backgroundColor: "#FF7F59",
                   height: '600px',
                   width: '600px'
-                    }}
+                }}
               >
+                {modalText}
               </div>
               <div
                 style={{
@@ -87,10 +108,12 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                   lineHeight: '22px',
                   fontSize:'18px'
                 }}>
-                  {bubble.text}
-                    test text
+
+                {bubble.text}
+                  test text
               </div>
-           </div>) }
+            </div>
+              )}
 
             <div className="modal-close cursor-pointer z-50" onClick={onClose}>
 
