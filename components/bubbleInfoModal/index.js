@@ -26,25 +26,21 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
   }
 
 
-  var isText = false;
-  if (bubble.mediaUrl === "" && bubble.text.length > 0) {
-    isText = true;
-  }
-  const modalText = isText &&
-    (<div
-      className="bubbleElement "
->      <Textfit mode="multi"
+  var isText = ((bubble.mediaUrl === "" && bubble.text.length > 0) ? true : false);
+  const modalText = isText ?
+    (<div className="bubbleElement ">
+      <Textfit
+        mode="multi"
         className="bubbleElement-text"
         style={{
           backgroundSize: "cover",
           border: "2px solid #FFFFF",
-        }}
-      >
+        }}>
         <div className="bubbleElement-text-content-modal">
           {bubble.text}
         </div>
       </Textfit>
-    </div>);
+    </div>) : "";
 
   return (
     <div
@@ -77,12 +73,13 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                 className="player"
                 url={imageURL} />
               <div
-              style={{
-                paddingTop:"10px",
-                height: '50px',
+                style={{
+                  paddingTop:"10px",
+                  height: '50px',
                   lineHeight: '22px',
-                fontSize:'18px'
-                }} >{bubble.text}
+                  fontSize:'18px'
+                    }} >
+                {bubble.text}
                 test text
              </div>
              </div>
