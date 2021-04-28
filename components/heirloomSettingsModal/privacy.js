@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {Switch} from "@chakra-ui/react"
 
 export default function PrivacyTab() {
   const role = "OWNER";
@@ -48,9 +49,11 @@ function Question({question, subtext}){
                         <div className="text-sm text-gray-500">{subtext}</div>
                     </div>
             </div>
-            <div class="onoffswitch ml-auto">
-                <input type="checkbox"  />
-            </div>
+            <Switch 
+                size="lg" 
+                className="ml-auto"
+                colorScheme="gray"
+            />
         </div>
     );
 
