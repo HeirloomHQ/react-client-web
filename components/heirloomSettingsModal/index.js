@@ -4,6 +4,7 @@ import styles from "./modal.module.css";
 import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
+import PrivacyTab from "./privacy";
 import { useMemorial } from "../../lib/memorial";
 import { useMembers } from "../../lib/members";
 
@@ -72,10 +73,16 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
       case 4:
         return <></>;
       case 5:
-        return <></>;
+        return <PrivacyTab />;
     }
   }
 
+  function disabledButtons(title){
+    if(title == "Media" || title == "Donations" || title == "Billing"){
+      return true;
+    }
+    return false;
+  }
   function MenuBar() {
     const MENU_TABS = [
       "General",
@@ -91,9 +98,10 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
           <button
             className={`${
               num === 0 ? "mr-7" : "mx-7"
-            } text-text-default font-sans font-semibold focus:outline-none`}
+            } ${disabledButtons(title) ? "text-gray-400" : "text-text-default"} font-sans font-semibold focus:outline-none`}
             onClick={() => setTab(num)}
             key={title}
+            disabled={disabledButtons(title) ? "true" : ""}
           >
             <h2 className="mb-4 select-none">{title}</h2>
             {tab === num && <SelectedRectangle />}
