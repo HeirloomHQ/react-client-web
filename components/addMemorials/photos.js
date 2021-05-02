@@ -170,10 +170,9 @@ export default function PhotoPost({ type, onPost }) {
               </>
             )}
             <div className="mb-8" />
-              {type !== "default" ?
+
                 <Btn onClick={() => onPost({ text, media_url })} disabled={media_url === "" || text === ""}>Post</Btn>
-                : <></>
-              }
+
           </>
         );
   }

@@ -102,7 +102,6 @@ export default function Home() {
         window.alert(e);
       });
   };
-
   return (
     <>
       <Head>
