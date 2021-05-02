@@ -12,8 +12,8 @@ import LoadingSpinner from "../../components/loadingSpinner";
 import { useMemorial } from "../../lib/memorial";
 import { AddMemoirModal } from "../../components/addMemorials";
 import { ChakraProvider } from "@chakra-ui/react";
-import emptyMemoir from '../../components/icons/emptyMemoir';
-import PhotoPost from '../../components/addMemorials/photos';
+import emptyMemoir from "../../components/icons/emptyMemoir";
+import PhotoPost from "../../components/addMemorials/photos";
 function getMemoirs(array) {
   // console.log(array)
   if (array.length < 3) {
@@ -83,19 +83,21 @@ export default function Home() {
     setModalOpen(true);
   };
   const onCloseClick = () => setModalVariant("");
-  const onClose = () =>  onCloseClick()
+  const onClose = () => onCloseClick();
 
   const clearAndClose = () => {
     onClose();
   };
   const [createLoading, setCreateLoading] = useState(false);
-  function useForceUpdate(){
+  function useForceUpdate() {
     const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update the state to force render
-}
+    return () => setValue((value) => value + 1); // update the state to force render
+  }
   const addModal = (postParams) => {
-    console.log({postParams});
-    apiCall(() => axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true }))
+    console.log({ postParams });
+    apiCall(() =>
+      axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true })
+    )
       .then(() => {
         setCreateLoading(false);
         clearAndClose();
@@ -117,63 +119,51 @@ export default function Home() {
         </title>
       </Head>
 
-
       <ChakraProvider class="background-p">
         <PageNavbar
           // onPlusClick={onPlusClick}
           onTextClick={
             // set stat
-            () => setModalVariant("TEXT")}
+            () => setModalVariant("TEXT")
+          }
           // onTextClick={onTextClick}
-          onImageClick={
-            () => setModalVariant("PHOTO")}
-          onYoutubeClick={
-            () => setModalVariant("YOUTUBE")}
-
+          onImageClick={() => setModalVariant("PHOTO")}
+          onYoutubeClick={() => setModalVariant("YOUTUBE")}
         />
         <AddMemoirModal onCloseClick={onCloseClick} variant={modalVariant} />
 
         <div className="landing bg-paper w-full min-h-screen scrollable">
-
           {!loading ? (
-                 memoirs.length > 0 ?
-            <div className="bubble-container w-full h-130">
-              <div className="bubble-container-add">
-                <BubbleElement options={defaultOptions} className="bubbleUI">
-
-                  {getMemoirs(memoirs).map((bubble, i) => (
-
-                    <MockMemoirBubble
-                      onClick={() => handleclick(bubble)}
-                      className="bubbleElement"
-                      bubble={(bubble)}
-                      key={i}
-                    />
-                  ))}
-
-                </BubbleElement>
-
-              </div>
+            memoirs.length > 0 ? (
+              <div className="bubble-container w-full h-130">
+                <div className="bubble-container-add">
+                  <BubbleElement options={defaultOptions} className="bubbleUI">
+                    {getMemoirs(memoirs).map((bubble, i) => (
+                      <MockMemoirBubble
+                        onClick={() => handleclick(bubble)}
+                        className="bubbleElement"
+                        bubble={bubble}
+                        key={i}
+                      />
+                    ))}
+                  </BubbleElement>
+                </div>
                 <BubbleInfoModal
                   open={modalOpen}
                   bubble={modalKey}
-                onClose={closeModal}
-              />
-              </div> :
+                  onClose={closeModal}
+                />
+              </div>
+            ) : (
               <div className="default">
-
-
                 <PhotoPost type={"default"} onPost={addModal} />
-
-                </div>
-
-
+              </div>
+            )
           ) : (
             <LoadingSpinner />
           )}
         </div>
-        </ChakraProvider>
-
+      </ChakraProvider>
     </>
   );
 }
