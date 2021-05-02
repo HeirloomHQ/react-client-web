@@ -89,7 +89,10 @@ export default function Home() {
     onClose();
   };
   const [createLoading, setCreateLoading] = useState(false);
-
+  function useForceUpdate(){
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update the state to force render
+}
   const addModal = (postParams) => {
     console.log({postParams});
     apiCall(() => axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true }))
@@ -97,9 +100,9 @@ export default function Home() {
         setCreateLoading(false);
         clearAndClose();
         //TODO: Function to reload single memorial
-        console.log("Imformation has been sent");
-        this.forceUpdate();
-
+        // console.log("Imformation has been sent");
+        // useForceUpdate();
+        // this.forceUpdate();
       })
       .catch((e) => {
         setCreateLoading(false);
