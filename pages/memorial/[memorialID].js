@@ -27,6 +27,8 @@ export default function Home() {
   const router = useRouter();
   const apiCall = useApiCall();
   const [memoirs, setMemoirs] = useState([]);
+  const [refreshFlag, setRefreshFlag] = useState(false);
+  const refreshMemoirs = () => setRefreshFlag(!refreshFlag);
 
   const { memorial, setMemorial, loading, setLoading } = useMemorial();
 
@@ -70,7 +72,7 @@ export default function Home() {
     if (router.query.memorialID) {
       loadMemoirs();
     }
-  }, [apiCall, router, setLoading, setMemoirs]);
+  }, [refreshFlag, apiCall, router, setLoading, setMemoirs]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState("");
@@ -89,10 +91,6 @@ export default function Home() {
     onClose();
   };
   const [createLoading, setCreateLoading] = useState(false);
-  function useForceUpdate() {
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue((value) => value + 1); // update the state to force render
-  }
   const addModal = (postParams) => {
     console.log({ postParams });
     apiCall(() =>
@@ -100,11 +98,8 @@ export default function Home() {
     )
       .then(() => {
         setCreateLoading(false);
-        clearAndClose();
-        //TODO: Function to reload single memorial
-        // console.log("Imformation has been sent");
-        // useForceUpdate();
-        // this.forceUpdate();
+        refreshMemoirs();
+        console.log("Information has been sent");
       })
       .catch((e) => {
         setCreateLoading(false);
