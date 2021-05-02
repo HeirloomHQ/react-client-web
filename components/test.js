@@ -47,9 +47,7 @@ const MockMemoirBubble = ({ bubble, onClick }) => {
       </div> :
     <div
       style={{
-        // backgroundImage: `url(${bubble.mediaUrl})`,
         backgroundImage: `url(${vid? thumbnail.medium.url : bubble.mediaUrl})`,
-
         backgroundSize: "cover",
         backgroundColor: "#FF7F59",
       }}

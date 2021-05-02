@@ -18,11 +18,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function PhotoPost({ onPost }) {
+export default function PhotoPost({ type, onPost }) {
   const classes = useStyles();
   const [media_url, setMediaUrl] = useState("");
   const [text, setText] = useState("");
-  
+
   const { enterDropZone, leaveDropZone, inDropZone, file, setFile } = useDragAndDrop();
   const apiCall = useApiCall();
 
@@ -102,7 +102,7 @@ export default function PhotoPost({ onPost }) {
 
   return (
           <>
-            <SettingsLabel>Add photos, videos, or audio clips</SettingsLabel>
+      {type !== "default" ? <SettingsLabel>Add photos, videos, or audio clips</SettingsLabel> : null}
             {!file ? (
               !imageLoading ? (
                 <div
@@ -142,7 +142,7 @@ export default function PhotoPost({ onPost }) {
                 <div className="h-80">
                   <LoadingSpinner />
                 </div>
-              ) 
+              )
             ) : (
               <>
                 <div
@@ -151,7 +151,8 @@ export default function PhotoPost({ onPost }) {
                   onMouseLeave={() => setCoverPhotoHovered(false)}
                   style={{ backgroundImage: `url(${media_url})` }}
                 >
-                  <button
+
+                <button
                     className={[
                       coverPhotoHovered ? "" : "opacity-0 ",
                       "rounded-full mr-2 mt-2 px-2 py-2 mb-auto bg-black bg-opacity-40 text-white hover:bg-opacity-70 transition-all duration-150 focus:outline-none",
@@ -169,7 +170,10 @@ export default function PhotoPost({ onPost }) {
               </>
             )}
             <div className="mb-8" />
-            <Btn onClick={() => onPost({ text, media_url })} disabled={media_url === "" || text === ""}>Post</Btn>
+              {type !== "default" ?
+                <Btn onClick={() => onPost({ text, media_url })} disabled={media_url === "" || text === ""}>Post</Btn>
+                : <></>
+              }
           </>
         );
   }
