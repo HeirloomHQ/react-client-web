@@ -54,7 +54,7 @@ function Question({question, subtext, buttonText }){
                         <div className=" font-medium text-sm text-gray-500 pb-5 pt-4">{subtext}</div>
                     </div>
             </div>
-                <Button ColorScheme="red" className="ml-auto" variant="ghost" >
+                <Button colorScheme="red" className="ml-auto" variant="ghost" >
                     {buttonText}
                 </Button>
                  
