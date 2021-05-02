@@ -80,7 +80,6 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                   fontSize:'18px'
                     }} >
                 {bubble.text}
-                test text
              </div>
              </div>
 
@@ -107,7 +106,6 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                 }}>
 
                 {bubble.text}
-                  test text
               </div>
             </div>
               )}
