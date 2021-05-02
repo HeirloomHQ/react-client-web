@@ -97,7 +97,9 @@ export default function Home() {
         setCreateLoading(false);
         clearAndClose();
         //TODO: Function to reload single memorial
-        console.log("Imformation has been sent")
+        console.log("Imformation has been sent");
+        this.forceUpdate();
+
       })
       .catch((e) => {
         setCreateLoading(false);

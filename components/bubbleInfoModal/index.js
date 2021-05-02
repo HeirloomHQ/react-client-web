@@ -90,7 +90,7 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                   backgroundImage: `url(${bubble.mediaUrl})`,
                   // backgroundImage: `url(${vid? thumbnail.medium.url : bubble.mediaUrl})`,
                   backgroundSize: "cover",
-                  backgroundColor: "#FF7F59",
+                  // backgroundColor: "#FF7F59",
                   height: '600px',
                   width: '600px'
                 }}
