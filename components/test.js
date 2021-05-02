@@ -16,7 +16,7 @@ const MockMemoirBubble = ({ bubble, onClick }) => {
       style={{
         backgroundImage: `url(${bubble.mediaUrl})`,
         backgroundSize: "cover",
-        backgroundColor: "#FF7F59",
+        backgroundColor: "#FFFFFF",
       }}
       className="bubbleElement "
       onClick={onClick}
