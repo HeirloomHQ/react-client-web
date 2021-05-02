@@ -5,6 +5,7 @@ import SelectedRectangle from "../selectedRectangle";
 import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
 import PrivacyTab from "./privacy";
+import DonationsTab from "./donations";
 import { useMemorial } from "../../lib/memorial";
 import { useMembers } from "../../lib/members";
 
@@ -69,7 +70,7 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
       case 2:
         return <SharingTab members={members} loading={loadingMembers} />;
       case 3:
-        return <></>;
+        return <DonationsTab />;
       case 4:
         return <></>;
       case 5:
@@ -78,7 +79,7 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
   }
 
   function disabledButtons(title){
-    if(title == "Media" || title == "Donations" || title == "Billing"){
+    if(title == "Media" || title == "Billing"){
       return true;
     }
     return false;
