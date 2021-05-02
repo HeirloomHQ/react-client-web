@@ -20,14 +20,13 @@ export default function TextPost({ onPost }) {
         rows={5}
         onChange={(e) => setText(e.target.value)}
         value={text}
-
       />
       <hr />
       <div className="py-10">
         <Button
           className="w-full font-bold"
           variant="filled"
-          onClick={() => onPost({ text, "media_url": "" })}
+          onClick={() => onPost({ text, media_url: "" })}
           disabled={text === ""}
         >
           Post

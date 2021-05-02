@@ -30,25 +30,27 @@ export function AddMemoirModal({ variant, onCloseClick }) {
   const { memorial } = useMemorial();
   const apiCall = useApiCall();
 
- const onClose = () =>  onCloseClick() 
+  const onClose = () => onCloseClick();
   const clearAndClose = () => {
-    onClose(); 
+    onClose();
   };
 
   const advanceStep = () => setStep(step + 1);
   const reverseStep = () => setStep(step - 1 >= 0 ? step - 1 : 0);
 
   const [createLoading, setCreateLoading] = useState(false);
-  const [memData, setMemData] = useState({story:"",video:"",link:"", photo:""});
+  const [memData, setMemData] = useState({ story: "", video: "", link: "", photo: "" });
 
   const addModal = (postParams) => {
-    console.log({postParams});
-    apiCall(() => axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true }))
+    console.log({ postParams });
+    apiCall(() =>
+      axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true })
+    )
       .then(() => {
         setCreateLoading(false);
         clearAndClose();
         //TODO: Function to reload single memorial
-        console.log("Imformation has been sent")
+        console.log("Imformation has been sent");
       })
       .catch((e) => {
         setCreateLoading(false);
@@ -64,20 +66,19 @@ export function AddMemoirModal({ variant, onCloseClick }) {
       case "TEXT":
         return "Tell a Story";
       case "YOUTUBE":
-        return "Upload Video"
-      }
+        return "Upload Video";
+    }
   };
-
 
   function ModalBody({ variant }) {
     switch (variant) {
       case "TEXT":
       default:
-        return <TextPost onPost={addModal}/> ;
+        return <TextPost onPost={addModal} />;
       case "PHOTO":
-        return <PhotoPost onPost={addModal} />;  
+        return <PhotoPost onPost={addModal} />;
       case "YOUTUBE":
-        return <YoutubePost onPost={addModal}/> 
+        return <YoutubePost onPost={addModal} />;
     }
   }
 
@@ -111,7 +112,6 @@ export function AddMemoirModal({ variant, onCloseClick }) {
     </ModalBase>
   );
 }
-
 
 function SettingsLabel({ children }) {
   return <div className="text-2xl font-bold text-gray-700 mb-6 mt-8">{children}</div>;

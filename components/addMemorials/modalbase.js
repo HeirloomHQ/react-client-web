@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import styles from "../heirloomSettingsModal/modal.module.css";
 
 export default function ModalBase({ children, open, onClose }) {
-
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
     return () => {
