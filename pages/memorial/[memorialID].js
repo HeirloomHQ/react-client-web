@@ -83,6 +83,8 @@ export default function Home() {
     setModalOpen(true);
   };
   const onCloseClick = () => setModalVariant("");
+  const onClose = () =>  onCloseClick()
+
   const clearAndClose = () => {
     onClose();
   };
