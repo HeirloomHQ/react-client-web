@@ -15,10 +15,13 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
   const imageURL = bubble.mediaUrl;
 
   var thumbnail = youtubeThumbnail("" + imageURL);
-  // if (bubble) {
+  {
+    /*if (bubble) {
   //   thumbnail = youtubeThumbnail(bubble.mediaUrl);//.mediaUrl);
   // }
   // var thumbnail = youtubeThumbnail('https://www.youtube.com/watch?v=9bZkp7q19f0');
+  */
+  }
 
   var vid = false;
   if (thumbnail.default.url !== "http://img.youtube.com/vi/null/default.jpg") {
@@ -87,7 +90,7 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
                 <div
                   style={{
                     backgroundImage: `url(${bubble.mediaUrl})`,
-                    // backgroundImage: `url(${vid? thumbnail.medium.url : bubble.mediaUrl})`,
+
                     backgroundSize: "cover",
                     backgroundColor: !isText ? "#FF7F59" : "",
                     height: "600px",
@@ -116,7 +119,6 @@ export default function BubbleInfoModal({ open, onClose, bubble }) {
           <BubbleInfo />
         </div>
       </div>
-      //{" "}
     </div>
   );
 }
