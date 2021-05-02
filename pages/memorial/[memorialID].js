@@ -130,7 +130,7 @@ export default function Home() {
         <div className="landing bg-paper w-full min-h-screen scrollable">
 
           {!loading ? (
-                 memoirs.length < 0 ?
+                 memoirs.length > 0 ?
             <div className="bubble-container w-full h-130">
               <div className="bubble-container-add">
                 <BubbleElement options={defaultOptions} className="bubbleUI">
