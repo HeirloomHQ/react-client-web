@@ -11,7 +11,7 @@
 	height: 100%;
 	border-radius: 50%;
 }
-.bubble-container{
+.bubble-container-add{
 	position: absolute;
     top: 50%;
     left: 50%;
@@ -22,6 +22,20 @@
   width: 800vh;
   /* border: 2px solid black; */
 }
+.default{
+  /* margin-top:100px; */
+  position: absolute;
+width: 509px;
+height: 288px;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+
+border-radius: 10px;
+text-align: center;
+font-size: 25px;
+}
+
 .bubbleUI {
 	position: relative; /* or absolute */
 
@@ -49,12 +63,49 @@
 	transition: opacity 0.1s ease;
   }
 
-  .bubbleElement:hover {
+.bubbleElement:hover {
 	/* opacity: 0.5; */
   filter: blur(1px) brightness(70%);
   /* filter: brightness(50%); */
-  }
-  .bubbleinfo{
-    /* height: 500px;
-    width: 600px; */
-  }
+}
+.bubbleElement-text {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.1s ease;
+    background:white;
+}
+.bubbleElement-text-content{
+  max-width: 90%;
+  margin:0 25%;
+  font-size:14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-align:center;
+  overflow: hidden;
+  justify-content: center;
+
+}
+.bubbleElement-text-content-modal{
+  max-width: 500px;
+  margin:0 10%;
+  font-size:30px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-align:center;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.bubbleElement-text:hover {
+/* opacity: 0.5; */
+filter: blur(1px) brightness(70%);
+/* filter: brightness(50%); */
+}

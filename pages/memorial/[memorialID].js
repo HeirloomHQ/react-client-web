@@ -12,7 +12,8 @@ import LoadingSpinner from "../../components/loadingSpinner";
 import { useMemorial } from "../../lib/memorial";
 import { AddMemoirModal } from "../../components/addMemorials";
 import { ChakraProvider } from "@chakra-ui/react";
-
+import emptyMemoir from "../../components/icons/emptyMemoir";
+import PhotoPost from "../../components/addMemorials/photos";
 function getMemoirs(array) {
   // console.log(array)
   if (array.length < 3) {
@@ -26,6 +27,8 @@ export default function Home() {
   const router = useRouter();
   const apiCall = useApiCall();
   const [memoirs, setMemoirs] = useState([]);
+  const [refreshFlag, setRefreshFlag] = useState(false);
+  const refreshMemoirs = () => setRefreshFlag(!refreshFlag);
 
   const { memorial, setMemorial, loading, setLoading } = useMemorial();
 
@@ -69,17 +72,41 @@ export default function Home() {
     if (router.query.memorialID) {
       loadMemoirs();
     }
-  }, [apiCall, router, setLoading, setMemoirs]);
+  }, [refreshFlag, apiCall, router, setLoading, setMemoirs]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState("");
-
+  const [modalKey, setModalKey] = useState("");
 
   const closeModal = () => setModalOpen(false);
 
-  const handleclick = () => setModalOpen(true);
+  const handleclick = (i) => {
+    setModalKey(i);
+    setModalOpen(true);
+  };
   const onCloseClick = () => setModalVariant("");
+  const onClose = () => onCloseClick();
 
+  const clearAndClose = () => {
+    onClose();
+  };
+  const [createLoading, setCreateLoading] = useState(false);
+
+  const addModal = (postParams) => {
+    console.log({ postParams });
+    apiCall(() =>
+      axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true })
+    )
+      .then(() => {
+        setCreateLoading(false);
+        refreshMemoirs();
+        console.log("Information has been sent");
+      })
+      .catch((e) => {
+        setCreateLoading(false);
+        window.alert(e);
+      });
+  };
   return (
     <>
       <Head>
@@ -87,41 +114,47 @@ export default function Home() {
           Heirloom | {memorial?.firstName} {memorial?.lastName}
         </title>
       </Head>
-      <ChakraProvider>
+
+      <ChakraProvider class="background-p">
         <PageNavbar
           // onPlusClick={onPlusClick}
           onTextClick={
             // set stat
-            () => setModalVariant("TEXT")}
+            () => setModalVariant("TEXT")
+          }
           // onTextClick={onTextClick}
-          onImageClick={
-            () => setModalVariant("PHOTO")}
-          onYoutubeClick={
-            () => setModalVariant("YOUTUBE")}
-
+          onImageClick={() => setModalVariant("PHOTO")}
+          onYoutubeClick={() => setModalVariant("YOUTUBE")}
         />
         <AddMemoirModal onCloseClick={onCloseClick} variant={modalVariant} />
+
         <div className="landing bg-paper w-full min-h-screen scrollable">
           {!loading ? (
-            <div className="bubble-container w-full h-full">
-              <div className="bubble-container">
-                <BubbleElement options={defaultOptions} className="bubbleUI">
-                  {getMemoirs(memoirs).map((bubble, i) => (
-                    <MockMemoirBubble
-                      onClick={handleclick}
-                      className="bubbleElement"
-                      bubble={bubble}
-                      key={i}
-                    />
-                  ))}
-                </BubbleElement>
+            memoirs.length > 0 ? (
+              <div className="bubble-container w-full h-130">
+                <div className="bubble-container-add">
+                  <BubbleElement options={defaultOptions} className="bubbleUI">
+                    {getMemoirs(memoirs).map((bubble, i) => (
+                      <MockMemoirBubble
+                        onClick={() => handleclick(bubble)}
+                        className="bubbleElement"
+                        bubble={bubble}
+                        key={i}
+                      />
+                    ))}
+                  </BubbleElement>
+                </div>
+                <BubbleInfoModal
+                  open={modalOpen}
+                  bubble={modalKey}
+                  onClose={closeModal}
+                />
               </div>
-              <BubbleInfoModal
-                open={modalOpen}
-                // key={i}
-                onClose={closeModal}
-              />
-            </div>
+            ) : (
+              <div className="default">
+                <PhotoPost type={"default"} onPost={addModal} />
+              </div>
+            )
           ) : (
             <LoadingSpinner />
           )}
