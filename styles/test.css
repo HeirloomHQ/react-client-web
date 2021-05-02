@@ -22,7 +22,7 @@
   width: 800vh;
   /* border: 2px solid black; */
 }
-.test{
+.default{
   /* margin-top:100px; */
   position: absolute;
 width: 509px;
@@ -31,22 +31,11 @@ left: 50%;
 top: 50%;
 transform: translate(-50%, -50%);
 
-/* background-image: url("../public/assets/img/media.png"); */
-
-/* Gray */
-
-/* border: 2px dashed #C1C0BF; */
 border-radius: 10px;
 text-align: center;
 font-size: 25px;
 }
-.test_default{
-  /* background-image: url("../public/assets/img/media.png");
-  background-position: center;
-  background-repeat: no-repeat; */
-  /* width: 509px;
-height: 70%; */
-}
+
 .bubbleUI {
 	position: relative; /* or absolute */
 

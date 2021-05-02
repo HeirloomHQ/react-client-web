@@ -154,7 +154,7 @@ export default function Home() {
                 onClose={closeModal}
               />
               </div> :
-              <div className="test">
+              <div className="default">
 
 
                 <PhotoPost type={"default"} onPost={addModal} />
