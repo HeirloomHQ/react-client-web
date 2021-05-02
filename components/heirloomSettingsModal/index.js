@@ -6,6 +6,7 @@ import HeirloomSettings from "./settings";
 import SharingTab from "./sharing";
 import PrivacyTab from "./privacy";
 import DonationsTab from "./donations";
+import BillingTab from "./billing";
 import { useMemorial } from "../../lib/memorial";
 import { useMembers } from "../../lib/members";
 
@@ -72,14 +73,14 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
       case 3:
         return <DonationsTab />;
       case 4:
-        return <></>;
+        return <BillingTab />;
       case 5:
         return <PrivacyTab />;
     }
   }
 
   function disabledButtons(title){
-    if(title == "Media" || title == "Billing"){
+    if(title == "Media" || title== "Donations" || title == "Billing"){
       return true;
     }
     return false;
