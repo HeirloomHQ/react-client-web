@@ -11,7 +11,7 @@ const MockMemoirBubble = ({ bubble, onClick }) => {
   const openModal = (variant) => {
     setModalOpen(true);
   };
-  console.log(bubble);
+  //console.log(bubble);
   const imageURL = bubble.mediaUrl;
   var thumbnail = youtubeThumbnail("" + imageURL);
   if (bubble) {
