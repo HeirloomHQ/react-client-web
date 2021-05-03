@@ -79,10 +79,19 @@ export default function Home() {
   const [modalKey, setModalKey] = useState("");
 
   const closeModal = () => setModalOpen(false);
-
-  const handleclick = (i) => {
-    setModalKey(i);
-    setModalOpen(true);
+  
+  const handleclick = (i) => { 
+    if(i.id == null){
+      setModalVariant("TEXT")
+      return (
+      <AddMemoirModal onCloseClick={onCloseClick} variant={modalVariant} />
+      ) 
+    }
+    else{
+      setModalKey(i);
+      setModalOpen(true);
+    }
+    
   };
   const onCloseClick = () => setModalVariant("");
   const onClose = () => onCloseClick();
@@ -93,14 +102,14 @@ export default function Home() {
   const [createLoading, setCreateLoading] = useState(false);
 
   const addModal = (postParams) => {
-    console.log({ postParams });
+    // console.log({ postParams });
     apiCall(() =>
       axios.post(`/api/memoir/${memorial.id}`, postParams, { withCredentials: true })
     )
       .then(() => {
         setCreateLoading(false);
         refreshMemoirs();
-        console.log("Information has been sent");
+        // console.log("Information has been sent");
       })
       .catch((e) => {
         setCreateLoading(false);

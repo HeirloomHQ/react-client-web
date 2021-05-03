@@ -50,7 +50,8 @@ export function AddMemoirModal({ variant, onCloseClick }) {
         setCreateLoading(false);
         clearAndClose();
         //TODO: Function to reload single memorial
-        console.log("Imformation has been sent");
+        // console.log("Imformation has been sent");
+        location.reload();
       })
       .catch((e) => {
         setCreateLoading(false);
