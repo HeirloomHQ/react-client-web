@@ -7,6 +7,7 @@ import SharingTab from "./sharing";
 import PrivacyTab from "./privacy";
 import DonationsTab from "./donations";
 import BillingTab from "./billing";
+import MediaTab from "./media";
 import { useMemorial } from "../../lib/memorial";
 import { useMembers } from "../../lib/members";
 
@@ -67,7 +68,7 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
       default:
         return <HeirloomSettings memorial={memorial} onClose={onClose} />;
       case 1:
-        return <></>;
+        return <MediaTab requests={members} memorial={memorial}/>;
       case 2:
         return <SharingTab members={members} loading={loadingMembers} />;
       case 3:
@@ -80,9 +81,9 @@ function ModalContent({ memorial, onClose, loadingMembers, members }) {
   }
 
   function disabledButtons(title){
-    if(title == "Media" || title== "Donations" || title == "Billing"){
-      return true;
-    }
+    // if(title=="Media" || title== "Donations" || title == "Billing"){
+    //   return true;
+    // }
     return false;
   }
   function MenuBar() {
