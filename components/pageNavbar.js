@@ -35,7 +35,7 @@ export default function PageNavbar({ onTextClick, onImageClick, onYoutubeClick }
 
   return (
     <>
-      <div className="w-full flex items-center px-24 py-4 bg-paper">
+      <div className="w-full flex items-center px-24 py-4 bg-paper z-0">
         <div className="mx-auto flex  items-center">
           <input
             type="image"
